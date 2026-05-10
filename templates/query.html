@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Submit Query · TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Query Section -->
+        <section class="min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-12 relative overflow-hidden">
+            <!-- Decorative Glow -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-tcf-green/10 rounded-full blur-[120px]"></div>
+            
+            <div class="relative z-10 w-full max-w-lg">
+                <!-- Query Form Container -->
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <h1 class="text-3xl font-bold text-center mb-2 text-tcf-green">Submit a Query</h1>
+                    <p class="text-center text-gray-400 mb-8 text-sm uppercase tracking-widest">We're Here to Help</p>
+
+                    <form id="queryForm" class="space-y-6">
+                        <!-- CNIC -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">CNIC</label>
+                            <input type="text" id="cnic" name="cnic" placeholder="12345-1234567-1" maxlength="13" required
+                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        </div>
+
+                        <!-- Query Type -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Query Type</label>
+                            <select id="query_type" name="query_type" required
+                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                                <option value="">Select a Query Type</option>
+                                <option value="admission">Admission Related</option>
+                                <option value="scholarship">Scholarship Related</option>
+                                <option value="fee">Fee Related</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Your Query -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Your Query</label>
+                            <textarea id="query" name="query" placeholder="Describe your query in detail..." rows="6" required
+                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition resize-none"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full bg-tcf-green text-tcf-black font-bold py-3 rounded-lg hover:bg-white transition duration-300 uppercase tracking-wider">
+                            Submit Query
+                        </button>
+                    </form>
+
+                    <!-- Response Message -->
+                    <div id="response" class="mt-6 p-4 rounded-lg border border-white/10 bg-tcf-black hidden">
+                        <p id="responseText" class="text-gray-300 text-sm"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5">
+            <div class="max-w-7xl mx-auto text-center">
+                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById("queryForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const cnic = document.getElementById("cnic").value.trim();
+            const query_type = document.getElementById("query_type").value;
+            const query = document.getElementById("query").value.trim();
+
+            if (cnic === "" || query_type === "" || query === "") {
+                alert("Please fill in all fields!");
+                return;
+            }
+
+            try {
+                const response = await fetch("/query", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ cnic, query_type, query })
+                });
+
+                const data = await response.json();
+                const responseDiv = document.getElementById("response");
+                const responseText = document.getElementById("responseText");
+                
+                responseText.textContent = data.message || "Query submitted successfully!";
+                responseDiv.classList.remove("hidden");
+                
+                if (data.success) {
+                    responseDiv.classList.add("border-tcf-green", "bg-tcf-green/10");
+                } else {
+                    responseDiv.classList.add("border-red-500", "bg-red-500/10");
+                }
+            } catch (err) {
+                console.error(err);
+                const responseDiv = document.getElementById("response");
+                const responseText = document.getElementById("responseText");
+                responseText.textContent = "Error submitting query. Please try again.";
+                responseDiv.classList.remove("hidden");
+                responseDiv.classList.add("border-red-500", "bg-red-500/10");
+            }
+        });
+    </script>
+</body>
+</html>

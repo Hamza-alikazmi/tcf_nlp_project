@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Admin Dashboard | TCF NLP</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: white; font-family: 'Inter', sans-serif; }
+        h1, th { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+    </style>
+</head>
+
+<body class="antialiased text-gray-200">
+    
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <div class="max-w-7xl mx-auto p-6 lg:p-10">
+        <!--  -->
+        <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-6">
+            <h1 class="text-4xl font-extrabold text-tcf-green tracking-tight">
+                Complaint Dashboard
+            </h1>
+            <span class="bg-tcf-green text-tcf-black text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-tcf-green/20">
+                Agentic AI Admin
+            </span>
+        </div>
+
+        <!-- Table Container -->
+        <div class="bg-tcf-dark-grey shadow-2xl rounded-xl overflow-hidden border border-white/5">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-tcf-black text-tcf-green border-b border-white/10">
+                        <tr>
+                            <th class="p-5 font-bold uppercase text-sm tracking-wider">ID</th>
+                            <th class="p-5 font-bold uppercase text-sm tracking-wider">Complaint Description</th>
+                            <th class="p-5 font-bold uppercase text-sm tracking-wider">Department</th>
+                            <th class="p-5 font-bold uppercase text-sm tracking-wider text-center">Priority</th>
+                            <th class="p-5 font-bold uppercase text-sm tracking-wider">Created At</th>
+                            <th class="p-5 font-bold uppercase text-sm tracking-wider">Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-white/5">
+                        {% for c in complaints %}
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <!-- ID -->
+                            <td class="p-5 font-mono text-xs font-bold text-tcf-green/80">
+                                {{ c.complaint_id }}
+                            </td>
+                            
+                            <!-- Description -->
+                            <td class="p-5 text-sm text-gray-300 leading-relaxed max-w-xs truncate" title="{{ c.text }}">
+                                {{ c.text }}
+                            </td>
+                            
+                            <!-- Department -->
+                            <td class="p-5 text-sm text-gray-400 font-medium">
+                                {{ c.department }}
+                            </td>
+                            
+                            <!-- Priority -->
+                            <td class="p-5 text-center">
+                                {% if c.priority|upper == "HIGH" %}
+                                    <span class="px-3 py-1 bg-red-900/30 text-red-400 text-[10px] font-black rounded border border-red-500/50 shadow-sm">HIGH</span>
+                                {% elif c.priority|upper == "NORMAL" %}
+                                    <span class="px-3 py-1 bg-tcf-green/10 text-tcf-green text-[10px] font-black rounded border border-tcf-green/50 shadow-sm">NORMAL</span>
+                                {% else %}
+                                    <span class="px-3 py-1 bg-gray-800 text-gray-400 text-[10px] font-black rounded border border-gray-600 shadow-sm">LOW</span>
+                                {% endif %}
+                            </td>
+
+                            <!-- Created At -->
+                            <td class="p-5 text-xs text-gray-500 italic">
+                                {{ c.created_at[:10] if c.created_at else "N/A" }}
+                            </td>
+
+                            <!-- Status -->
+                            <td class="p-5">
+                                <div class="flex items-center">
+                                    <span class="h-2 w-2 rounded-full mr-2 shadow-[0_0_8px_rgba(var(--status-color))]
+                                        {% if c.status == 'Resolved' %}bg-tcf-green
+                                        {% elif c.status == 'Pending' %}bg-blue-500
+                                        {% else %}bg-yellow-500{% endif %}">
+                                    </span>
+                                    <span class="text-xs font-black uppercase tracking-tighter
+                                        {% if c.status == 'Resolved' %}text-tcf-green
+                                        {% elif c.status == 'Pending' %}text-blue-400
+                                        {% else %}text-yellow-500{% endif %}">
+                                        {{ c.status }}
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="bg-tcf-black/50 px-6 py-4 border-t border-white/5">
+                <div class="flex items-center justify-between">
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        {% if has_prev %}
+                        <a href="/admin?page={{ current_page - 1 }}" class="relative inline-flex items-center px-4 py-2 border border-white/10 text-sm font-medium rounded-md text-gray-300 bg-tcf-dark-grey hover:bg-tcf-green hover:text-tcf-black transition"> Previous </a>
+                        {% endif %}
+                        {% if has_next %}
+                        <a href="/admin?page={{ current_page + 1 }}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-white/10 text-sm font-medium rounded-md text-gray-300 bg-tcf-dark-grey hover:bg-tcf-green hover:text-tcf-black transition"> Next </a>
+                        {% endif %}
+                    </div>
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500">
+                                Showing page <span class="font-bold text-tcf-green">{{ current_page }}</span> of <span class="font-bold text-white">{{ total_pages }}</span>
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                <!-- Previous Button -->
+                                <a href="/admin?page={{ current_page - 1 if has_prev else 1 }}" 
+                                class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-white/10 bg-tcf-dark-grey text-sm font-medium {{ 'text-gray-400 hover:bg-tcf-green hover:text-tcf-black transition' if has_prev else 'text-gray-700 cursor-not-allowed' }}">
+                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+
+                                <!-- Current Page -->
+                                <span class="relative inline-flex items-center px-4 py-2 border border-white/10 bg-tcf-green text-sm font-black text-tcf-black">
+                                    {{ current_page }}
+                                </span>
+
+                                <!-- Next Button -->
+                                <a href="/admin?page={{ current_page + 1 if has_next else current_page }}" 
+                                class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-white/10 bg-tcf-dark-grey text-sm font-medium {{ 'text-gray-400 hover:bg-tcf-green hover:text-tcf-black transition' if has_next else 'text-gray-700 cursor-not-allowed' }}">
+                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if not complaints %}
+            <div class="p-24 text-center">
+                <div class="inline-block p-4 rounded-full bg-tcf-green/5 mb-4">
+                    <svg class="w-12 h-12 text-tcf-green/20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </div>
+                <p class="text-xl font-header font-bold text-gray-500 uppercase tracking-widest">No Active Complaints</p>
+                <p class="text-gray-600 text-sm mt-1">The database is currently clear.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

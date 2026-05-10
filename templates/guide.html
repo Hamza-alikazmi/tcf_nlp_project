@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Alumni Guide & Scholarship | TCF</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+        .glass-card { background: #1A1C1D; border: 1px solid rgba(255,255,255,0.05); }
+        .step-gradient { background: linear-gradient(135deg, #49C34A 0%, #2e7d32 100%); }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Hero Section: Guide Intro -->
+        <section class="relative py-20 px-6 text-center border-b border-white/5 overflow-hidden">
+            <div class="relative z-10 max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-7xl font-black mb-4 leading-none">How to Choose <br><span class="text-tcf-green">Your Stream</span></h1>
+                <p class="text-gray-400 text-lg uppercase tracking-widest font-semibold">A Step-by-Step Guide to Picking the Right Subjects</p>
+                <div class="w-24 h-1 bg-tcf-green mx-auto mt-8"></div>
+            </div>
+        </section>
+
+        <!-- Step-by-Step Choosing Guide -->
+        <section class="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-8">
+            <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                <div class="text-6xl font-black text-white/5 absolute -top-4 -right-2 group-hover:text-tcf-green/10 transition">01</div>
+                <h2 class="text-2xl font-bold text-tcf-green mb-4">Check Your Interest</h2>
+                <p class="text-gray-400 text-sm leading-relaxed">Ask yourself which subjects you enjoy most. Studying something you like makes learning easier and fun. (e.g., Biology vs Maths vs Economics).</p>
+            </div>
+
+            <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                <div class="text-6xl font-black text-white/5 absolute -top-4 -right-2 group-hover:text-tcf-green/10 transition">02</div>
+                <h2 class="text-2xl font-bold text-tcf-green mb-4">Your Future Goal</h2>
+                <p class="text-gray-400 text-sm leading-relaxed">Do you dream of becoming a doctor, engineer, or designer? Knowing your goal helps you pick the right subjects now.</p>
+            </div>
+
+            <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                <div class="text-6xl font-black text-white/5 absolute -top-4 -right-2 group-hover:text-tcf-green/10 transition">03</div>
+                <h2 class="text-2xl font-bold text-tcf-green mb-4">Check Your Strengths</h2>
+                <ul class="text-sm space-y-2 text-gray-400">
+                    <li class="flex gap-2"><span class="text-tcf-green">➤</span> Math/Physics = Science</li>
+                    <li class="flex gap-2"><span class="text-tcf-green">➤</span> Numbers/Business = Commerce</li>
+                    <li class="flex gap-2"><span class="text-tcf-green">➤</span> Arts/Creativity = Humanities</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Detailed Stream Options -->
+        <section class="bg-tcf-dark-grey py-20 px-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-16">The Four Main <span class="text-tcf-green">Intermediate Streams</span></h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- F.Sc Pre-Medical -->
+                    <div class="bg-tcf-black p-6 rounded-xl border border-white/5 hover:border-tcf-green transition duration-500">
+                        <div class="w-12 h-12 bg-tcf-green/10 rounded-lg flex items-center justify-center mb-6 text-tcf-green text-2xl font-black">M</div>
+                        <h3 class="text-xl font-bold text-white mb-2">F.Sc Pre-Medical</h3>
+                        <p class="text-xs text-gray-500 mb-4 font-bold uppercase tracking-tighter">Physics, Chemistry, Biology</p>
+                        <ul class="text-xs space-y-2 text-gray-400 mb-6">
+                            <li>• MBBS Doctor</li>
+                            <li>• Dentist (BDS)</li>
+                            <li>• Pharmacist</li>
+                        </ul>
+                    </div>
+
+                    <!-- F.Sc Pre-Engineering -->
+                    <div class="bg-tcf-black p-6 rounded-xl border border-white/5 hover:border-tcf-green transition duration-500">
+                        <div class="w-12 h-12 bg-tcf-green/10 rounded-lg flex items-center justify-center mb-6 text-tcf-green text-2xl font-black">E</div>
+                        <h3 class="text-xl font-bold text-white mb-2">F.Sc Pre-Eng</h3>
+                        <p class="text-xs text-gray-500 mb-4 font-bold uppercase tracking-tighter">Physics, Chemistry, Maths</p>
+                        <ul class="text-xs space-y-2 text-gray-400 mb-6">
+                            <li>• Mechanical/Civil Eng</li>
+                            <li>• Architecture</li>
+                            <li>• Aviation</li>
+                        </ul>
+                    </div>
+
+                    <!-- ICS -->
+                    <div class="bg-tcf-black p-6 rounded-xl border border-white/5 hover:border-tcf-green transition duration-500">
+                        <div class="w-12 h-12 bg-tcf-green/10 rounded-lg flex items-center justify-center mb-6 text-tcf-green text-2xl font-black">C</div>
+                        <h3 class="text-xl font-bold text-white mb-2">ICS (Computer)</h3>
+                        <p class="text-xs text-gray-500 mb-4 font-bold uppercase tracking-tighter">CS, Maths, Stats/Phys</p>
+                        <ul class="text-xs space-y-2 text-gray-400 mb-6">
+                            <li>• Software Dev</li>
+                            <li>• AI Specialist</li>
+                            <li>• Cyber Security</li>
+                        </ul>
+                    </div>
+
+                    <!-- I.Com -->
+                    <div class="bg-tcf-black p-6 rounded-xl border border-white/5 hover:border-tcf-green transition duration-500">
+                        <div class="w-12 h-12 bg-tcf-green/10 rounded-lg flex items-center justify-center mb-6 text-tcf-green text-2xl font-black">B</div>
+                        <h3 class="text-xl font-bold text-white mb-2">I.Com (Commerce)</h3>
+                        <p class="text-xs text-gray-500 mb-4 font-bold uppercase tracking-tighter">Accounting, Econ, Math</p>
+                        <ul class="text-xs space-y-2 text-gray-400 mb-6">
+                            <li>• Chartered Accountant</li>
+                            <li>• Banker</li>
+                            <li>• Finance Analyst</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scholarship Section -->
+        <section class="py-24 px-6 max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-tcf-green font-black uppercase tracking-widest text-sm">Financing Your Education</span>
+                <h2 class="text-5xl font-black mt-4">TCF Scholarship <br><span class="text-tcf-green">Application Process</span></h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- TSP Step 1 -->
+                <div class="glass-card group overflow-hidden rounded-2xl hover:border-tcf-green transition">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-24 flex items-center justify-center bg-tcf-green text-tcf-black font-black text-2xl py-4 md:py-0">01</div>
+                        <div class="p-8 flex-1">
+                            <h3 class="text-xl font-bold mb-2">Fill TSP Application Form</h3>
+                            <p class="text-gray-400 text-sm mb-4">Complete the form with accurate details. This is your first step toward university funding.</p>
+                            <a href="#" class="inline-flex items-center text-xs font-bold text-tcf-green hover:underline uppercase tracking-tighter">
+                                <span class="mr-2">▶</span> Watch Application Tutorial
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TSP Step 2 -->
+                <div class="glass-card group overflow-hidden rounded-2xl hover:border-tcf-green transition">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-24 flex items-center justify-center bg-tcf-green text-tcf-black font-black text-2xl py-4 md:py-0">02</div>
+                        <div class="p-8 flex-1">
+                            <h3 class="text-xl font-bold mb-2">Alumni Team Interview</h3>
+                            <p class="text-gray-400 text-sm mb-4">Our team will schedule a meeting to understand your goals and financial needs.</p>
+                            <a href="#" class="inline-flex items-center text-xs font-bold text-tcf-green hover:underline uppercase tracking-tighter">
+                                <span class="mr-2">▶</span> Interview Prep Guide
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TSP Step 3 & 4 -->
+                <div class="glass-card group overflow-hidden rounded-2xl hover:border-tcf-green transition">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-24 flex items-center justify-center bg-tcf-green text-tcf-black font-black text-2xl py-4 md:py-0">03</div>
+                        <div class="p-8 flex-1">
+                            <h3 class="text-xl font-bold mb-2">Admission & Fee Payment</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">Once you clear the interview and secure admission, TCF assists in paying your tuition fees. You will need to submit a fee form for each semester.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="mt-16 bg-tcf-green p-10 rounded-3xl text-center shadow-2xl shadow-tcf-green/20">
+                <h3 class="text-tcf-black text-3xl font-black mb-4 uppercase leading-none">Ready to start your journey?</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#" class="bg-tcf-black text-white px-8 py-3 rounded-full font-bold uppercase text-sm hover:bg-white hover:text-tcf-black transition">Apply for TSP</a>
+                    <a href="#" class="bg-transparent border-2 border-tcf-black text-tcf-black px-8 py-3 rounded-full font-bold uppercase text-sm hover:bg-tcf-black hover:text-white transition">Contact Counselor</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-12 px-6 border-t border-white/10 bg-tcf-dark-grey text-center">
+            <h3 class="text-2xl font-bold text-tcf-green mb-4">TCF Alumni Pathways</h3>
+            <p class="text-gray-400 text-sm mb-8">Building Pakistan's Future Through Quality Education.</p>
+            <p class="text-xs font-semibold uppercase tracking-widest text-gray-600">© 2026 TCF Alumni Pathways | Karachi • Lahore • Islamabad</p>
+        </footer>
+    </div>
+</body>
+</html>

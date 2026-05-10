@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Alumni Dashboard · TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Alumni Dashboard Section -->
+        <section class="py-16 px-6">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-4xl font-bold mb-2 text-tcf-green">Alumni Dashboard</h1>
+                <p class="text-gray-400 mb-8 text-sm uppercase tracking-widest">Track Your Success Journey</p>
+
+                <!-- Stats Overview -->
+                <div class="grid md:grid-cols-4 gap-6 mb-12">
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Current Status</p>
+                        <p class="text-3xl font-bold text-tcf-green">Active</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Education Level</p>
+                        <p class="text-3xl font-bold text-blue-400">Bachelor</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Applications</p>
+                        <p class="text-3xl font-bold text-tcf-green">3</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Assistance Received</p>
+                        <p class="text-3xl font-bold text-green-400">Yes</p>
+                    </div>
+                </div>
+
+                <!-- Profile & Updates -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <h2 class="text-xl font-bold text-tcf-green mb-6">My Profile</h2>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between pb-3 border-b border-white/10">
+                                <span class="text-gray-400">Name:</span>
+                                <span class="font-semibold">Ali Ahmed Khan</span>
+                            </div>
+                            <div class="flex justify-between pb-3 border-b border-white/10">
+                                <span class="text-gray-400">University:</span>
+                                <span class="font-semibold">FAST NUCES</span>
+                            </div>
+                            <div class="flex justify-between pb-3 border-b border-white/10">
+                                <span class="text-gray-400">Program:</span>
+                                <span class="font-semibold">BS Computer Science</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Graduation Year:</span>
+                                <span class="font-semibold">2025</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <h2 class="text-xl font-bold text-tcf-green mb-6">Recent Updates</h2>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-tcf-black/50 rounded-lg border border-white/5">
+                                <p class="text-sm font-semibold">Scholarship Approved</p>
+                                <p class="text-xs text-gray-400">2 weeks ago</p>
+                            </div>
+                            <div class="p-3 bg-tcf-black/50 rounded-lg border border-white/5">
+                                <p class="text-sm font-semibold">New Mentorship Program</p>
+                                <p class="text-xs text-gray-400">1 month ago</p>
+                            </div>
+                            <div class="p-3 bg-tcf-black/50 rounded-lg border border-white/5">
+                                <p class="text-sm font-semibold">Career Workshop Attended</p>
+                                <p class="text-xs text-gray-400">2 months ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 mt-16">
+            <div class="max-w-7xl mx-auto text-center">
+                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+        }
+        
+        nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        nav a {
+            text-decoration: none;
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        nav a:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+        }
+        
+        nav a:active {
+            transform: translateY(0);
+        }
+        
+        .separator {
+            color: #ddd;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        @media (max-width: 600px) {
+            .nav-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .separator {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-container">
+        <h1>🎓 Student Portal</h1>
+        <nav>
+            <a href="reg-form.html">📝 Registration Form</a>
+            <span class="separator">|</span>
+            <a href="scholarship-form.html">💰scholar ship</a>
+            <span class="separator">|</span>
+            <a href="fee-form.html">💵 Fee Form</a>
+            <a href="query.html"> query</a>
+        </nav>
+    </div>
+</body>
+</html>

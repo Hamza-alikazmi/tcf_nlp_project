@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TCF — Staff Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --surface2:  #21262d;
+      --border:    #30363d;
+      --green:     #3fb950;
+      --green-dim: #1a6b3c;
+      --red:       #f85149;
+      --red-dim:   #6e1f1f;
+      --gold:      #d29922;
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --white:     #ffffff;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background-image:
+        radial-gradient(ellipse at 20% 10%, rgba(63,185,80,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 90%, rgba(248,81,73,0.05) 0%, transparent 50%);
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 520px;
+      animation: rise 0.55s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    @keyframes rise {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── Header ── */
+    .header {
+      margin-bottom: 2rem;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(63,185,80,0.12);
+      border: 1px solid rgba(63,185,80,0.3);
+      color: var(--green);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      margin-bottom: 0.9rem;
+    }
+
+    .header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      color: var(--white);
+    }
+
+    .header h1 span { color: var(--green); }
+
+    .header p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 0.5rem;
+      font-weight: 300;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab {
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+      user-select: none;
+      border: none;
+      background: transparent;
+      letter-spacing: 0.2px;
+    }
+
+    .tab .tab-icon { margin-right: 0.45rem; font-size: 1rem; }
+
+    .tab.active-add  { color: var(--green); border-bottom: 2px solid var(--green);  background: rgba(63,185,80,0.05); }
+    .tab.active-del  { color: var(--red);   border-bottom: 2px solid var(--red);    background: rgba(248,81,73,0.05); }
+    .tab:hover:not(.active-add):not(.active-del) { color: var(--text); background: var(--surface2); }
+
+    /* ── Panel ── */
+    .panel { padding: 2rem; display: none; }
+    .panel.show { display: block; animation: fadeSlide 0.3s ease; }
+
+    @keyframes fadeSlide {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .panel-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 1.5rem;
+    }
+    .panel-title.add { color: var(--green); }
+    .panel-title.del { color: var(--red); }
+
+    /* ── Fields ── */
+    .field { margin-bottom: 1.2rem; }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      margin-bottom: 0.45rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.78rem 1rem;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder { color: var(--muted); }
+
+    input:focus, select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(63,185,80,0.12);
+    }
+
+    .panel-del input:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(248,81,73,0.12);
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238b949e' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.9rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    select option { background: var(--surface2); color: var(--text); }
+
+    /* ── Buttons ── */
+    .btn {
+      width: 100%;
+      padding: 0.88rem;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+      margin-top: 0.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn:hover   { transform: translateY(-1px); }
+    .btn:active  { transform: translateY(0); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+    .btn-add {
+      background: linear-gradient(135deg, #1a6b3c, var(--green));
+      color: var(--white);
+      box-shadow: 0 4px 14px rgba(63,185,80,0.2);
+    }
+    .btn-add:hover { box-shadow: 0 6px 20px rgba(63,185,80,0.35); }
+
+    .btn-del {
+      background: linear-gradient(135deg, #6e1f1f, var(--red));
+      color: var(--white);
+      box-shadow: 0 4px 14px rgba(248,81,73,0.2);
+    }
+    .btn-del:hover { box-shadow: 0 6px 20px rgba(248,81,73,0.35); }
+
+    /* ── Message ── */
+    .msg {
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 400;
+      margin-bottom: 1.2rem;
+      display: none;
+      animation: fadeSlide 0.3s ease;
+      line-height: 1.5;
+    }
+
+    .msg.success { background: rgba(63,185,80,0.1);  border: 1px solid rgba(63,185,80,0.35); color: var(--green); display: block; }
+    .msg.error   { background: rgba(248,81,73,0.1);  border: 1px solid rgba(248,81,73,0.35); color: var(--red);   display: block; }
+    .msg.warn    { background: rgba(210,153,34,0.1); border: 1px solid rgba(210,153,34,0.35);color: var(--gold);  display: block; }
+
+    /* ── Spinner ── */
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    .btn.loading .spinner { display: block; }
+    .btn.loading .btn-label { display: none; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Divider ── */
+    .sep { height: 1px; background: var(--border); margin: 1.4rem 0; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="header">
+    <div class="header-badge">TCF Portal</div>
+    <h1>Staff <span>Management</span></h1>
+    <p>Add or remove members from the signins collection</p>
+  </div>
+
+  <div class="card">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active-add" onclick="switchTab('add')">
+        <span class="tab-icon">＋</span> Add Member
+      </button>
+      <button class="tab" id="del-tab" onclick="switchTab('del')">
+        <span class="tab-icon">✕</span> Delete Member
+      </button>
+    </div>
+
+    <!-- ── ADD PANEL ── -->
+    <div class="panel show" id="panel-add">
+      <p class="panel-title add">— New Member Registration</p>
+
+      <div id="msg-add" class="msg"></div>
+
+      <div class="field">
+        <label>CNIC Number</label>
+        <input type="text" id="add-cnic" placeholder="13 digit CNIC e.g. 3830262874104" maxlength="13"/>
+      </div>
+
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="add-email" placeholder="member@example.com"/>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="add-password" placeholder="Enter password"/>
+      </div>
+
+      <div class="field">
+        <label>Role</label>
+        <select id="add-role">
+          <option value="" disabled selected>Select role</option>
+          <option value="fee-section-member">Fee Section Member</option>
+          <option value="scholarship-section-member">Scholarship Section Member</option>
+        </select>
+      </div>
+
+      <div class="sep"></div>
+
+      <button class="btn btn-add" id="btn-add" onclick="addMember()">
+        <div class="spinner"></div>
+        <span class="btn-label">＋ Add Member</span>
+      </button>
+    </div>
+
+    <!-- ── DELETE PANEL ── -->
+    <div class="panel panel-del" id="panel-del">
+      <p class="panel-title del">— Remove Member</p>
+
+      <div id="msg-del" class="msg"></div>
+
+      <div class="field">
+        <label>CNIC Number</label>
+        <input type="text" id="del-cnic" placeholder="Enter CNIC to delete" maxlength="13"/>
+      </div>
+
+      <div class="sep"></div>
+
+      <button class="btn btn-del" id="btn-del" onclick="deleteMember()">
+        <div class="spinner"></div>
+        <span class="btn-label">✕ Delete Member</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">TCF-DATABASE › signins collection</div>
+</div>
+
+<script>
+  // ── Tab Switch ──────────────────────────────────────────────
+  function switchTab(tab) {
+    const tabs = document.querySelectorAll('.tab');
+    tabs[0].className = 'tab';
+    tabs[1].className = 'tab';
+    document.getElementById('panel-add').classList.remove('show');
+    document.getElementById('panel-del').classList.remove('show');
+
+    if (tab === 'add') {
+      tabs[0].classList.add('active-add');
+      document.getElementById('panel-add').classList.add('show');
+    } else {
+      tabs[1].classList.add('active-del');
+      document.getElementById('panel-del').classList.add('show');
+    }
+  }
+
+  // ── Show Message ────────────────────────────────────────────
+  function showMsg(id, type, text) {
+    const el = document.getElementById(id);
+    el.className = 'msg ' + type;
+    el.textContent = text;
+  }
+
+  function hideMsg(id) {
+    document.getElementById(id).className = 'msg';
+  }
+
+  // ── Add Member ──────────────────────────────────────────────
+  async function addMember() {
+    const cnic     = document.getElementById('add-cnic').value.trim();
+    const email    = document.getElementById('add-email').value.trim();
+    const password = document.getElementById('add-password').value.trim();
+    const role     = document.getElementById('add-role').value;
+    const btn      = document.getElementById('btn-add');
+
+    hideMsg('msg-add');
+
+    if (!cnic || !email || !password || !role) {
+      return showMsg('msg-add', 'error', 'Tamam fields fill karna zaroori hain.');
+    }
+    if (!/^\d{13}$/.test(cnic)) {
+      return showMsg('msg-add', 'error', 'CNIC 13 digits ka hona chahiye (bina dashes ke).');
+    }
+
+    btn.disabled = true;
+    btn.classList.add('loading');
+
+    try {
+      const res  = await fetch('http://localhost:3001/api/staff/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cnic, email, password, role })
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        showMsg('msg-add', 'success', '✓ ' + data.message);
+        document.getElementById('add-cnic').value = '';
+        document.getElementById('add-email').value = '';
+        document.getElementById('add-password').value = '';
+        document.getElementById('add-role').value = '';
+      } else if (res.status === 409) {
+        showMsg('msg-add', 'warn', '⚠ ' + data.message);
+      } else {
+        showMsg('msg-add', 'error', '✕ ' + data.message);
+      }
+    } catch {
+      showMsg('msg-add', 'error', 'Server se connection nahi ho saka.');
+    }
+
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  }
+
+  // ── Delete Member ───────────────────────────────────────────
+  async function deleteMember() {
+    const cnic = document.getElementById('del-cnic').value.trim();
+    const btn  = document.getElementById('btn-del');
+
+    hideMsg('msg-del');
+
+    if (!cnic) return showMsg('msg-del', 'error', 'CNIC darj karna zaroori hai.');
+    if (!/^\d{13}$/.test(cnic)) {
+      return showMsg('msg-del', 'error', 'CNIC 13 digits ka hona chahiye.');
+    }
+
+    btn.disabled = true;
+    btn.classList.add('loading');
+
+    try {
+      const res  = await fetch('http://localhost:3001/api/staff/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cnic })
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        showMsg('msg-del', 'success', '✓ ' + data.message);
+        document.getElementById('del-cnic').value = '';
+      } else if (res.status === 404) {
+        showMsg('msg-del', 'warn', '⚠ ' + data.message);
+      } else {
+        showMsg('msg-del', 'error', '✕ ' + data.message);
+      }
+    } catch {
+      showMsg('msg-del', 'error', 'Server se connection nahi ho saka.');
+    }
+
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  }
+</script>
+</body>
+</html>

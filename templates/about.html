@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>About - TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: white; font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Main Content -->
+        <main class="max-w-6xl mx-auto px-6 py-16">
+            
+            <!-- Introduction -->
+            <section id="introduction" class="mb-24 text-center">
+                <h2 class="text-5xl md:text-6xl font-extrabold mb-8 leading-none">Welcome to <br><span class="text-tcf-green">TCF Alumni Pathways</span></h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                    <strong class="text-tcf-green">A dedicated department of The Citizen Foundation (TCF)</strong>, established in 2005 with our head office in Karachi and regional branches in Islamabad and Lahore. Our mission is to guide TCF graduates as they transition from school to higher education and professional careers.
+                </p>
+            </section>
+
+            <!-- Vision, Mission & Values Section -->
+            <section id="core-values" class="mb-24">
+                <h2 class="text-3xl font-bold mb-12 text-center inline-block bg-tcf-green text-tcf-black px-4 py-1">Our Core Values</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Vision -->
+                    <div class="value-block bg-tcf-dark-grey p-8 rounded-xl border-t-4 border-tcf-green shadow-xl">
+                        <h3 class="text-tcf-green text-2xl font-bold mb-4">Vision</h3>
+                        <h4 class="text-white text-xl mb-2 italic underline decoration-tcf-green">Positive Change</h4>
+                        <p class="text-gray-400">To remove barriers of class and privilege to make the citizens of Pakistan agents of positive change.</p>
+                    </div>
+
+                    <!-- Mission -->
+                    <div class="value-block bg-tcf-dark-grey p-8 rounded-xl border-t-4 border-tcf-green shadow-xl">
+                        <h3 class="text-tcf-green text-2xl font-bold mb-4">Mission</h3>
+                        <div class="mb-4">
+                            <h4 class="text-white text-xl mb-1 italic underline decoration-tcf-green">Quality Education</h4>
+                            <p class="text-gray-400 text-sm">Enabling moral, spiritual and intellectual enlightenment through education.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-white text-xl mb-1 italic underline decoration-tcf-green">Better Future</h4>
+                            <p class="text-gray-400 text-sm">Creating opportunities to improve quality of life for all.</p>
+                        </div>
+                    </div>
+
+                    <!-- Values -->
+                    <div class="value-block bg-tcf-dark-grey p-8 rounded-xl border-t-4 border-tcf-green shadow-xl">
+                        <h3 class="text-tcf-green text-2xl font-bold mb-4">Core Values</h3>
+                        <ul class="values-list space-y-3">
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-tcf-green rounded-full"></span> <strong>Sincerity</strong>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-tcf-green rounded-full"></span> <strong>Service</strong>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-tcf-green rounded-full"></span> <strong>Beauty</strong>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-tcf-green rounded-full"></span> <strong>Positive Conduct</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- What We Do -->
+            <section id="what-we-do" class="mb-24 py-16 bg-tcf-dark-grey/50 rounded-3xl px-8 border border-white/5">
+                <h2 class="text-4xl font-bold mb-8 text-tcf-green">What We Do</h2>
+                <p class="text-xl text-gray-300 mb-10">We provide comprehensive support to TCF graduates in several critical areas:</p>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="group">
+                        <h4 class="text-tcf-green font-bold text-xl mb-2">Higher Education Guidance</h4>
+                        <p class="text-gray-400 group-hover:text-gray-200 transition">Advising students on fields of study, career scope, and selecting colleges nationwide.</p>
+                    </div>
+                    <div class="group">
+                        <h4 class="text-tcf-green font-bold text-xl mb-2">University Applications</h4>
+                        <p class="text-gray-400 group-hover:text-gray-200 transition">Helping with admission procedures, timelines, and rigorous document preparation.</p>
+                    </div>
+                    <div class="group">
+                        <h4 class="text-tcf-green font-bold text-xl mb-2">Financial Support (Qarza-e-Hasana)</h4>
+                        <p class="text-gray-400 group-hover:text-gray-200 transition">Assisting deserving students with tuition, hostel fees, and transport costs.</p>
+                    </div>
+                    <div class="group">
+                        <h4 class="text-tcf-green font-bold text-xl mb-2">Technical & Career Training</h4>
+                        <p class="text-gray-400 group-hover:text-gray-200 transition">Dedicated mentorship for those pursuing technical or vocational pathways.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How We Work -->
+            <section id="how-we-work" class="mb-24 grid md:grid-cols-2 gap-12 items-start">
+                <div class="bg-tcf-dark-grey p-10 rounded-2xl border-l-8 border-tcf-green">
+                    <h2 class="text-3xl font-bold mb-6">How We Work</h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed">Students apply for financial assistance through <strong>Qarza-e-Hasana</strong>. Each application undergoes a careful review and interview process to assess eligibility.</p>
+                    <p class="text-gray-400">Approved students receive tailored financial support covering:</p>
+                    <ul class="mt-4 space-y-2 text-tcf-green font-semibold">
+                        <li>+ Tuition Fees</li>
+                        <li>+ Hostel & Mess Fees</li>
+                        <li>+ Transport Costs</li>
+                        <li>+ Educational Supplies</li>
+                    </ul>
+                </div>
+                <div class="py-10">
+                    <h2 class="text-3xl font-bold mb-6 text-tcf-green italic">Impact & Success</h2>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">Since 2005, TCF Alumni Pathways has guided over <strong>5,000 students</strong> and provided financial support to more than <strong>2,000 graduates</strong>.</p>
+                    <div class="bg-tcf-green text-tcf-black p-6 rounded-lg text-center shadow-2xl shadow-tcf-green/20">
+                        <h3 class="text-6xl font-black">95%</h3>
+                        <p class="text-xl font-bold uppercase tracking-widest">Success Rate</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-12 px-6 border-t border-white/10 bg-tcf-black text-center">
+            <h3 class="text-2xl font-bold text-tcf-green mb-4">Contact Us</h3>
+            <div class="text-gray-400 space-y-2 mb-8">
+                <p>📧 info@tcf-alumni.org</p>
+                <p>📞 +92 123 456 7890</p>
+            </div>
+            <p class="text-xs font-semibold uppercase tracking-widest text-gray-600">© 2026 TCF Alumni Pathways: Building Your Future Through Education</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Sign Up · TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                        'tcf-error': '#dc3545',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+        
+        .loader {
+            width: 18px; height: 18px;
+            border: 2px solid #0B0C0C;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main" class="min-h-screen flex flex-col">
+        <header class="bg-tcf-black border-b border-white/10 px-6 py-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="TCF Logo" class="h-8 brightness-0 invert">
+                    <h1 class="text-xl font-bold text-tcf-green">Alumni Pathways</h1>
+                </div>
+                <a href="/" class="text-xs font-bold uppercase text-gray-400 hover:text-tcf-green transition">Back to Home</a>
+            </div>
+        </header>
+
+        <section class="flex-grow flex items-center justify-center px-6 py-12 relative overflow-hidden">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-tcf-green/5 rounded-full blur-[120px]"></div>
+            
+            <div class="relative z-10 w-full max-w-md">
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <h1 class="text-3xl font-bold text-center mb-2 text-tcf-green">Create Account</h1>
+                    <p class="text-center text-gray-500 mb-8 text-xs font-bold uppercase tracking-widest">Join the Agentic AI Network</p>
+
+                    <div id="alertMessage" class="hidden mb-6 p-4 rounded-lg text-sm font-medium"></div>
+
+                    <form id="registrationForm" class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-widest">Full Name</label>
+                            <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required
+                                class="w-full bg-tcf-black border border-white/5 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none transition text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-widest">CNIC Number</label>
+                            <input type="text" id="cnic" name="cnic" placeholder="13-digit number" maxlength="13" required
+                                class="w-full bg-tcf-black border border-white/5 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none transition text-sm">
+                            <p id="cnicError" class="hidden text-tcf-error text-[10px] mt-1 italic font-bold uppercase">Must be 13 digits</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-widest">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="example@tcf.org.pk" required
+                                class="w-full bg-tcf-black border border-white/5 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none transition text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-widest">Password</label>
+                            <div class="relative">
+                                <input type="password" id="password" name="password" placeholder="••••••••" required
+                                    class="w-full bg-tcf-black border border-white/5 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none transition text-sm">
+                                <button type="button" onclick="togglePass('password', this)" class="absolute right-3 top-3 text-gray-600 hover:text-tcf-green">👁️</button>
+                            </div>
+                            <div class="mt-2 h-1 w-full bg-gray-800 rounded-full overflow-hidden">
+                                <div id="strengthMeter" class="h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-x-4 mt-2 text-[9px] font-bold text-gray-600 uppercase tracking-tighter">
+                                <p id="reqLen">○ 8+ Characters</p>
+                                <p id="reqNum">○ 1 Number</p>
+                                <p id="reqLet">○ 1 Letter</p>
+                                <p id="reqSpec">○ 1 Special (@$!%)</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-widest">Confirm Password</label>
+                            <div class="relative">
+                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required
+                                    class="w-full bg-tcf-black border border-white/5 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none transition text-sm">
+                            </div>
+                            <p id="confirmError" class="hidden text-tcf-error text-[10px] mt-1 italic font-bold uppercase">Passwords do not match</p>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="w-full bg-tcf-green text-tcf-black font-black py-4 rounded-xl hover:bg-white transition duration-300 uppercase text-xs tracking-widest mt-4">
+                            Register Account
+                        </button>
+                    </form>
+
+                    <div class="mt-8 pt-6 border-t border-white/5 text-center">
+                        <p class="text-gray-500 text-xs">Already have an account? <a href="/login" class="text-tcf-green hover:underline font-bold ml-1">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-tcf-dark-grey py-6 px-6 border-t border-white/5 text-center">
+            <p class="text-gray-600 text-[10px] font-bold uppercase tracking-widest">&copy; 2026 The Citizens Foundation · Alumni Pathways</p>
+        </footer>
+    </div>
+
+    <script>
+        const cnic = document.getElementById('cnic');
+        const pass = document.getElementById('password');
+        const confirm = document.getElementById('confirmPassword');
+        const fullName = document.getElementById('full_name');
+        const email = document.getElementById('email');
+        const form = document.getElementById('registrationForm');
+        const alertBox = document.getElementById('alertMessage');
+
+        function togglePass(id, btn) {
+            const el = document.getElementById(id);
+            el.type = el.type === 'password' ? 'text' : 'password';
+            btn.textContent = el.type === 'password' ? '👁️' : '🔒';
+        }
+
+        function showAlert(msg, type) {
+            alertBox.textContent = msg;
+            alertBox.className = `mb-6 p-4 rounded-lg text-xs font-bold uppercase ${type === 'success' ? 'bg-tcf-green/20 text-tcf-green border border-tcf-green/50' : 'bg-red-900/20 text-red-500 border border-red-500/50'}`;
+            alertBox.classList.remove('hidden');
+        }
+
+        cnic.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 13);
+            document.getElementById('cnicError').classList.toggle('hidden', e.target.value.length === 13);
+        });
+
+        pass.addEventListener('input', () => {
+            const val = pass.value;
+            const checks = {
+                len: val.length >= 8,
+                num: /\d/.test(val),
+                let: /[A-Za-z]/.test(val),
+                spec: /[@$!%*?&]/.test(val)
+            };
+
+            document.getElementById('reqLen').className = checks.len ? 'text-tcf-green' : 'text-gray-600';
+            document.getElementById('reqNum').className = checks.num ? 'text-tcf-green' : 'text-gray-600';
+            document.getElementById('reqLet').className = checks.let ? 'text-tcf-green' : 'text-gray-600';
+            document.getElementById('reqSpec').className = checks.spec ? 'text-tcf-green' : 'text-gray-600';
+
+            const strength = Object.values(checks).filter(Boolean).length;
+            const meter = document.getElementById('strengthMeter');
+            meter.style.width = (strength * 25) + '%';
+            meter.className = `h-full transition-all duration-500 ${strength < 2 ? 'bg-red-500' : strength < 4 ? 'bg-yellow-500' : 'bg-tcf-green'}`;
+        });
+
+        confirm.addEventListener('input', () => {
+            document.getElementById('confirmError').classList.toggle('hidden', pass.value === confirm.value);
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Front-end validations
+            if (pass.value !== confirm.value) return showAlert("Passwords must match", "error");
+            if (cnic.value.length !== 13) return showAlert("CNIC must be 13 digits", "error");
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="loader"></span>`;
+
+            try {
+                // Endpoint changed from /api/signup to /api/signin-data to match app.py
+                const res = await fetch('/api/signin-data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        full_name: fullName.value,
+                        cnic: cnic.value, 
+                        email: email.value, 
+                        password: pass.value,
+                        confirmPassword: confirm.value 
+                    })
+                });
+                const data = await res.json();
+                
+                if(data.success) {
+                    showAlert(data.message || "Account created! Redirecting...", "success");
+                    setTimeout(() => window.location.href = '/login', 2000);
+                } else {
+                    showAlert(data.message || "Registration failed", "error");
+                }
+            } catch (err) {
+                showAlert("Network error. Please try again.", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Register Account";
+            }
+        });
+    </script>
+</body>
+</html>

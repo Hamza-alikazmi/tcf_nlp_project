@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Fee Application · TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Fee Form Section -->
+        <section class="py-16 px-6">
+            <div class="max-w-2xl mx-auto">
+                <h1 class="text-4xl font-bold mb-2 text-tcf-green text-center">Tertiary Fee Process</h1>
+                <p class="text-center text-gray-400 mb-12 text-sm uppercase tracking-widest">Apply for Fee Assistance</p>
+
+                <!-- Fee Form -->
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <form id="feeForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Student Name -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Student Name</label>
+                                <input type="text" name="student_name" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            </div>
+
+                            <!-- Roll Number -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Roll Number</label>
+                                <input type="text" name="roll_number" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Email</label>
+                                <input type="email" name="email" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            </div>
+
+                            <!-- Phone -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Phone</label>
+                                <input type="tel" name="phone" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            </div>
+                        </div>
+
+                        <!-- University/Institution -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">University/Institution</label>
+                            <input type="text" name="institution" required
+                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        </div>
+
+                        <!-- Program -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Program/Degree</label>
+                            <input type="text" name="program" required
+                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        </div>
+
+                        <!-- Annual Fee -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Annual Fee Amount (PKR)</label>
+                            <input type="number" name="annual_fee" required
+                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        </div>
+
+                        <!-- Financial Hardship Description -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Describe Your Financial Situation</label>
+                            <textarea name="financial_situation" rows="4" required
+                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition resize-none"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full bg-tcf-green text-tcf-black font-bold py-3 rounded-lg hover:bg-white transition duration-300 uppercase tracking-wider">
+                            Submit Application
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 mt-16">
+            <div class="max-w-7xl mx-auto text-center">
+                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .checkbox-item label {
+            display: inline;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #responseBox {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+
+        #responseBox.show {
+            display: block;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+        }
+
+        .file-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading::after {
+            content: "⏳";
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Tertiary Fee Process Form</h1>
+
+        <form id="feeForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="required">Today's Date</label>
+                <input type="date" name="todayDate" required>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Name</label>
+                <input type="text" name="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Father's Name</label>
+                <input type="text" name="fatherName" required placeholder="Enter father's name">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Student CNIC</label>
+                <input type="text" name="cnic" required placeholder="12345-1234567-1">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Email</label>
+                <input type="email" name="email" required placeholder="example@domain.com">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Matric Roll</label>
+                <input type="text" name="matricRoll" required placeholder="Enter matric roll number">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Contact</label>
+                <input type="text" name="contact" required placeholder="03XXXXXXXXX">
+            </div>
+
+            <div class="form-group">
+                <label class="required">WhatsApp</label>
+                <input type="text" name="whatsapp" required placeholder="03XXXXXXXXX">
+            </div>
+
+            <div class="form-group">
+                <label class="required">City</label>
+                <input type="text" name="city" required placeholder="Enter your city">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Institute</label>
+                <input type="text" name="instituteName" required placeholder="Enter institute name">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Degree</label>
+                <input type="text" name="degree" required placeholder="e.g., BS Computer Science">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Applying For</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="applyingFor" value="semesterFee">
+                        <label>Semester Fee</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="applyingFor" value="hostelFee">
+                        <label>Hostel Fee</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="applyingFor" value="messFee">
+                        <label>Mess Fee</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="applyingFor" value="transportFee">
+                        <label>Transport Fee</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Current Semester</label>
+                <select name="currentSemester" required>
+                    <option value="">Select Semester</option>
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                    <option value="3">Semester 3</option>
+                    <option value="4">Semester 4</option>
+                    <option value="5">Semester 5</option>
+                    <option value="6">Semester 6</option>
+                    <option value="7">Semester 7</option>
+                    <option value="8">Semester 8</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Last Date</label>
+                <input type="date" name="lastDate" required>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Account Holder</label>
+                <input type="text" name="accountHolder" required placeholder="Name on bank account">
+            </div>
+
+            <div class="form-group">
+                <label class="required">IBAN</label>
+                <input type="text" name="iban" required placeholder="PKxxxxxxxxxxxx">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Number of Siblings</label>
+                <input type="number" name="siblings" required min="0">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Monthly Income</label>
+                <input type="number" name="income" required min="0" placeholder="in PKR">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Fee Voucher</label>
+                <input type="file" name="feeVoucher" required accept=".pdf,.jpg,.jpeg,.png">
+                <div class="file-hint">Accepted formats: PDF, JPG, PNG (Max 5MB)</div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Contribution Slip</label>
+                <input type="file" name="contributionSlip" required accept=".pdf,.jpg,.jpeg,.png">
+                <div class="file-hint">Accepted formats: PDF, JPG, PNG (Max 5MB)</div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Latest Result</label>
+                <input type="file" name="result" required accept=".pdf,.jpg,.jpeg,.png">
+                <div class="file-hint">Accepted formats: PDF, JPG, PNG (Max 5MB)</div>
+            </div>
+
+            <div class="form-group">
+                <label>Cheque Book (Optional)</label>
+                <input type="file" name="chequeBook" accept=".pdf,.jpg,.jpeg,.png">
+                <div class="file-hint">Accepted formats: PDF, JPG, PNG (Max 5MB)</div>
+            </div>
+
+            <button type="submit" id="submitBtn">Submit Application</button>
+        </form>
+
+        <div id="responseBox"></div>
+    </div>
+
+    <script>
+        document.getElementById("feeForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const form = document.getElementById("feeForm");
+            const formData = new FormData(form);
+            const submitBtn = document.getElementById("submitBtn");
+            const responseBox = document.getElementById("responseBox");
+
+            // Validate checkboxes - at least one must be selected
+            const checkboxes = document.querySelectorAll('input[name="applyingFor"]:checked');
+            if (checkboxes.length === 0) {
+                responseBox.innerHTML = '<div style="color: red; padding: 10px; background: #ffeeee; border-radius: 5px;">⚠️ Please select at least one option in "Applying For"</div>';
+                responseBox.classList.add('show');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Submitting... ⏳';
+            responseBox.innerHTML = '<div class="loading">Processing your application...</div>';
+            responseBox.classList.add('show');
+
+            try {
+                // Send data to server - FIXED URL from "/fee-form" to "/fee"
+                const response = await fetch("/fee", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const html = await response.text();
+                
+                // Display response
+                responseBox.innerHTML = html;
+                
+                // Reset form if submission was successful
+                if (response.ok) {
+                    form.reset();
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                responseBox.innerHTML = `
+                    <div style="color: red; padding: 20px; background: #ffeeee; border-radius: 5px; text-align: center;">
+                        <h3 style="margin-top: 0;">❌ Server Error</h3>
+                        <p>Unable to connect to the server. Please try again later.</p>
+                        <p style="font-size: 12px; color: #666;">${error.message}</p>
+                        <button onclick="window.location.href='/'" style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Submit Application';
+            }
+        });
+
+        // Optional: Add CNIC formatting
+        document.querySelector('input[name="cnic"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 13) value = value.slice(0, 13);
+            
+            if (value.length > 5) {
+                value = value.slice(0,5) + '-' + value.slice(5);
+            }
+            if (value.length > 13) {
+                value = value.slice(0,13) + '-' + value.slice(13,14);
+            }
+            e.target.value = value;
+        });
+
+        // Optional: Add phone number formatting
+        document.querySelector('input[name="contact"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            e.target.value = value;
+        });
+
+        document.querySelector('input[name="whatsapp"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            e.target.value = value;
+        });
+
+        // File size validation
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach(input => {
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file && file.size > 5 * 1024 * 1024) {
+                    alert('File size should not exceed 5MB');
+                    e.target.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

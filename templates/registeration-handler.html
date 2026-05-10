@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Registration Confirmed · TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Success Section -->
+        <section class="min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-12 relative overflow-hidden">
+            <!-- Decorative Glow -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-tcf-green/10 rounded-full blur-[120px]"></div>
+            
+            <div class="relative z-10 w-full max-w-md text-center">
+                <!-- Success Card -->
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <!-- Success Icon -->
+                    <div class="w-16 h-16 bg-tcf-green/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-tcf-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+
+                    <h1 class="text-3xl font-bold text-tcf-green mb-3">Registration Successful!</h1>
+                    <p class="text-gray-400 mb-8 text-sm leading-relaxed">
+                        Your student registration has been completed successfully. You can now login to your account and explore all the available services.
+                    </p>
+
+                    <!-- Details -->
+                    <div class="bg-tcf-black/50 rounded-lg p-6 mb-8 text-left">
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between pb-3 border-b border-white/10">
+                                <span class="text-gray-400">Status:</span>
+                                <span class="font-semibold text-tcf-green">✓ Active</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Next Step:</span>
+                                <span class="font-semibold">Login to Dashboard</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <a href="/login" class="block w-full bg-tcf-green text-tcf-black font-bold py-3 rounded-lg hover:bg-white transition duration-300 uppercase tracking-wider">
+                            Login to Dashboard
+                        </a>
+                        <a href="/home" class="block w-full bg-tcf-black/50 border border-tcf-green text-tcf-green font-bold py-3 rounded-lg hover:bg-tcf-green/10 transition duration-300 uppercase tracking-wider">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5">
+            <div class="max-w-7xl mx-auto text-center">
+                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .button-section {
+            padding: 30px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-view-all {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-view-all:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-search {
+            background: #28a745;
+            color: white;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .btn-back:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .search-section {
+            padding: 30px;
+            background: white;
+            display: none;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .search-section.active {
+            display: block;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-box button {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-box button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .records-section {
+            padding: 30px;
+            display: none;
+        }
+
+        .records-section.active {
+            display: block;
+        }
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 0 10px;
+        }
+
+        .records-header h2 {
+            color: #333;
+            font-size: 1.8em;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .records-header h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .records-count {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+        }
+
+        .records-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .record-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .record-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .record-info {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .record-info span {
+            font-size: 1.1em;
+        }
+
+        .record-info .name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .record-info .cnic {
+            color: #666;
+            background: #f0f0f0;
+            padding: 6px 15px;
+            border-radius: 25px;
+            font-family: monospace;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+        }
+
+        .record-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .record-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .record-actions button i {
+            font-size: 0.9em;
+        }
+
+        .btn-view { 
+            background: #17a2b8; 
+            color: white; 
+        }
+        .btn-view:hover { 
+            background: #138496; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(23, 162, 184, 0.3);
+        }
+
+        .btn-update { 
+            background: #ffc107; 
+            color: #212529; 
+        }
+        .btn-update:hover { 
+            background: #e0a800; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-delete { 
+            background: #dc3545; 
+            color: white; 
+        }
+        .btn-delete:hover { 
+            background: #c82333; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header h3 i {
+            font-size: 1.3em;
+        }
+
+        .close-modal {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 1.8em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        /* View Details Styling */
+        .details-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .detail-item.full-width {
+            grid-column: span 2;
+        }
+
+        .detail-item label {
+            display: block;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-item p {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        /* Update Form Styling */
+        .form-container {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .form-group label i {
+            color: #667eea;
+            margin-right: 5px;
+            width: 18px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover,
+        .form-group textarea:hover {
+            border-color: #764ba2;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            grid-column: span 2;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed #e9ecef;
+        }
+
+        .form-actions button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-actions button[type="submit"] {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+        }
+
+        .form-actions button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .form-actions button[type="button"] {
+            background: #6c757d;
+            color: white;
+        }
+
+        .form-actions button[type="button"]:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* Back Button */
+        .back-button-container {
+            margin-bottom: 20px;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+        }
+
+        .btn-back:hover {
+            background: #5a6268;
+            transform: translateX(-5px);
+        }
+
+        .btn-back i {
+            font-size: 0.9em;
+        }
+
+        .loading, .error, .no-records {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+            font-size: 1.2em;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .loading i {
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+        .error i {
+            color: #dc3545;
+            margin-right: 10px;
+        }
+
+        .no-records i {
+            color: #ffc107;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .details-container,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-item.full-width,
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .form-actions {
+                grid-column: span 1;
+                flex-direction: column;
+            }
+            
+            .record-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .record-actions {
+                width: 100%;
+                justify-content: stretch;
+            }
+            
+            .record-actions button {
+                flex: 1;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-graduation-cap"></i> Alumni Management System</h1>
+            <p>Manage alumni records with CNIC-based operations</p>
+        </div>
+
+        <div class="button-section">
+            <button class="btn btn-view-all" onclick="viewAllRecords()">
+                <i class="fas fa-list"></i> View All Registrations
+            </button>
+            <button class="btn btn-search" onclick="toggleSearch()">
+                <i class="fas fa-search"></i> Search by CNIC
+            </button>
+        </div>
+
+        <div class="search-section" id="searchSection">
+            <div class="search-box">
+                <input type="text" id="searchCNIC" placeholder="Enter 13-digit CNIC (without hyphen)" maxlength="13" pattern="\d*">
+                <button onclick="searchByCNIC()"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+
+        <div class="records-section" id="recordsSection">
+            <div class="records-header">
+                <h2 id="recordsTitle"><i class="fas fa-users"></i> Alumni Records</h2>
+                <span class="records-count" id="recordsCount">0 records</span>
+            </div>
+            <div class="records-list" id="recordsList"></div>
+        </div>
+    </div>
+
+    <!-- View Modal -->
+    <div class="modal" id="viewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-circle"></i> Alumni Details</h3>
+                <button class="close-modal" onclick="closeModal('viewModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="back-button-container">
+                    <button class="btn-back" onclick="closeModal('viewModal')">
+                        <i class="fas fa-arrow-left"></i> Back to Records
+                    </button>
+                </div>
+                <div id="viewDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Modal -->
+    <div class="modal" id="updateModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Update Alumni Record</h3>
+                <button class="close-modal" onclick="closeModal('updateModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="back-button-container">
+                    <button class="btn-back" onclick="closeModal('updateModal')">
+                        <i class="fas fa-arrow-left"></i> Back to Records
+                    </button>
+                </div>
+                <div id="updateForm"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/register';
+
+        // Toggle search section
+        function toggleSearch() {
+            document.getElementById('searchSection').classList.toggle('active');
+        }
+
+        // View all records
+        async function viewAllRecords() {
+            try {
+                document.getElementById('recordsList').innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading records...</div>';
+                document.getElementById('recordsSection').classList.add('active');
+                
+                const response = await fetch(`${API_URL}/all`);
+                const data = await response.json();
+                
+                const registrations = data.registrations || [];
+                displayRecords(registrations, 'All Alumni Records');
+            } catch (error) {
+                document.getElementById('recordsList').innerHTML = '<div class="error"><i class="fas fa-exclamation-circle"></i> Error fetching records</div>';
+            }
+        }
+
+        // Search by CNIC
+        async function searchByCNIC() {
+            const cnic = document.getElementById('searchCNIC').value.trim();
+            
+            if (!cnic || cnic.length !== 13 || !/^\d+$/.test(cnic)) {
+                alert('Please enter 13-digit CNIC without hyphen');
+                return;
+            }
+
+            try {
+                document.getElementById('recordsList').innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
+                document.getElementById('recordsSection').classList.add('active');
+                
+                const response = await fetch(`${API_URL}/cnic/${cnic}`);
+                
+                if (response.status === 404) {
+                    document.getElementById('recordsList').innerHTML = '<div class="no-records"><i class="fas fa-search"></i> No record found with this CNIC</div>';
+                    document.getElementById('recordsTitle').textContent = 'Search Result';
+                    document.getElementById('recordsCount').textContent = '0 records';
+                    return;
+                }
+                
+                const data = await response.json();
+                const registration = data.registration || data;
+                displayRecords([registration], 'Search Result');
+            } catch (error) {
+                document.getElementById('recordsList').innerHTML = '<div class="error"><i class="fas fa-exclamation-circle"></i> Error searching record</div>';
+            }
+        }
+
+        // Display records
+        function displayRecords(records, title) {
+            document.getElementById('recordsTitle').innerHTML = `<i class="fas fa-users"></i> ${title}`;
+            document.getElementById('recordsCount').textContent = `${records.length} records`;
+            
+            if (records.length === 0) {
+                document.getElementById('recordsList').innerHTML = '<div class="no-records"><i class="fas fa-database"></i> No records found</div>';
+                return;
+            }
+
+            let html = '';
+            records.forEach(record => {
+                html += `
+                    <div class="record-item">
+                        <div class="record-info">
+                            <span class="name"><i class="fas fa-user"></i> ${record.alumni || 'N/A'}</span>
+                            <span class="cnic"><i class="fas fa-id-card"></i> ${record.cnic || 'N/A'}</span>
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn-view" onclick="viewRecord('${record.cnic}')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn-update" onclick="updateRecord('${record.cnic}')">
+                                <i class="fas fa-edit"></i> Update
+                            </button>
+                            <button class="btn-delete" onclick="deleteRecord('${record.cnic}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('recordsList').innerHTML = html;
+        }
+
+        // View single record by CNIC
+        async function viewRecord(cnic) {
+            try {
+                const response = await fetch(`${API_URL}/cnic/${cnic}`);
+                const data = await response.json();
+                const record = data.registration || data;
+                
+                let details = '<div class="details-container">';
+                
+                // All fields to display
+                const fieldsToShow = [
+                    'alumni', 'fatherName', 'dob', 'gender', 'cnic', 
+                    'personalMobile', 'parentMobile', 'schoolName', 'campusName',
+                    'area', 'regionName', 'homeAddress', 'homeCity', 'metricRoll',
+                    'matricYear', 'metricStatus', 'interEnrollment', 'enrollDate',
+                    'faculty', 'collegeName', 'collegeType', 'interSupport', 'studyUniversity'
+                ];
+                
+                const fieldLabels = {
+                    alumni: 'Full Name', fatherName: 'Father\'s Name', dob: 'Date of Birth',
+                    gender: 'Gender', cnic: 'CNIC', personalMobile: 'Personal Mobile',
+                    parentMobile: 'Parent Mobile', schoolName: 'School Name', campusName: 'Campus Name',
+                    area: 'Area', regionName: 'Region', homeAddress: 'Home Address',
+                    homeCity: 'City', metricRoll: 'Metric Roll No', matricYear: 'Metric Year',
+                    metricStatus: 'Metric Status', interEnrollment: 'Inter Enrollment',
+                    enrollDate: 'Enrollment Date', faculty: 'Faculty', collegeName: 'College Name',
+                    collegeType: 'College Type', interSupport: 'Inter Support', studyUniversity: 'University'
+                };
+                
+                fieldsToShow.forEach(field => {
+                    if (record[field]) {
+                        let value = record[field];
+                        // Format dates
+                        if (field.includes('date') || field === 'dob' || field === 'enrollDate') {
+                            try {
+                                value = new Date(value).toLocaleDateString('en-PK', {
+                                    year: 'numeric', month: 'long', day: 'numeric'
+                                });
+                            } catch (e) {}
+                        }
+                        
+                        details += `
+                            <div class="detail-item ${field === 'homeAddress' ? 'full-width' : ''}">
+                                <label>${fieldLabels[field] || field}</label>
+                                <p>${value || 'N/A'}</p>
+                            </div>
+                        `;
+                    }
+                });
+                
+                details += '</div>';
+                document.getElementById('viewDetails').innerHTML = details;
+                openModal('viewModal');
+            } catch (error) {
+                alert('Error viewing record');
+            }
+        }
+
+        // Update record by CNIC - show form with all fields
+        async function updateRecord(cnic) {
+            try {
+                const response = await fetch(`${API_URL}/cnic/${cnic}`);
+                const data = await response.json();
+                const record = data.registration || data;
+                
+                let form = '<form onsubmit="submitUpdate(event, \'' + cnic + '\')"><div class="form-container"><div class="form-grid">';
+                
+                // All editable fields
+                const fields = [
+                    {name: 'alumni', type: 'text', label: 'Full Name', icon: 'user'},
+                    {name: 'fatherName', type: 'text', label: 'Father\'s Name', icon: 'user'},
+                    {name: 'dob', type: 'date', label: 'Date of Birth', icon: 'calendar'},
+                    {name: 'gender', type: 'select', label: 'Gender', icon: 'venus-mars', options: ['Male', 'Female', 'Other']},
+                    {name: 'cnic', type: 'text', label: 'CNIC', icon: 'id-card', pattern: '\\d{13}'},
+                    {name: 'personalMobile', type: 'tel', label: 'Personal Mobile', icon: 'phone', pattern: '\\d{11}'},
+                    {name: 'parentMobile', type: 'tel', label: 'Parent Mobile', icon: 'phone', pattern: '\\d{11}'},
+                    {name: 'schoolName', type: 'text', label: 'School Name', icon: 'school'},
+                    {name: 'campusName', type: 'text', label: 'Campus Name', icon: 'building'},
+                    {name: 'area', type: 'text', label: 'Area', icon: 'map'},
+                    {name: 'regionName', type: 'text', label: 'Region', icon: 'map'},
+                    {name: 'homeAddress', type: 'textarea', label: 'Home Address', icon: 'home', fullWidth: true},
+                    {name: 'homeCity', type: 'text', label: 'City', icon: 'city'},
+                    {name: 'metricRoll', type: 'text', label: 'Metric Roll No', icon: 'hashtag'},
+                    {name: 'matricYear', type: 'number', label: 'Metric Year', icon: 'calendar'},
+                    {name: 'metricStatus', type: 'select', label: 'Metric Status', icon: 'check', options: ['Yes', 'No']},
+                    {name: 'interEnrollment', type: 'select', label: 'Inter Enrollment', icon: 'check', options: ['Yes', 'No']},
+                    {name: 'enrollDate', type: 'date', label: 'Enrollment Date', icon: 'calendar'},
+                    {name: 'faculty', type: 'text', label: 'Faculty', icon: 'graduation-cap'},
+                    {name: 'collegeName', type: 'text', label: 'College Name', icon: 'building'},
+                    {name: 'collegeType', type: 'text', label: 'College Type', icon: 'building'},
+                    {name: 'interSupport', type: 'select', label: 'Inter Support', icon: 'check', options: ['Yes', 'No']},
+                    {name: 'studyUniversity', type: 'text', label: 'University', icon: 'university'}
+                ];
+                
+                fields.forEach(field => {
+                    const value = record[field.name] || '';
+                    const fullWidthClass = field.fullWidth ? 'full-width' : '';
+                    
+                    let inputField = '';
+                    
+                    if (field.type === 'select') {
+                        let options = '';
+                        field.options.forEach(opt => {
+                            options += `<option value="${opt}" ${value === opt ? 'selected' : ''}>${opt}</option>`;
+                        });
+                        inputField = `<select name="${field.name}" required>${options}</select>`;
+                    } else if (field.type === 'textarea') {
+                        inputField = `<textarea name="${field.name}" rows="3" required>${value}</textarea>`;
+                    } else {
+                        let pattern = field.pattern ? `pattern="${field.pattern}"` : '';
+                        inputField = `<input type="${field.type}" name="${field.name}" value="${value}" ${pattern} required>`;
+                    }
+                    
+                    form += `
+                        <div class="form-group ${fullWidthClass}">
+                            <label><i class="fas fa-${field.icon}"></i> ${field.label}:</label>
+                            ${inputField}
+                        </div>
+                    `;
+                });
+                
+                form += `
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit"><i class="fas fa-save"></i> Update Record</button>
+                            <button type="button" onclick="closeModal('updateModal')"><i class="fas fa-times"></i> Cancel</button>
+                        </div>
+                    </div>
+                </form>`;
+                
+                document.getElementById('updateForm').innerHTML = form;
+                openModal('updateModal');
+            } catch (error) {
+                alert('Error loading record');
+            }
+        }
+
+        // Submit update by CNIC
+        async function submitUpdate(event, cnic) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch(`${API_URL}/cnic/${cnic}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    alert('Record updated successfully');
+                    closeModal('updateModal');
+                    viewAllRecords();
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Update failed');
+                }
+            } catch (error) {
+                alert('Error updating record');
+            }
+        }
+
+        // Delete record by CNIC
+        async function deleteRecord(cnic) {
+            if (!confirm('Are you sure you want to delete this record?')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/cnic/${cnic}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    alert('Record deleted successfully');
+                    viewAllRecords();
+                } else {
+                    alert('Delete failed');
+                }
+            } catch (error) {
+                alert('Error deleting record');
+            }
+        }
+
+        // Modal functions
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
+</body>
+</html>

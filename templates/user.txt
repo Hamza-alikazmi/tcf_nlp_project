@@ -1,0 +1,14 @@
+name
+reg_name
+cnic
+fathername
+department
+semester
+
+
+
+1. student
+2. admin 
+    i.   Fee
+    ii.  Scholarship
+    iii. Superadmin

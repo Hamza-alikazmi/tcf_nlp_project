@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Success Stories | TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+        .glass-card { background: rgba(26, 28, 29, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .story-gradient { background: linear-gradient(to bottom, transparent, rgba(11, 12, 12, 0.9)); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    {% include 'navbar.html' %}
+
+    <!-- Hero Section -->
+    <section class="py-20 px-6 text-center">
+        <h2 class="text-tcf-green font-bold tracking-[0.3em] mb-4">Dreams Realized</h2>
+        <h1 class="text-5xl md:text-7xl font-black text-white leading-none mb-6">Our Alumni <br><span class="opacity-50">Impact Stories</span></h1>
+        <p class="max-w-2xl mx-auto text-gray-400">From the streets of Orangi to the halls of Harvard, see how education changes everything.</p>
+    </section>
+
+    <main class="max-w-7xl mx-auto px-6 pb-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Story 1: Kainat -->
+            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
+                <div class="relative h-64">
+                    <img src="kainat.jpg" alt="Kainat Ansari" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
+                    <div class="absolute inset-0 story-gradient flex items-end p-6">
+                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">HARVARD UNIVERSITY</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-white mb-3">Kainat Ansari: From Orangi to Harvard</h3>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">Accepted to the Ivy League Harvard Graduate School of Education, Kainat proves that even in the smallest slums, the biggest dreams can take flight.</p>
+                    <div class="flex items-center justify-between">
+                        <a href="#kainat-full" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
+                        <span class="text-[10px] text-gray-600 font-bold uppercase">Class of TCF</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Story 2: Asad -->
+            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
+                <div class="relative h-64">
+                    <img src="asad2.jpg" alt="Asad Graduation" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
+                    <div class="absolute inset-0 story-gradient flex items-end p-6">
+                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">GIKI GRADUATE</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-white mb-3">Asad: The Fruit-Seller's Legacy</h3>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">Asad's father chose his son's education over fixing their leaking roof. Today, Asad is a Software Engineer, rewriting his family's future.</p>
+                    <div class="flex items-center justify-between">
+                        <a href="#raza" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
+                        <span class="text-[10px] text-gray-600 font-bold uppercase">Engineer</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Story 3: Abdul Wahid -->
+            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
+                <div class="relative h-64">
+                    <img src="abdul.jpg" alt="Abdul Wahid" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
+                    <div class="absolute inset-0 story-gradient flex items-end p-6">
+                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">LUMS SCHOLAR</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-white mb-3">Abdul Wahid: Beyond the Fields</h3>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">A farmer's son from Bhurewala becomes the first in his village to attend university, securing a full scholarship at LUMS.</p>
+                    <div class="flex items-center justify-between">
+                        <a href="#abdul" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
+                        <span class="text-[10px] text-gray-600 font-bold uppercase">Physics Major</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Story 4: Iram -->
+            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
+                <div class="relative h-64">
+                    <img src="irum.jpg" alt="Iram" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
+                    <div class="absolute inset-0 story-gradient flex items-end p-6">
+                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">POLICE FORCE</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-white mb-3">Iram: Breaking Barriers</h3>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">Challenging conventional norms, Iram joined the Motorway Police, proving that women can lead and protect in any field.</p>
+                    <div class="flex items-center justify-between">
+                        <a href="#irum" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
+                        <span class="text-[10px] text-gray-600 font-bold uppercase">Patrol Officer</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Story 5: Anum -->
+            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
+                <div class="relative h-64">
+                    <img src="anum.jpg" alt="Anum Fatima" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
+                    <div class="absolute inset-0 story-gradient flex items-end p-6">
+                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">MICRO-LENDING</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-white mb-3">Anum Fatima: Humble to Harvard</h3>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">From a driver's home to a Harvard prize winner, Anum now uses her education to provide micro-loans for her community.</p>
+                    <div class="flex items-center justify-between">
+                        <a href="#anum" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
+                        <span class="text-[10px] text-gray-600 font-bold uppercase">Entrepreneur</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <!-- Detailed View Spotlight (Example for Kainat) -->
+    <section id="kainat-full" class="bg-tcf-dark-grey py-24 px-6 border-t border-white/5">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
+            <div class="md:w-1/2">
+                <h2 class="text-4xl font-black text-tcf-green mb-6">Spotlight: Kainat Ansari</h2>
+                <p class="text-gray-300 leading-relaxed mb-6 italic">
+                    "One day, as a kid, you're wondering if you will ever go to school. Next thing you know, you are packing your bags to go to Harvard!"
+                </p>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                    Coming from Orangi – a small town, a slum – women like me are told places like Harvard aren't for us. Getting in was beyond what my parents or I ever imagined. We celebrate Kainat's grit and your belief in the potential of Pakistan's children.
+                </p>
+                <div class="bg-tcf-black p-4 rounded-xl border border-white/5">
+                    <video class="w-full rounded-lg" controls>
+                        <source src="kainat-video.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <img src="kainat.jpg" alt="Kainat" class="rounded-3xl border-2 border-tcf-green shadow-2xl shadow-tcf-green/10">
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 px-6 text-center">
+        <div class="max-w-3xl mx-auto glass-card p-12 rounded-3xl border-t-4 border-tcf-green">
+            <h3 class="text-3xl font-black mb-4">Be the Next Story</h3>
+            <p class="text-gray-400 mb-8">Your background doesn't define your destination. Apply for the TCF Scholarship Program and start your journey.</p>
+            <a href="/login" class="bg-tcf-green text-tcf-black px-10 py-3 rounded-full font-black uppercase text-sm inline-block tracking-widest">Join Alumni Portal</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-tcf-dark-grey py-12 px-6 border-t border-white/10 text-center">
+        <h3 class="text-xl font-bold text-tcf-green mb-4">TCF Alumni Pathways</h3>
+        <div class="text-sm text-gray-500 space-y-2 mb-8">
+            <p>📧 info@tcf-alumni.org | 📞 0800-00823</p>
+            <p>© 2026 The Citizens Foundation. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

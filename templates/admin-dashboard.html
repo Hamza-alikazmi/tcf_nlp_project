@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Admin Dashboard · TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Admin Dashboard Section -->
+        <section class="py-16 px-6">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-4xl font-bold mb-2 text-tcf-green">Admin Dashboard</h1>
+                <p class="text-gray-400 mb-8 text-sm uppercase tracking-widest">Manage Applications & Complaints</p>
+
+                <!-- Stats Grid -->
+                <div class="grid md:grid-cols-5 gap-4 mb-12">
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Total Users</p>
+                        <p class="text-3xl font-bold text-tcf-green">245</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Applications</p>
+                        <p class="text-3xl font-bold text-blue-400">89</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Complaints</p>
+                        <p class="text-3xl font-bold text-red-400">23</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Resolved</p>
+                        <p class="text-3xl font-bold text-green-400">18</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Pending</p>
+                        <p class="text-3xl font-bold text-yellow-400">5</p>
+                    </div>
+                </div>
+
+                <!-- Management Sections -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Recent Applications -->
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <h2 class="text-xl font-bold text-tcf-green mb-6">Recent Applications</h2>
+                        <div class="space-y-3 max-h-96 overflow-y-auto">
+                            <div class="p-4 bg-tcf-black/50 rounded-lg border border-white/5">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-semibold">Ali Ahmed - Scholarship</p>
+                                        <p class="text-xs text-gray-400">CNIC: 12345-1234567-1</p>
+                                    </div>
+                                    <span class="px-2 py-1 bg-yellow-400/20 text-yellow-300 text-xs font-bold rounded">Pending</span>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-tcf-black/50 rounded-lg border border-white/5">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-semibold">Fatima Khan - Fee Support</p>
+                                        <p class="text-xs text-gray-400">CNIC: 98765-7654321-1</p>
+                                    </div>
+                                    <span class="px-2 py-1 bg-green-400/20 text-green-300 text-xs font-bold rounded">Approved</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Complaints -->
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <h2 class="text-xl font-bold text-tcf-green mb-6">Recent Complaints</h2>
+                        <div class="space-y-3 max-h-96 overflow-y-auto">
+                            <div class="p-4 bg-tcf-black/50 rounded-lg border border-white/5">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-semibold">Application Processing Delay</p>
+                                        <p class="text-xs text-gray-400">Submitted 2 days ago</p>
+                                    </div>
+                                    <span class="px-2 py-1 bg-red-400/20 text-red-300 text-xs font-bold rounded">Open</span>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-tcf-black/50 rounded-lg border border-white/5">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-semibold">Technical Issue - Portal</p>
+                                        <p class="text-xs text-gray-400">Submitted 1 day ago</p>
+                                    </div>
+                                    <span class="px-2 py-1 bg-green-400/20 text-green-300 text-xs font-bold rounded">Resolved</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="mt-12">
+                    <h2 class="text-xl font-bold text-tcf-green mb-6">Management Tools</h2>
+                    <div class="grid md:grid-cols-4 gap-4">
+                        <a href="#" class="p-6 bg-tcf-dark-grey border border-tcf-green/30 rounded-xl hover:border-tcf-green hover:bg-tcf-green/5 transition text-center">
+                            <i class="fas fa-users text-2xl text-tcf-green mb-3"></i>
+                            <p class="font-semibold">Manage Users</p>
+                        </a>
+                        <a href="#" class="p-6 bg-tcf-dark-grey border border-tcf-green/30 rounded-xl hover:border-tcf-green hover:bg-tcf-green/5 transition text-center">
+                            <i class="fas fa-file-alt text-2xl text-tcf-green mb-3"></i>
+                            <p class="font-semibold">View Applications</p>
+                        </a>
+                        <a href="#" class="p-6 bg-tcf-dark-grey border border-tcf-green/30 rounded-xl hover:border-tcf-green hover:bg-tcf-green/5 transition text-center">
+                            <i class="fas fa-exclamation-circle text-2xl text-tcf-green mb-3"></i>
+                            <p class="font-semibold">Handle Complaints</p>
+                        </a>
+                        <a href="#" class="p-6 bg-tcf-dark-grey border border-tcf-green/30 rounded-xl hover:border-tcf-green hover:bg-tcf-green/5 transition text-center">
+                            <i class="fas fa-chart-bar text-2xl text-tcf-green mb-3"></i>
+                            <p class="font-semibold">View Reports</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 mt-16">
+            <div class="max-w-7xl mx-auto text-center">
+                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+        
+        nav a:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+        }
+        
+        nav a:active {
+            transform: translateY(0);
+        }
+        
+        .separator {
+            color: #ddd;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        @media (max-width: 600px) {
+            .nav-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .separator {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+   <header class="sticky top-0 z-50 bg-tcf-black/90 backdrop-blur-md border-b border-white/10">
+            <nav id="nav" class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <img src="logo.png" alt="TCF Logo" class="h-10 brightness-0 invert">
+                    <h1 class="text-xl font-bold text-tcf-green">ALUMNI PATHWAYS</h1>
+                </div>
+                <div class="hidden lg:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider">
+                    <a href="/home" class="hover:text-tcf-green transition">Home</a>
+                    <a href="/about" class="text-tcf-green">About</a>
+                    <a href="/guide" class="hover:text-tcf-green transition">Alumni Guide</a>
+                    <a href="/success-stories" class="hover:text-tcf-green transition">Success Stories</a>
+                    <a href="/contact" class="hover:text-tcf-green transition">Contact</a>
+                    <a href="/login" class="bg-tcf-green text-tcf-black px-4 py-1.5 rounded-full hover:bg-white transition">Student Portal</a>
+                </div>
+            </nav>
+        </header>
+
+</body>
+</html>

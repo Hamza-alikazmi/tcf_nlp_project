@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>TCF Alumni Pathways | Our Offices</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: white; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* Carousel Perspective & Flip logic */
+        .carousel-scene { perspective: 1200px; }
+        .c-card { transition: all 0.65s cubic-bezier(0.23, 1, 0.32, 1); transform-style: preserve-3d; }
+        .flip-card-inner { transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1); }
+        .c-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { backface-visibility: hidden; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 1.5rem; }
+        .card-back { transform: rotateY(180deg); }
+        
+        .edot-pulse { animation: ep 2s infinite; }
+        @keyframes ep {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(73, 195, 74, 0.5); }
+            50% { box-shadow: 0 0 0 6px rgba(73, 195, 74, 0); }
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- Navigation (Placeholder for your Navbar include) -->
+{% include 'navbar.html' %}
+
+    <!-- Main Content Area -->
+    <main class="flex-grow py-16 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col items-center">
+            
+            <!-- Eyebrow & Title -->
+            <div class="inline-flex items-center gap-3 bg-tcf-green/10 border border-tcf-green/20 text-tcf-green text-[10px] font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-6">
+                <span class="w-2 h-2 bg-tcf-green rounded-full edot-pulse"></span>
+                Our Presence
+            </div>
+            
+            <h2 class="text-4xl md:text-6xl font-extrabold text-center mb-2">
+                Contact <span class="text-tcf-green">Our Offices</span>
+            </h2>
+            <p class="text-gray-500 text-sm md:text-base font-light mb-12 text-center max-w-md">
+                Select an office below to see complete address and contact details.
+            </p>
+
+            <!-- Carousel Wrapper -->
+            <div class="relative w-full max-w-4xl px-4 md:px-12 group">
+                
+                <!-- Navigation Buttons -->
+                <button id="prevBtn" class="absolute left-0 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-tcf-dark-grey border border-white/10 text-white hover:bg-tcf-green hover:text-tcf-black transition-all shadow-xl">
+                    <span class="text-2xl mt-[-2px]">‹</span>
+                </button>
+                <button id="nextBtn" class="absolute right-0 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-tcf-dark-grey border border-white/10 text-white hover:bg-tcf-green hover:text-tcf-black transition-all shadow-xl">
+                    <span class="text-2xl mt-[-2px]">›</span>
+                </button>
+
+                <!-- Scene -->
+                <div class="carousel-scene relative h-[480px] w-full" id="scene">
+
+                    <!-- Karachi Card -->
+                    <div class="c-card absolute w-[280px] md:w-[320px] h-[440px] top-0 left-1/2 -translate-x-1/2 cursor-pointer" id="card0">
+                        <div class="flip-card-inner relative w-full h-full">
+                            <!-- Front -->
+                            <div class="card-front overflow-hidden bg-tcf-dark-grey">
+                                <img src="assert/quaid-mizar.jpg" class="w-full h-full object-cover opacity-60 transition-transform duration-500 hover:scale-110" alt="Karachi">
+                                <span class="absolute top-4 right-4 bg-tcf-green text-tcf-black text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter z-10">Head Office</span>
+                                <div class="absolute inset-0 bg-gradient-to-t from-tcf-black via-transparent to-transparent flex flex-col justify-end p-8">
+                                    <h3 class="text-4xl text-white">Karachi</h3>
+                                </div>
+                            </div>
+                            <!-- Back -->
+                            <div class="card-back bg-tcf-dark-grey border border-tcf-green/30 p-6 flex flex-col">
+                                <div class="border-b border-white/10 pb-4 mb-4">
+                                    <h3 class="text-tcf-green text-2xl">Karachi</h3>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Asra Ahmed / Anas Hussain</p>
+                                </div>
+                                <div class="flex-grow space-y-4 text-xs text-gray-300">
+                                    <p class="flex gap-3"><span>📍</span> Plot No. 20, Sector #14, Korangi Industrial Area, Karachi 74900</p>
+                                    <p class="flex gap-3"><span>✉</span> <a href="mailto:info@tcf.org.pk" class="text-tcf-green">info@tcf.org.pk</a></p>
+                                    <p class="flex gap-3"><span>📞</span> 0800-00823 (Toll-free)</p>
+                                </div>
+                                <div class="pt-4 border-t border-white/10 flex justify-between items-center">
+                                    <span class="text-[10px] text-tcf-green font-bold tracking-widest uppercase">Visit Us</span>
+                                    <span class="w-8 h-8 rounded-full border border-tcf-green/50 flex items-center justify-center text-tcf-green">↗</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lahore Card -->
+                    <div class="c-card absolute w-[280px] md:w-[320px] h-[440px] top-0 left-1/2 -translate-x-1/2 cursor-pointer" id="card1">
+                        <div class="flip-card-inner relative w-full h-full">
+                            <div class="card-front overflow-hidden bg-tcf-dark-grey">
+                                <img src="assert/minara-pskistan.jpg" class="w-full h-full object-cover opacity-60" alt="Lahore">
+                                <span class="absolute top-4 right-4 bg-tcf-green text-tcf-black text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter z-10">Regional</span>
+                                <div class="absolute inset-0 bg-gradient-to-t from-tcf-black flex flex-col justify-end p-8">
+                                    <h3 class="text-4xl text-white">Lahore</h3>
+                                </div>
+                            </div>
+                            <div class="card-back bg-tcf-dark-grey border border-tcf-green/30 p-6 flex flex-col">
+                                <div class="border-b border-white/10 pb-4 mb-4">
+                                    <h3 class="text-tcf-green text-2xl">Lahore</h3>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Umer Shahid</p>
+                                </div>
+                                <div class="flex-grow space-y-4 text-xs text-gray-300">
+                                    <p class="flex gap-3"><span>📍</span> Plot #91, Block–C, Broadway Road, Phase VIII, DHA Lahore</p>
+                                    <p class="flex gap-3"><span>✉</span> <span class="text-tcf-green">umer.shahid@tcf.org.pk</span></p>
+                                    <p class="flex gap-3"><span>📞</span> +92-42-37135871-76</p>
+                                </div>
+                                <div class="pt-4 border-t border-white/10 flex justify-between items-center">
+                                    <span class="text-[10px] text-tcf-green font-bold tracking-widest uppercase">Contact</span>
+                                    <span class="w-8 h-8 rounded-full border border-tcf-green/50 flex items-center justify-center text-tcf-green">↗</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Islamabad Card -->
+                    <div class="c-card absolute w-[280px] md:w-[320px] h-[440px] top-0 left-1/2 -translate-x-1/2 cursor-pointer" id="card2">
+                        <div class="flip-card-inner relative w-full h-full">
+                            <div class="card-front overflow-hidden bg-tcf-dark-grey">
+                                <img src="assert/Sunset_at_Faisal_Masjid-1024x504.jpg" class="w-full h-full object-cover opacity-60" alt="North">
+                                <span class="absolute top-4 right-4 bg-tcf-green text-tcf-black text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter z-10">North Office</span>
+                                <div class="absolute inset-0 bg-gradient-to-t from-tcf-black flex flex-col justify-end p-8">
+                                    <h3 class="text-4xl text-white">North</h3>
+                                </div>
+                            </div>
+                            <div class="card-back bg-tcf-dark-grey border border-tcf-green/30 p-6 flex flex-col">
+                                <div class="border-b border-white/10 pb-4 mb-4">
+                                    <h3 class="text-tcf-green text-2xl">Islamabad</h3>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Mizhgan Kirmani</p>
+                                </div>
+                                <div class="flex-grow space-y-4 text-xs text-gray-300">
+                                    <p class="flex gap-3"><span>📍</span> Near Fazia Colony, Service Road, Gangal West, Rawalpindi</p>
+                                    <p class="flex gap-3"><span>✉</span> <span class="text-tcf-green">syeda.mizhgan@tcf.org.pk</span></p>
+                                    <p class="flex gap-3"><span>📞</span> (92-51) 4578229 Ext: 115</p>
+                                </div>
+                                <div class="pt-4 border-t border-white/10 flex justify-between items-center">
+                                    <span class="text-[10px] text-tcf-green font-bold tracking-widest uppercase">North Reg</span>
+                                    <span class="w-8 h-8 rounded-full border border-tcf-green/50 flex items-center justify-center text-tcf-green">↗</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dots Container -->
+                <div class="flex justify-center gap-3 mt-8" id="dots"></div>
+                <p class="text-center text-[10px] text-gray-500 uppercase tracking-widest mt-6 opacity-50">✨ Tap card to flip & view details</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-tcf-dark-grey pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-center md:text-left">
+                <!-- Branding / Info -->
+                <div class="space-y-4">
+                    <h3 class="text-tcf-green text-xl font-bold border-b border-tcf-green/30 pb-2">TCF Head Office</h3>
+                    <div class="text-sm text-gray-400 space-y-2">
+                        <p><span class="text-tcf-green font-semibold">Contact:</span> Asra Ahmed / Anas Hussain</p>
+                        <p class="leading-relaxed">📍 Plot No. 20, Sector # 14, Korangi Industrial Area, Karachi, Pakistan.</p>
+                    </div>
+                </div>
+                
+                <!-- Quick Contact -->
+                <div class="space-y-4">
+                    <h3 class="text-tcf-green text-xl font-bold border-b border-tcf-green/30 pb-2">Support</h3>
+                    <div class="text-sm text-gray-400 space-y-2">
+                        <p>📧 info@tcf.org.pk</p>
+                        <p>📞 Toll-free: 0800-00823</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-tcf-green text-xl font-bold border-b border-tcf-green/30 pb-2">Links</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><a href="#" class="hover:text-tcf-green">Alumni Guide</a></li>
+                        <li><a href="#" class="hover:text-tcf-green">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Social -->
+                <div class="social-media space-y-4">
+                    <h3 class="text-tcf-green text-xl font-bold border-b border-tcf-green/30 pb-2">Socials</h3>
+                    <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                        <a href="#" class="bg-white/5 p-2 rounded hover:bg-tcf-green/10 transition">FB</a>
+                        <a href="#" class="bg-white/5 p-2 rounded hover:bg-tcf-green/10 transition">IG</a>
+                        <a href="#" class="bg-white/5 p-2 rounded hover:bg-tcf-green/10 transition">X</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-white/5 text-center">
+                <p class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
+                    © 2026 The Citizens Foundation Alumni Pathways.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Carousel Logic
+        (function() {
+            let activeIndex = 0;
+            const totalCards = 3;
+            let isAnimating = false;
+
+            const positionMap = [
+                { left: '50%', translateX: '-50%', translateY: '0px', scale: 1, zIndex: 20, opacity: 1, filter: 'brightness(1)' },
+                { left: '80%', translateX: '-50%', translateY: '20px', scale: 0.75, zIndex: 8, opacity: 0.5, filter: 'brightness(0.5)' },
+                { left: '20%', translateX: '-50%', translateY: '20px', scale: 0.75, zIndex: 8, opacity: 0.5, filter: 'brightness(0.5)' }
+            ];
+
+            function updateCarousel() {
+                for (let i = 0; i < totalCards; i++) {
+                    let offset = (i - activeIndex) % totalCards;
+                    if (offset < 0) offset += totalCards;
+                    
+                    const pos = positionMap[offset];
+                    const card = document.getElementById('card' + i);
+                    if (!card) continue;
+
+                    card.style.left = pos.left;
+                    card.style.transform = `translateX(${pos.translateX}) translateY(${pos.translateY}) scale(${pos.scale})`;
+                    card.style.zIndex = pos.zIndex;
+                    card.style.opacity = pos.opacity;
+                    card.style.filter = pos.filter;
+                    card.style.pointerEvents = offset === 0 ? 'auto' : 'none';
+                    
+                    if (offset !== 0) card.classList.remove('flipped');
+                }
+                updateDots();
+            }
+
+            function slide(dir) {
+                if (isAnimating) return;
+                isAnimating = true;
+                activeIndex = (activeIndex + dir + totalCards) % totalCards;
+                updateCarousel();
+                setTimeout(() => isAnimating = false, 650);
+            }
+
+            function updateDots() {
+                const dots = document.getElementById('dots');
+                dots.innerHTML = '';
+                for (let i = 0; i < totalCards; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${i === activeIndex ? 'bg-tcf-green w-8' : 'bg-white/20'}`;
+                    dot.onclick = () => { activeIndex = i; updateCarousel(); };
+                    dots.appendChild(dot);
+                }
+            }
+
+            // Events
+            document.getElementById('prevBtn').onclick = () => slide(-1);
+            document.getElementById('nextBtn').onclick = () => slide(1);
+
+            document.querySelectorAll('.c-card').forEach(card => {
+                card.onclick = function() {
+                    if(this.style.pointerEvents === 'auto') this.classList.toggle('flipped');
+                }
+            });
+
+            // Init
+            updateCarousel();
+        })();
+    </script>
+</body>
+</html>

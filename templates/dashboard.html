@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <title>Student Dashboard · TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Dashboard Section -->
+        <section class="py-16 px-6">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-4xl font-bold mb-2 text-tcf-green">Student Dashboard</h1>
+                <p class="text-gray-400 mb-8 text-sm uppercase tracking-widest">Welcome to your Alumni Pathways Dashboard</p>
+
+                <!-- Stats Grid -->
+                <div class="grid md:grid-cols-4 gap-6 mb-12">
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Applications</p>
+                        <p class="text-3xl font-bold text-tcf-green">3</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Approved</p>
+                        <p class="text-3xl font-bold text-green-400">1</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Pending</p>
+                        <p class="text-3xl font-bold text-yellow-400">2</p>
+                    </div>
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <p class="text-gray-400 text-xs uppercase mb-2">Profile</p>
+                        <p class="text-3xl font-bold text-blue-400">100%</p>
+                    </div>
+                </div>
+
+                <!-- Dashboard Cards -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Applications -->
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <h2 class="text-xl font-bold text-tcf-green mb-6">Recent Applications</h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-4 bg-tcf-black/50 rounded-lg border border-white/5">
+                                <div>
+                                    <p class="font-semibold">Scholarship Application</p>
+                                    <p class="text-xs text-gray-400">Submitted 3 days ago</p>
+                                </div>
+                                <span class="px-3 py-1 bg-yellow-400/20 text-yellow-300 text-xs font-bold rounded-full">Pending</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-tcf-black/50 rounded-lg border border-white/5">
+                                <div>
+                                    <p class="font-semibold">Fee Application</p>
+                                    <p class="text-xs text-gray-400">Submitted 1 week ago</p>
+                                </div>
+                                <span class="px-3 py-1 bg-green-400/20 text-green-300 text-xs font-bold rounded-full">Approved</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-tcf-dark-grey border border-white/10 rounded-xl p-6">
+                        <h2 class="text-xl font-bold text-tcf-green mb-6">Quick Actions</h2>
+                        <div class="space-y-3">
+                            <a href="/scholarship-form" class="block p-4 bg-tcf-black/50 rounded-lg border border-tcf-green/30 hover:border-tcf-green hover:bg-tcf-green/5 transition text-center font-semibold text-tcf-green">
+                                <i class="fas fa-graduation-cap mr-2"></i> Apply for Scholarship
+                            </a>
+                            <a href="/fee-form" class="block p-4 bg-tcf-black/50 rounded-lg border border-tcf-green/30 hover:border-tcf-green hover:bg-tcf-green/5 transition text-center font-semibold text-tcf-green">
+                                <i class="fas fa-file-invoice-dollar mr-2"></i> Fee Assistance
+                            </a>
+                            <a href="/guide" class="block p-4 bg-tcf-black/50 rounded-lg border border-tcf-green/30 hover:border-tcf-green hover:bg-tcf-green/5 transition text-center font-semibold text-tcf-green">
+                                <i class="fas fa-book mr-2"></i> View Alumni Guide
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 mt-16">
+            <div class="max-w-7xl mx-auto text-center">
+                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+
+<!-- ========== HEADER ========== -->
+<div class="dashboard-header d-flex justify-content-between align-items-center">
+    <h3 class="mb-0"><i class="fas fa-shield-alt me-2" style="color:#2563eb;"></i>Complaint Admin</h3>
+    <div class="d-flex align-items-center gap-3">
+        <div class="refresh-indicator" id="refreshIndicator">
+            <span class="spinner-border spinner-border-sm d-none" role="status" id="refreshSpinner"></span>
+            <span id="lastUpdated">updating...</span>
+        </div>
+        <button class="btn btn-outline-secondary btn-sm rounded-pill px-4" id="manualRefreshBtn">
+            <i class="fas fa-sync-alt me-1"></i>Refresh
+        </button>
+    </div>
+</div>
+
+<div class="container-fluid px-4 py-4">
+    <!-- ========== FILTER SECTION ========== -->
+    <div class="filter-card">
+        <div class="filter-group">
+            <div class="filter-label"><i class="fas fa-building me-1"></i>Department</div>
+            <select id="filterDept" class="form-select form-select-sm">
+                <option value="all">All departments</option>
+                <!-- options populated dynamically or static (you can keep static or fetch) -->
+                <option value="IT">IT</option>
+                <option value="HR">HR</option>
+                <option value="Admin">Admin</option>
+                <option value="Fee">Fee</option>
+                <option value="Billing">Billing</option>
+                <option value="Technical">Technical</option>
+                <option value="Customer Service">Customer Service</option>
+                <option value="Logistics">Logistics</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <div class="filter-label"><i class="fas fa-exclamation-triangle me-1"></i>Priority</div>
+            <select id="filterPriority" class="form-select form-select-sm">
+                <option value="all">All priorities</option>
+                <option value="HIGH">HIGH</option>
+                <option value="NORMAL">NORMAL</option>
+                <option value="LOW">LOW</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <div class="filter-label"><i class="fas fa-circle me-1"></i>Status</div>
+            <select id="filterStatus" class="form-select form-select-sm">
+                <option value="all">All statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+            </select>
+        </div>
+        <div class="ms-auto">
+            <button class="btn btn-outline-secondary btn-sm rounded-pill px-4" id="resetFiltersBtn">
+                <i class="fas fa-undo-alt me-1"></i>Reset
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== COMPLAINTS TABLE ========== -->
+    <div class="table-complaints">
+        <div class="table-wrapper">
+            <table class="table table-hover mb-0" id="complaintsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Complaint text</th>
+                        <th>Dept.</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Sentiment</th>
+                        <th>Resolution note</th>
+                        <th style="width:80px;">Save</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr><td colspan="8" class="text-center py-5 text-muted">Loading complaints...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ========== CHARTS GRID ========== -->
+    <div class="chart-grid">
+        <div class="chart-item">
+            <h6><i class="fas fa-chart-pie me-1"></i> Complaints by Dept.</h6>
+            <canvas id="deptChart" style="max-height:140px; width:100%;"></canvas>
+        </div>
+        <div class="chart-item">
+            <h6><i class="fas fa-chart-bar me-1"></i> Priority (H/N/L)</h6>
+            <canvas id="priorityChart" style="max-height:140px; width:100%;"></canvas>
+        </div>
+        <div class="chart-item">
+            <h6><i class="fas fa-chart-pie me-1"></i> Status</h6>
+            <canvas id="statusChart" style="max-height:140px; width:100%;"></canvas>
+        </div>
+        <div class="chart-item">
+            <h6><i class="fas fa-smile me-1"></i> Sentiment</h6>
+            <canvas id="sentimentChart" style="max-height:140px; width:100%;"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // State
+        let allComplaints = [];
+        let filteredComplaints = [];
+        let charts = {};
+
+    
+        let refreshTimer;
+        const REFRESH_INTERVAL = 30000;
+        
+        // DOM elements
+        const tableBody = document.getElementById('tableBody');
+        const filterDept = document.getElementById('filterDept');
+        const filterPriority = document.getElementById('filterPriority');
+        const filterStatus = document.getElementById('filterStatus');
+        const resetBtn = document.getElementById('resetFiltersBtn');
+        const manualRefreshBtn = document.getElementById('manualRefreshBtn');
+        const refreshSpinner = document.getElementById('refreshSpinner');
+        const lastUpdatedSpan = document.getElementById('lastUpdated');
+
+        // ========== FETCH COMPLAINTS FROM BACKEND ==========
+        async function fetchComplaints() {
+            showLoading(true);
+            try {
+                const response = await fetch('/admin/complaints');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                allComplaints = data; // array of complaint objects
+                applyFilters(); // this will also update charts
+                updateLastUpdated();
+            } catch (error) {
+                console.error('Failed to fetch complaints:', error);
+                tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-5 text-danger">Error loading complaints. Please refresh.</td></tr>`;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // ========== FILTER LOGIC ==========
+        function applyFilters() {
+            const dept = filterDept.value;
+            const priority = filterPriority.value;
+            const status = filterStatus.value;
+
+            filteredComplaints = allComplaints.filter(c => {
+                if (dept !== 'all' && c.department !== dept) return false;
+                if (priority !== 'all' && c.priority !== priority) return false;
+                if (status !== 'all' && c.status !== status) return false;
+                return true;
+            });
+
+            renderTable(filteredComplaints);
+            updateCharts(filteredComplaints);
+        }
+
+        // ========== RENDER TABLE ROWS ==========
+        function renderTable(complaints) {
+            if (!complaints.length) {
+                tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-5 text-muted">No complaints match filters</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            complaints.forEach(c => {
+                const statusClass = c.status === 'Pending' ? 'bg-pending' : (c.status === 'In Progress' ? 'bg-inprogress' : 'bg-resolved');
+                const priorityClass = c.priority === 'HIGH' ? 'priority-high' : (c.priority === 'NORMAL' ? 'priority-normal' : 'priority-low');
+                let sentimentBg = '#f1f5f9';
+                if (c.sentiment === 'Positive') sentimentBg = '#dcfce7';
+                else if (c.sentiment === 'Negative') sentimentBg = '#fee2e2';
+                
+                html += `<tr data-id="${c.complaint_id}">
+                    <td><span class="fw-semibold">${c.complaint_id}</span></td>
+                    <td style="max-width:260px; white-space:normal;">${c.text || ''}</td>
+                    <td>${c.department || ''}</td>
+                    <td class="${priorityClass}">${c.priority || ''}</td>
+                    <td>
+                        <select class="form-select form-select-sm status-select" style="width:130px;" data-original="${c.status}">
+                            <option value="Pending" ${c.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="In Progress" ${c.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="Resolved" ${c.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+                        </select>
+                    </td>
+                    <td><span class="sentiment-badge" style="background:${sentimentBg};">${c.sentiment || 'Neutral'}</span></td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm resolution-input" placeholder="Add note" value="${c.resolution || ''}">
+                    </td>
+                    <td>
+                        <button class="btn btn-save-row btn-save-complaint"><i class="far fa-save me-1"></i>save</button>
+                    </td>
+                </tr>`;
+            });
+            tableBody.innerHTML = html;
+
+            // Attach save events
+            document.querySelectorAll('.btn-save-complaint').forEach(btn => {
+                btn.addEventListener('click', saveHandler);
+            });
+        }
+
+        // ========== SAVE HANDLER (POST /admin/update) ==========
+        async function saveHandler(e) {
+            const btn = e.currentTarget;
+            const row = btn.closest('tr');
+            const complaintId = row.dataset.id;
+            const statusSelect = row.querySelector('.status-select');
+            const resolutionInput = row.querySelector('.resolution-input');
+            const newStatus = statusSelect.value;
+            const resolutionNote = resolutionInput.value;
+
+            // Disable button to prevent double click
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+
+            try {
+                const response = await fetch('/admin/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        complaint_id: complaintId,
+                        status: newStatus,
+                        resolution: resolutionNote
+                    })
+                });
+                if (!response.ok) throw new Error('Update failed');
+                // After successful update, refresh data
+                await fetchComplaints();
+            } catch (error) {
+                console.error('Update error:', error);
+                alert('Failed to update complaint. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="far fa-save me-1"></i>save';
+            }
+        }
+
+        // ========== CHART UPDATES ==========
+        function updateCharts(data) {
+            // Department counts
+            const deptMap = new Map();
+            data.forEach(c => deptMap.set(c.department, (deptMap.get(c.department)||0) + 1));
+            const deptLabels = Array.from(deptMap.keys());
+            const deptValues = Array.from(deptMap.values());
+
+            // Priority counts (order: HIGH, NORMAL, LOW)
+            const priorityOrder = ['HIGH','NORMAL','LOW'];
+            const priorityCounts = priorityOrder.map(p => data.filter(c => c.priority === p).length);
+
+            // Status counts (Pending, In Progress, Resolved)
+            const statusOrder = ['Pending','In Progress','Resolved'];
+            const statusCounts = statusOrder.map(s => data.filter(c => c.status === s).length);
+
+            // Sentiment counts (Positive, Neutral, Negative)
+            const sentimentOrder = ['Positive','Neutral','Negative'];
+            const sentimentCounts = sentimentOrder.map(sent => data.filter(c => c.sentiment === sent).length);
+
+            // Destroy existing charts
+            Object.values(charts).forEach(chart => chart?.destroy());
+            
+            // Department pie
+            const ctx1 = document.getElementById('deptChart').getContext('2d');
+            charts.dept = new Chart(ctx1, {
+                type: 'pie',
+                data: {
+                    labels: deptLabels,
+                    datasets: [{
+                        data: deptValues,
+                        backgroundColor: ['#3b82f6','#f97316','#10b981','#8b5cf6','#ec4899','#06b6d4','#f59e0b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } } }
+            });
+
+            // Priority bar
+            const ctx2 = document.getElementById('priorityChart').getContext('2d');
+            charts.priority = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: priorityOrder,
+                    datasets: [{
+                        data: priorityCounts,
+                        backgroundColor: ['#ef4444','#f59e0b','#10b981'],
+                        borderRadius: 8
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+            });
+
+            // Status doughnut
+            const ctx3 = document.getElementById('statusChart').getContext('2d');
+            charts.status = new Chart(ctx3, {
+                type: 'doughnut',
+                data: {
+                    labels: statusOrder,
+                    datasets: [{
+                        data: statusCounts,
+                        backgroundColor: ['#fbbf24','#3b82f6','#10b981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, cutout: '65%' }
+            });
+
+            // Sentiment bar
+            const ctx4 = document.getElementById('sentimentChart').getContext('2d');
+            charts.sentiment = new Chart(ctx4, {
+                type: 'bar',
+                data: {
+                    labels: sentimentOrder,
+                    datasets: [{
+                        data: sentimentCounts,
+                        backgroundColor: ['#10b981','#f59e0b','#ef4444'],
+                        borderRadius: 8
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+            });
+        }
+
+        // ========== UI HELPERS ==========
+        function showLoading(isLoading) {
+            if (isLoading) {
+                refreshSpinner.classList.remove('d-none');
+            } else {
+                refreshSpinner.classList.add('d-none');
+            }
+        }
+
+        function updateLastUpdated() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            lastUpdatedSpan.textContent = `Last updated: ${timeStr}`;
+        }
+
+        // ========== RESET FILTERS ==========
+        function resetFilters() {
+            filterDept.value = 'all';
+            filterPriority.value = 'all';
+            filterStatus.value = 'all';
+            applyFilters();
+        }
+
+        // ========== EVENT LISTENERS ==========
+        filterDept.addEventListener('change', applyFilters);
+        filterPriority.addEventListener('change', applyFilters);
+        filterStatus.addEventListener('change', applyFilters);
+        resetBtn.addEventListener('click', resetFilters);
+        manualRefreshBtn.addEventListener('click', () => fetchComplaints());
+
+        // ========== AUTO REFRESH ==========
+        function startAutoRefresh() {
+            if (refreshTimer) clearInterval(refreshTimer);
+            refreshTimer = setInterval(() => fetchComplaints(), REFRESH_INTERVAL);
+        }
+
+        // ========== INIT ==========
+        fetchComplaints();
+        startAutoRefresh();
+    })();
+</script>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

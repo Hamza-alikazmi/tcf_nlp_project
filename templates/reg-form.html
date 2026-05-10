@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Student Registration · TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Registration Section -->
+        <section class="py-16 px-6">
+            <div class="max-w-2xl mx-auto">
+                <h1 class="text-4xl font-bold mb-2 text-tcf-green text-center">Student Registration</h1>
+                <p class="text-center text-gray-400 mb-12 text-sm uppercase tracking-widest">Complete Your Profile</p>
+
+                <!-- Registration Form -->
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <form id="registrationForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Today's Date -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Today's Date</label>
+                                <input type="date" name="todayDate" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            </div>
+
+                            <!-- Alumni Name -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Alumni Name</label>
+                                <input type="text" name="alumni" placeholder="Enter name" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            </div>
+
+                            <!-- Father Name -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Father Name</label>
+                                <input type="text" name="fatherName" placeholder="Enter father's name" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            </div>
+
+                            <!-- Date of Birth -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Date of Birth</label>
+                                <input type="date" name="dob" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            </div>
+
+                            <!-- Gender -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Gender</label>
+                                <select name="gender" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- CNIC -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">CNIC (13 Digits)</label>
+                                <input type="text" name="cnic" placeholder="12345-1234567-1" maxlength="13" required
+                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full bg-tcf-green text-tcf-black font-bold py-3 rounded-lg hover:bg-white transition duration-300 uppercase tracking-wider mt-8">
+                            Register Student
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 mt-16">
+            <div class="max-w-7xl mx-auto text-center">
+                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+        <input type="text" id="metricRoll" name="metricRoll" placeholder="Enter 6-digit roll number" 
+               pattern="\d{6}" maxlength="6" title="Enter exactly 6 digits" required><br>
+
+        <!-- 7. School Name -->
+        <label for="schoolName">7. School Name:</label>
+        <input type="text" id="schoolName" name="schoolName" placeholder="Enter your school name" 
+               pattern="[A-Za-z0-9 ,.-]{3,100}" title="Alphanumeric characters, spaces, comma, dot, dash allowed" required><br>
+
+        <!-- 8. Campus Name -->
+        <label for="campusName">8. Campus Name:</label>
+        <input type="text" id="campusName" name="campusName" placeholder="Enter campus name"
+               pattern="[A-Za-z0-9 ,.-]{3,100}" title="Alphanumeric characters, spaces, comma, dot, dash allowed" required><br>
+
+        <!-- 9. Area -->
+        <label for="area">9. Area:</label>
+        <input type="text" id="area" name="area" placeholder="Enter your area"
+               pattern="[A-Za-z0-9 ,.-]{3,100}" title="Enter a valid area name" required><br>
+
+        <!-- 10. Region Name -->
+        <label for="regionName">10. Region Name:</label>
+        <input type="text" id="regionName" name="regionName" placeholder="Enter region name"
+               pattern="[A-Za-z ]{3,50}" title="Only letters and spaces allowed" required><br>
+
+        <!-- 11. Home Address -->
+        <label for="homeAddress">11. Home Address:</label>
+        <input type="text" id="homeAddress" name="homeAddress" placeholder="Enter home address"
+               pattern="[A-Za-z0-9 ,.-]{5,200}" title="Enter a valid address" required><br>
+
+        <!-- 12. Home City -->
+        <label for="homeCity">12. Home City:</label>
+        <input type="text" id="homeCity" name="homeCity" placeholder="Enter home city"
+               pattern="[A-Za-z ]{3,50}" title="Only letters and spaces allowed" required><br>
+
+        <!-- 13. Personal Mobile No -->
+        <label for="personalMobile">13. Personal Mobile No:</label>
+        <input type="tel" id="personalMobile" name="personalMobile" placeholder="Enter 11-digit mobile number" 
+               pattern="\d{11}" maxlength="11" title="Enter exactly 11 digits" required><br>
+
+        <!-- 14. Parent Mobile No -->
+        <label for="parentMobile">14. Parent Mobile No:</label>
+        <input type="tel" id="parentMobile" name="parentMobile" placeholder="Enter 11-digit parent's mobile number" 
+               pattern="\d{11}" maxlength="11" title="Enter exactly 11 digits" required><br>
+
+        <!-- 15. Metric Status -->
+        <label for="metricStatus">15. Metric Status:</label>
+        <select id="metricStatus" name="metricStatus" required>
+            <option value="">Select</option>
+            <option value="pass">Pass</option>
+            <option value="supply">Supply</option>
+        </select><br>
+
+        <!-- 16. Matric Completion Year -->
+        <label for="matricYear">16. Matric Completion Year:</label>
+        <input type="number" id="matricYear" name="matricYear" placeholder="Enter 4-digit year" 
+               min="2000" max="2099" step="1" required><br>
+
+        <!-- 17. Intermediate Enrollment Status -->
+        <label for="interEnrollment">17. Intermediate Enrollment:</label>
+        <select id="interEnrollment" name="interEnrollment" required>
+            <option value="">Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select><br>
+
+        <!-- 18. Date of Enrollment -->
+        <label for="enrollDate">18. Date of Enrollment:</label>
+        <input type="date" id="enrollDate" name="enrollDate" required><br>
+
+        <!-- 19. Faculty -->
+        <label for="faculty">19. Faculty:</label>
+        <select id="faculty" name="faculty" required>
+            <option value="">Select</option>
+            <option value="pre-medical">Pre Medical</option>
+            <option value="pre-engineering">Pre Engineering</option>
+            <option value="ics">ICS</option>
+            <option value="arts">Arts/Humanities</option>
+            <option value="commerce">Commerce</option>
+        </select><br>
+
+        <!-- 20. College Name -->
+        <label for="collegeName">20. College Name:</label>
+        <input type="text" id="collegeName" name="collegeName" placeholder="Enter college name"
+               pattern="[A-Za-z0-9 ,.-]{3,100}" title="Enter a valid college name" required><br>
+
+        <!-- 21. College Type -->
+        <label for="collegeType">21. College Type:</label>
+        <select id="collegeType" name="collegeType" required>
+            <option value="">Select</option>
+            <option value="private">Private</option>
+            <option value="semi-government">Semi-Government</option>
+            <option value="government">Government</option>
+        </select><br>
+
+        <!-- 22. Intermediate Support Status -->
+        <label for="interSupport">22. Inter Support Status:</label>
+        <select id="interSupport" name="interSupport" required>
+            <option value="">Select</option>
+            <option value="supported">Supported</option>
+            <option value="not-supported">Not Supported</option>
+        </select><br>
+
+        <!-- 23. Study at University -->
+        <label for="studyUniversity">23. Study at University?</label>
+        <select id="studyUniversity" name="studyUniversity" required>
+            <option value="">Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select><br>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Submit Registration">
+    </form>
+
+    <script>
+    document.getElementById("registrationForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        var formData = {
+            todayDate: document.getElementById("todayDate").value,
+            alumni: document.getElementById("alumni").value,
+            fatherName: document.getElementById("fatherName").value,
+            dob: document.getElementById("dob").value,
+            gender: document.getElementById("gender").value,
+            cnic: document.getElementById("cnic").value,
+            metricRoll: document.getElementById("metricRoll").value,
+            schoolName: document.getElementById("schoolName").value,
+            campusName: document.getElementById("campusName").value,
+            area: document.getElementById("area").value,
+            regionName: document.getElementById("regionName").value,
+            homeAddress: document.getElementById("homeAddress").value,
+            homeCity: document.getElementById("homeCity").value,
+            personalMobile: document.getElementById("personalMobile").value,
+            parentMobile: document.getElementById("parentMobile").value,
+            metricStatus: document.getElementById("metricStatus").value,
+            matricYear: document.getElementById("matricYear").value,
+            interEnrollment: document.getElementById("interEnrollment").value,
+            enrollDate: document.getElementById("enrollDate").value,
+            faculty: document.getElementById("faculty").value,
+            collegeName: document.getElementById("collegeName").value,
+            collegeType: document.getElementById("collegeType").value,
+            interSupport: document.getElementById("interSupport").value,
+            studyUniversity: document.getElementById("studyUniversity").value
+        };
+
+        // Frontend validation
+        if (!formData.cnic) {
+            alert("CNIC is required!");
+            return;
+        }
+
+        fetch("/register", {  
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(html) {
+            document.open();
+            document.write(html);
+            document.close();
+        })
+        .catch(function(error) {
+            console.error("Error:", error);
+            alert("Error sending data!");
+        });
+    });
+    </script>
+</body>
+</html>

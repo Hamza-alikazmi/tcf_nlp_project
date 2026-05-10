@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Login · TCF Alumni Pathways</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="main">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Login Section -->
+        <section class="min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-12 relative overflow-hidden">
+            <!-- Decorative Glow -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-tcf-green/10 rounded-full blur-[120px]"></div>
+            
+            <div class="relative z-10 w-full max-w-md">
+                <!-- Login Container -->
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <h1 class="text-3xl font-bold text-center mb-2 text-tcf-green">Student Portal</h1>
+                    <p class="text-center text-gray-400 mb-8 text-sm uppercase tracking-widest">Welcome Back</p>
+
+                    <form id="loginForm" class="space-y-6">
+                        <!-- Email/CNIC -->
+                        <div class="form-group">
+                            <label class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Email or CNIC</label>
+                            <input type="text" id="cnic" name="cnic" placeholder="Enter your email or CNIC" required
+                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Enter your password" required
+                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full bg-tcf-green text-tcf-black font-bold py-3 rounded-lg hover:bg-white transition duration-300 uppercase tracking-wider">
+                            Login to Portal
+                        </button>
+                    </form>
+
+                    <!-- Links -->
+                    <div class="flex justify-between items-center mt-8 pt-6 border-t border-white/10">
+                        <a href="/signup" class="text-tcf-green hover:text-white transition text-sm font-semibold uppercase">Create Account</a>
+                        <a href="/home" class="text-gray-400 hover:text-tcf-green transition text-sm font-semibold uppercase">Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5">
+            <div class="max-w-7xl mx-auto text-center">
+                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const cnic = document.getElementById('cnic').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!cnic || !password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cnic, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    alert(data.message || "Login failed.");
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("Server error! Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>

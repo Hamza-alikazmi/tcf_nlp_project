@@ -12,18 +12,40 @@
         <div class="hidden lg:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider">
             <a href="/home" class="hover:text-tcf-green transition {% if request.url.path == '/home' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Home</a>
             
-            {% if role == 'student' %}
-                <!-- Student Specific Links -->
+            {% if role in ['student', 'alumni'] %}
+                <!-- Student & Alumni Specific Links -->
                 <a href="/student/dashboard" class="hover:text-tcf-green transition {% if request.url.path == '/student/dashboard' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">My Dashboard</a>
                 <a href="/scholarship-form" class="hover:text-tcf-green transition {% if request.url.path == '/scholarship-form' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Scholarship</a>
                 <a href="/fee-form" class="hover:text-tcf-green transition {% if request.url.path == '/fee-form' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Fee Support</a>
+                <a href="/queryandcomplain" class="hover:text-tcf-green transition {% if request.url.path == '/queryandcomplain' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Query & Complaint</a>
                 
                 <!-- Logout Button -->
                 <a href="/logout" class="border border-red-500 text-red-500 px-4 py-1.5 rounded-full font-bold hover:bg-red-500 hover:text-white transition">Logout</a>
             
-            {% elif role == 'admin' %}
-                <!-- Admin Specific Links -->
-                <a href="/admin/dashboard" class="hover:text-tcf-green transition">Admin Panel</a>
+            {% elif role in ['admin', 'superadmin', 'fee', 'scholarship', 'genadmin'] %}
+                <!-- Base Admin Link (Accessible to all admins) -->
+                <a href="/admin/dashboard" class="hover:text-tcf-green transition {% if request.url.path == '/admin/dashboard' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Dashboard</a>
+                
+                <!-- Role-Specific Admin Links -->
+                {% if role in ['superadmin', 'fee'] %}
+                    <a href="/admin/fee-applications" class="hover:text-tcf-green transition {% if request.url.path == '/admin/fee-applications' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Fee Apps</a>
+                {% endif %}
+                
+                {% if role in ['superadmin', 'scholarship'] %}
+                    <a href="/admin/scholarship-applications" class="hover:text-tcf-green transition {% if request.url.path == '/admin/scholarship-applications' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Scholarships</a>
+                {% endif %}
+
+                {% if role in ['superadmin', 'genadmin'] %}
+                    <a href="/admin-complaints" class="hover:text-tcf-green transition {% if request.url.path == '/admin-complaints' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Complaints</a>
+                    <a href="/admin/queries" class="hover:text-tcf-green transition {% if request.url.path == '/admin/queries' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Queries</a> 
+                    
+                {% endif %}
+
+                {% if role == 'superadmin' %}
+                    <a href="/admin/users" class="hover:text-tcf-green transition {% if request.url.path == '/admin/users' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Users</a>
+                {% endif %}
+
+                <!-- Logout Button -->
                 <a href="/logout" class="border border-red-500 text-red-500 px-4 py-1.5 rounded-full font-bold hover:bg-red-500 hover:text-white transition">Logout</a>
             
             {% else %}
@@ -32,7 +54,7 @@
                 <a href="/guide" class="hover:text-tcf-green transition {% if request.url.path == '/guide' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Alumni Guide</a>
                 <a href="/success-stories" class="hover:text-tcf-green transition {% if request.url.path == '/success-stories' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Success Stories</a>
                 <a href="/contact" class="hover:text-tcf-green transition {% if request.url.path == '/contact' %}text-tcf-green border-b-2 border-tcf-green{% endif %}">Contact</a>
-                <a href="/login" class="bg-tcf-green text-tcf-black px-4 py-1.5 rounded-full font-bold hover:bg-white transition">Student Portal</a>
+                <a href="/login" class="bg-tcf-green text-tcf-black px-4 py-1.5 rounded-full font-bold hover:bg-white transition">Login</a>
             {% endif %}
         </div>
     </nav>

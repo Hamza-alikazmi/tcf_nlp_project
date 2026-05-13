@@ -11,7 +11,7 @@ class User(Document):
     full_name = StringField(required=True)
     email = StringField(required=True)
     type = StringField(default="user", choices=["user", "admin"])
-    role = StringField(default="student", choices=["student", "alumni", "superadmin", "fee", "scholarship"])
+    role = StringField(default="student", choices=["student", "alumni", "superadmin", "fee", "scholarship","genadmin"])
     created_at = DateTimeField(default=datetime.utcnow)
 
     meta = {'collection': 'users'}
@@ -31,40 +31,58 @@ class Complaint(Document):
 
     meta = {'collection': 'complaints'}                                                                         
 
+from mongoengine import Document, StringField, IntField, FloatField, DateTimeField, ListField, EmailField
+from datetime import datetime
 
 class FeeApplication(Document):
+    # System Fields
     application_id = StringField(required=True, unique=True, index=True)
+    status = StringField(default="Pending", choices=["Pending", "In Review", "Approved", "Rejected"])
+    created_at = DateTimeField(default=datetime.utcnow)
+
+    # Basic Info (Matches Frontend names)
     today_date = StringField(required=True)
     name = StringField(required=True)
     father_name = StringField(required=True)
-    cnic = StringField(required=True)
-    email = StringField(required=True)
+    cnic = StringField(required=True, max_length=13) # No unique=True here to allow multiple sem applications if needed, or keep unique if 1 app per student
+    email = EmailField(required=True)
     matric_roll = StringField(required=True)
-    contact = StringField(required=True)
-    whatsapp = StringField(required=True)
+    contact = StringField(required=True, max_length=11)
+    whatsapp = StringField(required=True, max_length=11)
     city = StringField(required=True)
+
+    # Academic Info
     institute_name = StringField(required=True)
     degree = StringField(required=True)
-    applying_for = ListField(StringField(), required=True)
     current_semester = StringField(required=True)
     last_date = StringField(required=True)
+
+    # Application Details
+    # ListField is crucial because user can select multiple (Semester + Hostel etc.)
+    applying_for = ListField(StringField(), required=True) 
+    
+    # Financial & Banking
     account_holder = StringField(required=True)
     iban = StringField(required=True)
-    siblings = IntField(required=True)
-    income = FloatField(required=True)
-    # File Paths
+    siblings = IntField(required=True, min_value=0)
+    income = FloatField(required=True, min_value=0.0)
+
+    # Storage paths for uploaded files
     fee_voucher_path = StringField(required=True)
     contribution_slip_path = StringField(required=True)
     result_path = StringField(required=True)
-    cheque_book_path = StringField() 
-    status = StringField(default="Pending")
-    created_at = DateTimeField(default=datetime.utcnow)
+    cheque_book_path = StringField() # Optional
 
     meta = {
         'collection': 'fee_applications',
-        'indexes': ['application_id', 'cnic', 'status']
+        'indexes': [
+            'application_id', 
+            'cnic', 
+            'status',
+            'created_at'
+        ],
+        'ordering': ['-created_at'] # Latest applications top par aayengi
     }
-
 
 class StudentRegistration(Document):
     registration_id = StringField(required=True, unique=True, index=True)
@@ -124,23 +142,32 @@ class SystemLog(Document):
         'indexes': ['created_at']
     }
 
+from mongoengine import Document, StringField, IntField, FloatField, DateTimeField, EmailField
+from datetime import datetime
 
 class ScholarshipApplication(Document):
+    # System Fields
     application_id = StringField(required=True, unique=True, index=True)
+    status = StringField(default="Pending", choices=["Pending", "In Review", "Approved", "Rejected"])
+    created_at = DateTimeField(default=datetime.utcnow)
+
+    # Personal Information
     name = StringField(required=True)
-    gender = StringField(required=True)
+    gender = StringField(required=True, choices=["male", "female", "other"])
     dob = StringField()
-    cnic = StringField(required=True, unique=True, max_length=13)
-    email = StringField(required=True)
+    cnic = StringField(required=True, unique=True, max_length=13, min_length=13)
+    email = EmailField(required=True)
     father_name = StringField(required=True)
     father_cnic = StringField(required=True, max_length=13)
     address = StringField(required=True)
     city = StringField(required=True)
     campus = StringField(required=True)
-    phone = StringField(required=True)
-    whatsapp = StringField(required=True)
+    phone = StringField(required=True, max_length=11)
+    whatsapp = StringField(required=True, max_length=11)
     emergency_contact = StringField(required=True)
-    emergency_phone = StringField(required=True)
+    emergency_phone = StringField(required=True, max_length=11)
+
+    # Education Background
     applicable_option = StringField(required=True)
     currently_working = StringField(required=True)
     previously_applied = StringField(required=True)
@@ -150,55 +177,68 @@ class ScholarshipApplication(Document):
     matric_year = IntField(required=True)
     matric_roll = StringField(required=True)
     faculty = StringField(required=True)
-    matric_percentage = FloatField(required=True)
+    matric_percentage = FloatField(required=True, min_value=0, max_value=100)
     matric_grade = StringField(required=True)
     last_qualification = StringField(required=True)
-    earning_members = IntField(required=True)
-    siblings_in_uni = IntField(required=True)
-    household_members = IntField(required=True)
+
+    # Household & Financials
+    earning_members = IntField(required=True, default=0)
+    siblings_in_uni = IntField(required=True, default=0)
+    household_members = IntField(required=True, default=0)
     house_type = StringField(required=True)
-    rent_amount = FloatField()
-    transport = FloatField(required=True)
-    medical = FloatField(required=True)
-    gas_bill = FloatField(required=True)
-    electricity = FloatField(required=True)
-    water = FloatField(required=True)
-    grocery = FloatField(required=True)
-    loan = FloatField()
-    other_expense = FloatField()
+    rent_amount = FloatField(default=0.0)
+    transport = FloatField(required=True, default=0.0)
+    medical = FloatField(required=True, default=0.0)
+    gas_bill = FloatField(required=True, default=0.0)
+    electricity = FloatField(required=True, default=0.0)
+    water = FloatField(required=True, default=0.0)
+    grocery = FloatField(required=True, default=0.0)
+    loan = FloatField(default=0.0)
+    other_expense = FloatField(default=0.0)
     total_expense = FloatField(required=True)
     contribution_amount = FloatField(required=True)
+
+    # Tertiary Education Plans (Plan A)
     degree_plan_a = StringField(required=True)
     reason_plan_a = StringField(required=True)
     industry_plan_a = StringField(required=True)
     uni1_plan_a = StringField(required=True)
     uni2_plan_a = StringField(required=True)
     uni3_plan_a = StringField(required=True)
+
+    # Tertiary Education Plans (Plan B)
     degree_plan_b = StringField(required=True)
     reason_plan_b = StringField(required=True)
     industry_plan_b = StringField(required=True)
     uni1_plan_b = StringField(required=True)
     uni2_plan_b = StringField(required=True)
     uni3_plan_b = StringField(required=True)
+
+    # File Paths (Storage path of uploaded files)
     cnic_file = StringField()
     father_cnic_file = StringField()
     photo = StringField()
     matric_marksheet = StringField()
     utility_bills = StringField()
     other_docs = StringField()
-    status = StringField(default="Pending")
-    created_at = DateTimeField(default=datetime.utcnow)
 
     meta = {
         'collection': 'scholarship_applications',
-        'indexes': ['application_id', 'cnic', 'status']
+        'indexes': [
+            'application_id', 
+            'cnic', 
+            'status',
+            'created_at' # New index for sorting by date
+        ],
+        'ordering': ['-created_at'] # Default sorting: Latest first
     }
-
 
 # ===================== Pydantic Schemas =====================
 
 class ComplaintCreate(BaseModel):
     text: str = Field(..., min_length=10, max_length=5000)
+    cnic: str  # Mandatory for official complaints
+    department: Optional[str] = None
 
 class AdminUpdate(BaseModel):
     complaint_id: str
@@ -250,3 +290,38 @@ class SignupRequest(BaseModel):
     email: str
     password: str
     confirmPassword: str
+
+class StaffCreateRequest(BaseModel):
+    full_name: str
+    cnic: str
+    email: str
+    password: str
+    role: str
+
+class StaffDeleteRequest(BaseModel):
+    cnic: str
+
+# Add this Document to your MongoDB sections in models.py
+class QueryTicket(Document):
+    query_no = StringField(required=True, unique=True, index=True)
+    cnic = StringField(required=True)
+    query = StringField(required=True)
+    department = StringField(required=True)
+    status = StringField(default="forwarded", choices=["forwarded", "responded"])
+    response = StringField()
+    confidence = FloatField()
+    createdAt = DateTimeField(default=datetime.utcnow)
+
+    meta = {
+        'collection': 'query_tickets',
+        'indexes': ['query_no', 'department', 'status'],
+        'ordering': ['-createdAt']
+    }
+
+# Add this to your Pydantic schemas section in models.py
+class QueryTicketUpdate(BaseModel):
+    cnic: str
+    query: str
+    department: str
+    response: Optional[str] = ""
+    status: str

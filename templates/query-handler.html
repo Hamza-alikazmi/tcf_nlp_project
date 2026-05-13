@@ -3,417 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Query Handler | TCF System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Query Management | TCF System</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .controls {
-            padding: 30px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e0e0e0;
-            text-align: center;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            margin: 10px;
-        }
-
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #5a67d8;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: #48bb78;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #38a169;
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background: #f56565;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #e53e3e;
-        }
-
-        .btn-warning {
-            background: #ed8936;
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background: #dd6b20;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .query-list {
-            display: grid;
-            gap: 20px;
-        }
-
-        .query-card {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .query-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform: translateY(-2px);
-        }
-
-        .query-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
-            flex-wrap: wrap;
-        }
-
-        .query-no {
-            font-size: 20px;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .query-status {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-forwarded {
-            background: #fef3c7;
-            color: #d97706;
-        }
-
-        .status-responded {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .query-text {
-            font-size: 16px;
-            color: #4a5568;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .query-meta {
-            display: flex;
-            gap: 15px;
-            font-size: 14px;
-            color: #718096;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .card-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 14px;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            animation: fadeIn 0.3s;
-        }
-
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+        
+        /* Modal animations */
+        .modal-enter { animation: fadeIn 0.2s ease-out forwards; }
+        .modal-content-enter { animation: slideUp 0.3s ease-out forwards; }
+        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
-        .modal-content {
-            background: white;
-            margin: 10% auto;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 15px;
-            animation: slideDown 0.3s;
-            text-align: center;
-        }
-
-        .department-modal {
-            max-width: 400px;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #667eea;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-            flex-direction: column;
-        }
-
-        .modal-btn {
-            padding: 12px;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .modal-btn-scholarship {
-            background: #667eea;
-            color: white;
-        }
-
-        .modal-btn-fee {
-            background: #48bb78;
-            color: white;
-        }
-
-        .modal-btn-close {
-            background: #f56565;
-            color: white;
-        }
-
-        .update-modal-content {
-            max-width: 600px;
-            text-align: left;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #4a5568;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
-            font-size: 18px;
-            color: #718096;
-        }
-
-        .no-data {
-            text-align: center;
-            padding: 50px;
-            font-size: 18px;
-            color: #a0aec0;
-        }
-
-        .selected-type {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 18px;
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        .welcome-message {
-            text-align: center;
-            padding: 50px;
-            color: #718096;
-            font-size: 18px;
+        @keyframes slideUp {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>📋 Query Management System</h1>
-            <p>Manage and track all forwarded queries</p>
+<body class="antialiased min-h-screen relative overflow-x-hidden">
+    
+    <!-- Background Decor -->
+    <div class="fixed top-0 right-0 w-[600px] h-[600px] bg-tcf-green/5 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+    <div class="fixed bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+
+    <div id="main" class="flex flex-col min-h-screen">
+        <!-- Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Header -->
+        <div class="pt-12 pb-8 px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-black text-white mb-2">
+                <i class="fas fa-tasks text-tcf-green mr-3"></i>Query Management
+            </h1>
+            <p class="text-gray-400 text-sm font-bold uppercase tracking-[0.2em]">Manage and track all forwarded queries</p>
         </div>
 
-        <div class="controls">
-            <button class="btn btn-primary" onclick="showDepartmentModal('all')">📊 All Queries</button>
-            <button class="btn btn-secondary" onclick="showDepartmentModal('pending')">⏳ Pending Queries</button>
+        <!-- Controls -->
+        <div class="max-w-7xl mx-auto px-6 w-full mb-10 flex flex-wrap justify-center gap-4">
+            <button onclick="showDepartmentModal('all')" class="bg-blue-600/20 border border-blue-500/50 hover:bg-blue-600 text-blue-400 hover:text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider transition duration-300 flex items-center gap-2">
+                <i class="fas fa-layer-group"></i> All Queries
+            </button>
+            <button onclick="showDepartmentModal('pending')" class="bg-amber-500/20 border border-amber-500/50 hover:bg-amber-500 text-amber-400 hover:text-tcf-black px-6 py-3 rounded-xl font-bold uppercase tracking-wider transition duration-300 flex items-center gap-2">
+                <i class="fas fa-hourglass-half"></i> Pending Queries
+            </button>
         </div>
 
-        <div class="content">
-            <div id="selectedType" class="selected-type"></div>
-            <div id="queryList" class="query-list">
-                <div class="welcome-message">
-                    👋 Welcome! Please click "All Queries" or "Pending Queries" to continue.
+        <!-- Content Area -->
+        <div class="max-w-7xl mx-auto px-6 w-full flex-grow pb-20">
+            <div id="selectedType" class="text-center mb-8 text-lg font-semibold text-tcf-green uppercase tracking-widest hidden"></div>
+            
+            <div id="queryList" class="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
+                <!-- Welcome State -->
+                <div class="col-span-full flex flex-col items-center justify-center p-12 bg-tcf-dark-grey border border-white/5 rounded-3xl text-center">
+                    <i class="fas fa-inbox text-5xl text-gray-600 mb-4"></i>
+                    <p class="text-gray-400 text-lg">Select "All Queries" or "Pending Queries" to begin managing tickets.</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- ==================== MODALS ==================== -->
 
     <!-- Department Selection Modal -->
-    <div id="departmentModal" class="modal">
-        <div class="modal-content department-modal">
-            <div class="modal-header" id="modalTitle">Select Department</div>
-            <div class="modal-buttons">
-                <button class="modal-btn modal-btn-scholarship" onclick="selectDepartment('Scholarship-Section')">🎓 Scholarship Section</button>
-                <button class="modal-btn modal-btn-fee" onclick="selectDepartment('Fee-Section')">💰 Fee Section</button>
-                <button class="modal-btn modal-btn-close" onclick="closeDepartmentModal()">❌ Cancel</button>
+    <div id="departmentModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm items-center justify-center modal-enter p-4">
+        <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl w-full max-w-md shadow-2xl modal-content-enter overflow-hidden">
+            <div class="p-6 border-b border-white/10 text-center">
+                <h3 class="text-2xl font-bold text-white" id="modalTitle">Select Department</h3>
+            </div>
+            <div class="p-6 flex flex-col gap-4">
+                <button onclick="selectDepartment('Scholarship-Section')" class="w-full bg-tcf-black border border-white/10 hover:border-tcf-green hover:text-tcf-green text-white px-6 py-4 rounded-xl font-bold uppercase tracking-wider transition duration-300 flex items-center justify-center gap-3">
+                    <i class="fas fa-graduation-cap"></i> Scholarship Section
+                </button>
+                <button onclick="selectDepartment('Fee-Section')" class="w-full bg-tcf-black border border-white/10 hover:border-tcf-green hover:text-tcf-green text-white px-6 py-4 rounded-xl font-bold uppercase tracking-wider transition duration-300 flex items-center justify-center gap-3">
+                    <i class="fas fa-wallet"></i> Fee Section
+                </button>
+            </div>
+            <div class="p-4 bg-tcf-black/50 border-t border-white/10 flex justify-center">
+                <button onclick="closeDepartmentModal()" class="text-gray-400 hover:text-red-400 font-bold uppercase text-sm tracking-widest transition">
+                    Cancel
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Update Modal -->
-    <div id="updateModal" class="modal">
-        <div class="modal-content update-modal-content">
-            <div class="modal-header">✏️ Update Query</div>
-            <form id="updateForm">
-                <input type="hidden" id="updateQueryNo">
-                <div class="form-group">
-                    <label>Query Number</label>
-                    <input type="text" id="updateQueryNoDisplay" readonly>
-                </div>
-                <div class="form-group">
-                    <label>CNIC</label>
-                    <input type="text" id="updateCnic" required>
-                </div>
-                <div class="form-group">
-                    <label>Query</label>
-                    <textarea id="updateQuery" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Department</label>
-                    <select id="updateDepartment">
-                        <option value="Scholarship-Section">Scholarship Section</option>
-                        <option value="Fee-Section">Fee Section</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Response</label>
-                    <textarea id="updateResponse" placeholder="Enter response to this query..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <select id="updateStatus">
-                        <option value="forwarded">Forwarded</option>
-                        <option value="responded">Responded</option>
-                    </select>
-                </div>
-                <div class="modal-buttons" style="display: flex; gap: 10px; justify-content: flex-end;">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="closeUpdateModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary btn-sm">Update Query</button>
-                </div>
-            </form>
+    <!-- Update Ticket Modal -->
+    <div id="updateModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm items-center justify-center modal-enter p-4">
+        <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl w-full max-w-2xl shadow-2xl modal-content-enter max-h-[90vh] overflow-y-auto custom-scroll">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-tcf-dark-grey z-10">
+                <h3 class="text-2xl font-bold text-tcf-green flex items-center gap-2">
+                    <i class="fas fa-pen-to-square"></i> Update Ticket
+                </h3>
+                <button onclick="closeUpdateModal()" class="text-gray-400 hover:text-white transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                <form id="updateForm" class="space-y-5">
+                    <input type="hidden" id="updateQueryNo">
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Query Number</label>
+                            <input type="text" id="updateQueryNoDisplay" readonly class="w-full bg-tcf-black/50 border border-white/5 rounded-lg px-4 py-3 text-gray-500 font-mono text-sm cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">CNIC</label>
+                            <input type="text" id="updateCnic" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:ring-1 focus:ring-tcf-green transition text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Department</label>
+                            <select id="updateDepartment" class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:ring-1 focus:ring-tcf-green transition text-sm">
+                                <option value="Scholarship-Section">Scholarship Section</option>
+                                <option value="Fee-Section">Fee Section</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Status</label>
+                            <select id="updateStatus" class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:ring-1 focus:ring-tcf-green transition text-sm font-bold">
+                                <option value="forwarded">FORWARDED (Pending)</option>
+                                <option value="responded">RESPONDED (Resolved)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Original Query</label>
+                        <textarea id="updateQuery" required rows="3" class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:ring-1 focus:ring-tcf-green transition text-sm resize-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 flex justify-between">
+                            Response/Resolution <span class="text-tcf-green font-normal normal-case">*(Will be visible to user)</span>
+                        </label>
+                        <textarea id="updateResponse" placeholder="Draft your official response here..." rows="4" class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:ring-1 focus:ring-tcf-green transition text-sm resize-none placeholder-gray-700"></textarea>
+                    </div>
+
+                    <div class="pt-4 flex gap-3 border-t border-white/10">
+                        <button type="button" onclick="closeUpdateModal()" class="flex-1 bg-transparent border border-white/20 hover:border-white text-white font-bold py-3 rounded-lg uppercase tracking-wider transition">
+                            Cancel
+                        </button>
+                        <button type="submit" class="flex-1 bg-tcf-green hover:bg-white text-tcf-black font-bold py-3 rounded-lg uppercase tracking-wider transition">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
+    <!-- ==================== SCRIPTS ==================== -->
     <script>
-        let currentQueryType = null; // 'all' or 'pending'
+        let currentQueryType = null; 
         let currentDepartment = null;
 
+        // --- Modals Logic ---
         function showDepartmentModal(type) {
             currentQueryType = type;
             const modalTitle = document.getElementById('modalTitle');
             if (type === 'all') {
-                modalTitle.innerHTML = '📊 Select Department for All Queries';
+                modalTitle.innerHTML = '<i class="fas fa-layer-group text-blue-400 mr-2"></i> All Queries';
             } else {
-                modalTitle.innerHTML = '⏳ Select Department for Pending Queries';
+                modalTitle.innerHTML = '<i class="fas fa-hourglass-half text-amber-400 mr-2"></i> Pending Queries';
             }
-            document.getElementById('departmentModal').style.display = 'block';
+            const modal = document.getElementById('departmentModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
+        function closeDepartmentModal() {
+            const modal = document.getElementById('departmentModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function showUpdateModal() {
+            const modal = document.getElementById('updateModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeUpdateModal() {
+            const modal = document.getElementById('updateModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // --- Data Fetching ---
         function selectDepartment(department) {
             currentDepartment = department;
             closeDepartmentModal();
@@ -425,82 +226,132 @@
             }
         }
 
-        function closeDepartmentModal() {
-            document.getElementById('departmentModal').style.display = 'none';
-        }
-
         async function loadAllQueries() {
-            document.getElementById('selectedType').innerHTML = `📌 Showing ALL queries for ${currentDepartment}`;
-            document.getElementById('queryList').innerHTML = '<div class="loading">Loading queries...</div>';
+            const label = document.getElementById('selectedType');
+            label.innerHTML = `📌 Displaying ALL Tickets for <span class="text-white">${currentDepartment.replace('-Section', '')}</span>`;
+            label.classList.remove('hidden');
+            
+            showLoadingState();
             
             try {
-                const response = await fetch(`http://localhost:3001/api/query-management/department/${currentDepartment}`);
+                const response = await fetch(`/api/query-management/department/${currentDepartment}`);
                 const result = await response.json();
                 
                 if (result.success) {
                     displayQueries(result.data);
                 } else {
-                    document.getElementById('queryList').innerHTML = '<div class="no-data">Failed to load queries</div>';
+                    showErrorState('Failed to load queries.');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('queryList').innerHTML = '<div class="no-data">Error loading queries</div>';
+                showErrorState('Network error loading queries.');
             }
         }
 
         async function loadPendingQueries() {
-            document.getElementById('selectedType').innerHTML = `⏳ Showing PENDING (forwarded) queries for ${currentDepartment}`;
-            document.getElementById('queryList').innerHTML = '<div class="loading">Loading queries...</div>';
+            const label = document.getElementById('selectedType');
+            label.innerHTML = `⏳ Displaying PENDING Tickets for <span class="text-white">${currentDepartment.replace('-Section', '')}</span>`;
+            label.classList.remove('hidden');
+            
+            showLoadingState();
             
             try {
-                const response = await fetch(`http://localhost:3001/api/query-management/pending/${currentDepartment}`);
+                const response = await fetch(`/api/query-management/pending/${currentDepartment}`);
                 const result = await response.json();
                 
                 if (result.success) {
                     displayQueries(result.data);
                 } else {
-                    document.getElementById('queryList').innerHTML = '<div class="no-data">Failed to load pending queries</div>';
+                    showErrorState('Failed to load pending queries.');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('queryList').innerHTML = '<div class="no-data">Error loading pending queries</div>';
+                showErrorState('Network error loading pending queries.');
             }
+        }
+
+        // --- UI Rendering ---
+        function showLoadingState() {
+            document.getElementById('queryList').innerHTML = `
+                <div class="col-span-full flex flex-col items-center justify-center p-12">
+                    <i class="fas fa-circle-notch fa-spin text-4xl text-tcf-green mb-4"></i>
+                    <p class="text-gray-400 font-bold uppercase tracking-widest text-sm">Fetching Database...</p>
+                </div>
+            `;
+        }
+
+        function showErrorState(msg) {
+            document.getElementById('queryList').innerHTML = `
+                <div class="col-span-full flex flex-col items-center justify-center p-12 bg-red-500/10 border border-red-500/20 rounded-3xl">
+                    <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                    <p class="text-red-400 font-bold uppercase tracking-widest text-sm">${msg}</p>
+                </div>
+            `;
         }
 
         function displayQueries(queries) {
             const container = document.getElementById('queryList');
             
             if (!queries || queries.length === 0) {
-                container.innerHTML = '<div class="no-data">No queries found for this department</div>';
+                container.innerHTML = `
+                    <div class="col-span-full flex flex-col items-center justify-center p-12 bg-tcf-dark-grey border border-white/5 rounded-3xl">
+                        <i class="fas fa-check-circle text-4xl text-gray-600 mb-4"></i>
+                        <p class="text-gray-400 font-bold uppercase tracking-widest text-sm">No tickets found for this filter.</p>
+                    </div>
+                `;
                 return;
             }
             
-            container.innerHTML = queries.map(query => `
-                <div class="query-card">
-                    <div class="query-header">
-                        <div class="query-no">Query #${query.query_no}</div>
-                        <div class="query-status status-${query.status}">${query.status.toUpperCase()}</div>
+            container.innerHTML = queries.map(query => {
+                const isPending = query.status === 'forwarded';
+                const statusColor = isPending ? 'text-amber-400 bg-amber-400/10 border-amber-400/20' : 'text-tcf-green bg-tcf-green/10 border-tcf-green/20';
+                const dateObj = new Date(query.createdAt);
+                
+                return `
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-6 shadow-xl hover:border-white/30 transition duration-300 flex flex-col h-full group">
+                    <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                        <div>
+                            <div class="text-xl font-bold text-white font-mono">${query.query_no}</div>
+                            <div class="text-xs text-gray-500 mt-1"><i class="fas fa-calendar-alt mr-1"></i> ${dateObj.toLocaleDateString()} at ${dateObj.toLocaleTimeString()}</div>
+                        </div>
+                        <div class="px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest border ${statusColor}">
+                            ${isPending ? 'PENDING' : 'RESPONDED'}
+                        </div>
                     </div>
-                    <div class="query-text">❓ <strong>Query:</strong> ${escapeHtml(query.query)}</div>
-                    <div class="query-meta">
-                        <span>📋 CNIC: ${query.cnic}</span>
-                        <span>🏢 Department: ${query.department}</span>
-                        <span>📅 Date: ${new Date(query.createdAt).toLocaleDateString()}</span>
-                        <span>⏰ Time: ${new Date(query.createdAt).toLocaleTimeString()}</span>
-                        ${query.confidence ? `<span>📊 Confidence: ${query.confidence}%</span>` : ''}
+                    
+                    <div class="flex-grow space-y-4">
+                        <div>
+                            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">User Query (CNIC: ${query.cnic})</span>
+                            <p class="text-sm text-gray-200 leading-relaxed bg-tcf-black p-3 rounded-lg border border-white/5">
+                                ${escapeHtml(query.query)}
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest block mb-1 ${isPending ? 'text-gray-500' : 'text-tcf-green'}">Official Response</span>
+                            ${query.response 
+                                ? `<p class="text-sm text-tcf-green leading-relaxed bg-tcf-green/5 p-3 rounded-lg border border-tcf-green/10 italic">${escapeHtml(query.response)}</p>` 
+                                : `<p class="text-xs text-gray-600 italic">No response drafted yet.</p>`
+                            }
+                        </div>
                     </div>
-                    ${query.response ? `<div class="query-text">💬 <strong>Response:</strong> ${escapeHtml(query.response)}</div>` : '<div class="query-text">💬 <strong>Response:</strong> <em>No response yet</em></div>'}
-                    <div class="card-buttons">
-                        <button class="btn btn-warning btn-sm" onclick="editQuery(${query.query_no})">✏️ Update</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteQuery(${query.query_no})">🗑️ Delete</button>
+                    
+                    <div class="pt-5 mt-4 border-t border-white/10 flex gap-3">
+                        <button onclick="editQuery('${query.query_no}')" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2">
+                            <i class="fas fa-pen text-blue-400"></i> Edit
+                        </button>
+                        <button onclick="deleteQuery('${query.query_no}')" class="flex-1 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
+        // --- Operations ---
         async function editQuery(queryNo) {
             try {
-                const response = await fetch(`http://localhost:3001/api/query-management/${queryNo}`);
+                const response = await fetch(`/api/query-management/${queryNo}`);
                 const result = await response.json();
                 
                 if (result.success) {
@@ -512,11 +363,11 @@
                     document.getElementById('updateDepartment').value = query.department;
                     document.getElementById('updateResponse').value = query.response || '';
                     document.getElementById('updateStatus').value = query.status;
-                    document.getElementById('updateModal').style.display = 'block';
+                    showUpdateModal();
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error loading query details');
+                alert('Error loading query details.');
             }
         }
 
@@ -532,80 +383,74 @@
                 status: document.getElementById('updateStatus').value
             };
             
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            submitBtn.disabled = true;
+            
             try {
-                const response = await fetch(`http://localhost:3001/api/query-management/${queryNo}`, {
+                const response = await fetch(`/api/query-management/${queryNo}`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(updateData)
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('✅ Query updated successfully!');
                     closeUpdateModal();
-                    if (currentQueryType === 'all') {
-                        loadAllQueries();
-                    } else if (currentQueryType === 'pending') {
-                        loadPendingQueries();
-                    }
+                    // Refresh current view
+                    if (currentQueryType === 'all') loadAllQueries();
+                    else if (currentQueryType === 'pending') loadPendingQueries();
                 } else {
-                    alert('❌ Error updating query: ' + result.message);
+                    alert('Error updating ticket: ' + result.message);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('❌ Error updating query');
+                alert('Server error updating ticket.');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
         });
 
         async function deleteQuery(queryNo) {
-            if (confirm(`⚠️ Are you sure you want to delete Query #${queryNo}? This action cannot be undone!`)) {
+            if (confirm(`Are you sure you want to permanently delete Ticket ${queryNo}?`)) {
                 try {
-                    const response = await fetch(`http://localhost:3001/api/query-management/${queryNo}`, {
+                    const response = await fetch(`/api/query-management/${queryNo}`, {
                         method: 'DELETE'
                     });
                     
                     const result = await response.json();
                     
                     if (result.success) {
-                        alert('✅ Query deleted successfully!');
-                        if (currentQueryType === 'all') {
-                            loadAllQueries();
-                        } else if (currentQueryType === 'pending') {
-                            loadPendingQueries();
-                        }
+                        // Refresh current view
+                        if (currentQueryType === 'all') loadAllQueries();
+                        else if (currentQueryType === 'pending') loadPendingQueries();
                     } else {
-                        alert('❌ Error deleting query: ' + result.message);
+                        alert('Error deleting ticket: ' + result.message);
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('❌ Error deleting query');
+                    alert('Server error deleting ticket.');
                 }
             }
         }
 
-        function closeUpdateModal() {
-            document.getElementById('updateModal').style.display = 'none';
-        }
-        
+        // --- Utilities ---
         function escapeHtml(text) {
+            if (!text) return "";
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
         
-        // Close modals when clicking outside
+        // Close modals when clicking outside the box
         window.onclick = function(event) {
             const departmentModal = document.getElementById('departmentModal');
             const updateModal = document.getElementById('updateModal');
-            if (event.target === departmentModal) {
-                closeDepartmentModal();
-            }
-            if (event.target === updateModal) {
-                closeUpdateModal();
-            }
+            if (event.target === departmentModal) closeDepartmentModal();
+            if (event.target === updateModal) closeUpdateModal();
         }
     </script>
 </body>

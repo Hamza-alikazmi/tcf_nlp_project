@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <title>Submit Query · TCF Alumni Pathways</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Support Hub · TCF Alumni Pathways</title>
     <script>
         tailwind.config = {
             theme: {
@@ -26,6 +27,17 @@
     <style>
         body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+        
+        /* Custom Star Rating CSS for Dark Theme */
+        .star-rating { direction: rtl; display: inline-flex; gap: 0.25rem; }
+        .star-rating input[type="radio"] { display: none; }
+        .star-rating label { font-size: 1.5rem; cursor: pointer; color: #333; transition: color 0.2s; }
+        .star-rating input[type="radio"]:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #F59E0B; } /* Amber color for stars */
+
+        /* Custom Scrollbar for AI output */
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #49C34A; border-radius: 4px; }
     </style>
 </head>
 <body class="antialiased">
@@ -33,111 +45,302 @@
         <!-- Navigation -->
         {% include 'navbar.html' %}
 
-        <!-- Query Section -->
-        <section class="min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-12 relative overflow-hidden">
+        <!-- Header -->
+        <section class="pt-12 pb-6 px-6 text-center relative">
+            <h1 class="text-4xl md:text-5xl font-black text-tcf-green mb-2">TCF Support Hub</h1>
+            <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.3em]">Query Assistant & Complaint Management</p>
+        </section>
+
+        <!-- Main Content -->
+        <section class="min-h-[calc(100vh-200px)] px-6 py-6 relative overflow-hidden">
             <!-- Decorative Glow -->
-            <div class="absolute -top-24 -right-24 w-96 h-96 bg-tcf-green/10 rounded-full blur-[120px]"></div>
+            <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-tcf-green/10 rounded-full blur-[120px] pointer-events-none"></div>
+            <div class="absolute bottom-0 -left-24 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
             
-            <div class="relative z-10 w-full max-w-lg">
-                <!-- Query Form Container -->
-                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
-                    <h1 class="text-3xl font-bold text-center mb-2 text-tcf-green">Submit a Query</h1>
-                    <p class="text-center text-gray-400 mb-8 text-sm uppercase tracking-widest">We're Here to Help</p>
+            <div class="relative z-10 w-full max-w-7xl mx-auto grid md:grid-cols-2 gap-8 pb-12">
+                
+                <!-- 1. OFFICIAL COMPLAINT FORM -->
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl flex flex-col h-full">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
+                        <span class="text-red-500"><i class="fas fa-bullhorn"></i></span>
+                        Submit a Query/Complaint
+                    </h2>
+                    <form id="complaintForm" class="space-y-4 flex-1 flex flex-col">
+                        <input type="text" id="complaintCnic" placeholder="CNIC (e.g., 1234512345671)" maxlength="13" required
+                            class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/20 transition">
+                        
+                        <select id="deptSelect" required
+                            class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/20 transition appearance-none">
+                            <option value="">Select Department</option>
+                            <option value="Admission-Section">Admission</option>
+                            <option value="Scholarship-Section">Scholarship</option>
+                            <option value="Fee-Section">Fee Process</option>
+                            <option value="General-Section">General Inquiry</option>
+                            <option value="Other">Other</option>
+                        </select>
 
-                    <form id="queryForm" class="space-y-6">
-                        <!-- CNIC -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">CNIC</label>
-                            <input type="text" id="cnic" name="cnic" placeholder="12345-1234567-1" maxlength="13" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
-                        </div>
-
-                        <!-- Query Type -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Query Type</label>
-                            <select id="query_type" name="query_type" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
-                                <option value="">Select a Query Type</option>
-                                <option value="admission">Admission Related</option>
-                                <option value="scholarship">Scholarship Related</option>
-                                <option value="fee">Fee Related</option>
-                                <option value="general">General Inquiry</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-
-                        <!-- Your Query -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Your Query</label>
-                            <textarea id="query" name="query" placeholder="Describe your query in detail..." rows="6" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition resize-none"></textarea>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="w-full bg-tcf-green text-tcf-black font-bold py-3 rounded-lg hover:bg-white transition duration-300 uppercase tracking-wider">
-                            Submit Query
+                        <textarea id="complaintText" rows="4" placeholder="Describe your issue or query in detail..." required
+                            class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/20 transition resize-none flex-1"></textarea>
+                        
+                        <button type="submit" id="complaintBtn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition duration-300 uppercase tracking-wider mt-auto">
+                            Submit Official Ticket
                         </button>
                     </form>
+                    <div id="complaintResponse" class="mt-4 p-4 rounded-lg border hidden transition-all duration-300 text-sm text-center font-semibold"></div>
+                </div>
 
-                    <!-- Response Message -->
-                    <div id="response" class="mt-6 p-4 rounded-lg border border-white/10 bg-tcf-black hidden">
-                        <p id="responseText" class="text-gray-300 text-sm"></p>
+                <!-- 2. AI QUERY AGENT -->
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl flex flex-col h-full">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
+                        <span class="text-tcf-green"><i class="fas fa-robot"></i></span>
+                        AI Query Agent
+                    </h2>
+                    <p class="text-gray-400 text-sm mb-4">Ask instant questions about TCF Alumni Pathways policies, admissions, and more.</p>
+                    
+                    <div class="space-y-4 flex-1 flex flex-col">
+                        <textarea id="queryText" rows="5" placeholder="e.g. How do I apply for the Qarze-Hasna scholarship?" 
+                            class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition resize-none"></textarea>
+                        
+                        <button onclick="submitAiQuery()" id="aiBtn" class="w-full bg-tcf-green hover:bg-white text-tcf-black font-bold py-3 rounded-lg transition duration-300 uppercase tracking-wider flex items-center justify-center gap-2">
+                            <i class="fas fa-bolt"></i> Ask AI Assistant
+                        </button>
+                        
+                        <div id="queryResponse" class="mt-auto p-4 bg-tcf-black rounded-lg border border-tcf-green/30 text-sm text-tcf-green hidden max-h-[120px] overflow-y-auto custom-scroll italic font-medium"></div>
                     </div>
                 </div>
+
+                <!-- 3. TRACK COMPLAINT/TICKET -->
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
+                        <span class="text-blue-400"><i class="fas fa-location-crosshairs"></i></span>
+                        Track Ticket Status
+                    </h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="trackId" placeholder="e.g., QRY-2026-00001" 
+                            class="flex-1 bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition font-mono uppercase">
+                        <button onclick="trackComplaint()" id="trackBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg transition duration-300 flex items-center justify-center">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div id="trackResponse" class="mt-6 p-5 bg-tcf-black rounded-lg border border-white/10 text-sm hidden">
+                        <!-- Tracking results inject here -->
+                    </div>
+                </div>
+
+                <!-- 4. FEEDBACK -->
+                <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center gap-3 text-white">
+                        <span class="text-amber-400"><i class="fas fa-star-half-alt"></i></span>
+                        Rate Resolution
+                    </h2>
+                    <p class="text-gray-400 text-sm mb-4">Help us improve by rating how your ticket was handled.</p>
+                    
+                    <div class="space-y-4">
+                        <input type="text" id="feedbackId" placeholder="Ticket ID (e.g., QRY-2026-00001)" 
+                            class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 transition font-mono uppercase">
+                        
+                        <div class="flex items-center justify-between bg-tcf-black border border-white/10 px-4 py-3 rounded-lg">
+                            <span class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Experience</span>
+                            <div class="star-rating" id="starContainer">
+                                <input type="radio" id="star5" name="rating" value="5"><label for="star5" class="fas fa-star"></label>
+                                <input type="radio" id="star4" name="rating" value="4"><label for="star4" class="fas fa-star"></label>
+                                <input type="radio" id="star3" name="rating" value="3"><label for="star3" class="fas fa-star"></label>
+                                <input type="radio" id="star2" name="rating" value="2"><label for="star2" class="fas fa-star"></label>
+                                <input type="radio" id="star1" name="rating" value="1"><label for="star1" class="fas fa-star"></label>
+                            </div>
+                        </div>
+                        
+                        <button onclick="submitFeedback()" class="w-full border border-white/20 hover:border-amber-400 hover:text-amber-400 text-white font-bold py-3 rounded-lg transition duration-300 uppercase tracking-wider">
+                            Submit Feedback
+                        </button>
+                        
+                        <div id="feedbackResponse" class="text-center text-sm font-semibold mt-2 hidden transition-all"></div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5">
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 relative z-10">
             <div class="max-w-7xl mx-auto text-center">
-                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
+                <p class="text-gray-500 text-xs">&copy; 2026 The Citizens Foundation. All rights reserved.</p>
             </div>
         </footer>
     </div>
 
     <script>
-        document.getElementById("queryForm").addEventListener("submit", async function(e) {
+        // 1. Submit Official Query/Complaint
+        document.getElementById('complaintForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const cnic = document.getElementById('complaintCnic').value.trim();
+            const text = document.getElementById('complaintText').value.trim();
+            const dept = document.getElementById('deptSelect').value;
+            const resDiv = document.getElementById('complaintResponse');
+            const btn = document.getElementById('complaintBtn');
 
-            const cnic = document.getElementById("cnic").value.trim();
-            const query_type = document.getElementById("query_type").value;
-            const query = document.getElementById("query").value.trim();
+            const cleanCnic = cnic.replace(/-/g, "");
 
-            if (cnic === "" || query_type === "" || query === "") {
-                alert("Please fill in all fields!");
+            if (cleanCnic.length !== 13 || isNaN(cleanCnic)) {
+                alert("Please enter a valid 13-digit CNIC.");
                 return;
             }
 
-            try {
-                const response = await fetch("/query", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ cnic, query_type, query })
-                });
+            btn.disabled = true;
+            btn.innerHTML = "Submitting... <i class='fas fa-spinner fa-spin ml-2'></i>";
+            
+            resDiv.classList.add('hidden');
+            resDiv.className = "mt-4 p-4 rounded-lg border hidden transition-all duration-300 text-sm text-center font-semibold";
 
+            try {
+                // Pointing to your new specific API route
+                const response = await fetch('/api/query-management/submit', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ query: text, cnic: cleanCnic, department: dept })
+                });
+                
                 const data = await response.json();
-                const responseDiv = document.getElementById("response");
-                const responseText = document.getElementById("responseText");
+                resDiv.innerHTML = data.message;
+                resDiv.classList.remove('hidden');
                 
-                responseText.textContent = data.message || "Query submitted successfully!";
-                responseDiv.classList.remove("hidden");
-                
-                if (data.success) {
-                    responseDiv.classList.add("border-tcf-green", "bg-tcf-green/10");
+                if (data.success || response.ok) {
+                    resDiv.classList.add('border-tcf-green', 'bg-tcf-green/10', 'text-tcf-green');
+                    document.getElementById('complaintForm').reset();
                 } else {
-                    responseDiv.classList.add("border-red-500", "bg-red-500/10");
+                    resDiv.classList.add('border-red-500', 'bg-red-500/10', 'text-red-400');
                 }
             } catch (err) {
-                console.error(err);
-                const responseDiv = document.getElementById("response");
-                const responseText = document.getElementById("responseText");
-                responseText.textContent = "Error submitting query. Please try again.";
-                responseDiv.classList.remove("hidden");
-                responseDiv.classList.add("border-red-500", "bg-red-500/10");
+                resDiv.innerText = "Error connecting to server. Please try again.";
+                resDiv.classList.remove('hidden');
+                resDiv.classList.add('border-red-500', 'bg-red-500/10', 'text-red-400');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = "Submit Official Ticket";
             }
         });
+
+        // 2. Submit AI Query
+        async function submitAiQuery() {
+            const text = document.getElementById('queryText').value.trim();
+            const resDiv = document.getElementById('queryResponse');
+            const btn = document.getElementById('aiBtn');
+            
+            if(!text) return;
+
+            btn.disabled = true;
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Thinking...";
+            resDiv.classList.remove('hidden');
+            resDiv.innerText = "Processing question...";
+
+            try {
+                // Hitting your NLP query endpoint
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ question: text })
+                });
+                const data = await response.json();
+                resDiv.innerText = data.answer || "I could not find an answer for that.";
+            } catch (e) {
+                resDiv.innerText = "AI Agent is currently offline. Please use the Official Query form.";
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = "<i class='fas fa-bolt'></i> Ask AI Assistant";
+            }
+        }
+
+        // 3. Track Complaint/Query Status
+        async function trackComplaint() {
+            const trackId = document.getElementById('trackId').value.trim().toUpperCase();
+            const resDiv = document.getElementById('trackResponse');
+            const btn = document.getElementById('trackBtn');
+
+            if(!trackId) { alert('Please enter a Ticket ID'); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i>";
+            
+            resDiv.classList.remove('hidden', 'text-red-400');
+            resDiv.innerText = "Searching database...";
+
+            try {
+                // Checking the single query endpoint
+                const response = await fetch(`/api/query-management/${trackId}`);
+                const result = await response.json();
+
+                if(result.success) {
+                    const data = result.data;
+                    resDiv.innerHTML = `
+                        <div class="space-y-2">
+                            <p class="flex justify-between border-b border-white/10 pb-2">
+                                <span class="text-gray-400">Status:</span> 
+                                <span class="text-blue-400 font-bold uppercase">${data.status}</span>
+                            </p>
+                            <p class="flex justify-between border-b border-white/10 py-2">
+                                <span class="text-gray-400">Department:</span> 
+                                <span class="text-white">${data.department}</span>
+                            </p>
+                            ${data.response ? `
+                                <div class="mt-4 p-3 bg-blue-500/10 rounded border border-blue-500/20">
+                                    <span class="text-blue-400 font-bold block mb-1">Official Response:</span>
+                                    <span class="text-gray-300 italic">${data.response}</span>
+                                </div>
+                            ` : `<p class="mt-2 text-gray-500 italic text-center">Awaiting response from staff.</p>`}
+                        </div>
+                    `;
+                } else {
+                    resDiv.innerText = result.message || "Ticket not found. Check your ID.";
+                    resDiv.classList.add('text-red-400');
+                }
+            } catch (e) {
+                resDiv.innerText = "Error tracking status. Server might be down.";
+                resDiv.classList.add('text-red-400');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = "<i class='fas fa-search'></i>";
+            }
+        }
+
+        // 4. Submit Feedback/Rating
+        async function submitFeedback() {
+            const complaintId = document.getElementById('feedbackId').value.trim().toUpperCase();
+            const rating = document.querySelector('input[name="rating"]:checked')?.value;
+            const resDiv = document.getElementById('feedbackResponse');
+
+            if(!complaintId || !rating) { 
+                alert('Please provide both the Ticket ID and select a Star Rating.'); 
+                return; 
+            }
+
+            resDiv.classList.remove('hidden', 'text-amber-400', 'text-red-400');
+            resDiv.innerText = "Submitting feedback...";
+            resDiv.classList.add('text-gray-400');
+
+            try {
+                // Assuming you have this endpoint from your original app.py setup
+                const response = await fetch('/feedback', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ complaint_id: complaintId, rating: parseInt(rating) })
+                });
+
+                if(response.ok) {
+                    resDiv.innerText = "Thank you for your feedback! It helps us improve.";
+                    resDiv.classList.replace('text-gray-400', 'text-amber-400');
+                    // Reset form
+                    document.getElementById('feedbackId').value = "";
+                    document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
+                } else {
+                    resDiv.innerText = "Failed to submit feedback. Check Ticket ID.";
+                    resDiv.classList.replace('text-gray-400', 'text-red-400');
+                }
+            } catch (e) {
+                resDiv.innerText = "Server error while submitting feedback.";
+                resDiv.classList.replace('text-gray-400', 'text-red-400');
+            }
+        }
     </script>
 </body>
 </html>

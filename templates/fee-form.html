@@ -26,6 +26,13 @@
     <style>
         body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .form-input { 
+            width: 100%; background-color: #0B0C0C; border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 0.5rem; padding: 0.75rem 1rem; color: white; outline: none; transition: all 0.3s;
+        }
+        .form-input:focus { border-color: #49C34A; box-shadow: 0 0 0 2px rgba(73, 195, 74, 0.2); }
+        .required::after { content: " *"; color: #49C34A; }
     </style>
 </head>
 <body class="antialiased">
@@ -33,414 +40,204 @@
         <!-- Navigation -->
         {% include 'navbar.html' %}
 
-        <!-- Fee Form Section -->
         <section class="py-16 px-6">
-            <div class="max-w-2xl mx-auto">
+            <div class="max-w-4xl mx-auto">
                 <h1 class="text-4xl font-bold mb-2 text-tcf-green text-center">Tertiary Fee Process</h1>
-                <p class="text-center text-gray-400 mb-12 text-sm uppercase tracking-widest">Apply for Fee Assistance</p>
+                <p class="text-center text-gray-400 mb-12 text-sm uppercase tracking-widest">Submit Fee Voucher & Assistance Request</p>
 
-                <!-- Fee Form -->
                 <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
-                    <form id="feeForm" class="space-y-6">
+                    <form id="feeForm" enctype="multipart/form-data" class="space-y-8">
+                        
+                        <!-- Row 1: Dates & Basic Info -->
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Today's Date</label>
+                                <input type="date" name="todayDate" required class="form-input">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Full Name</label>
+                                <input type="text" name="name" required placeholder="Enter student name" class="form-input">
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Father & Identity -->
                         <div class="grid md:grid-cols-2 gap-6">
-                            <!-- Student Name -->
                             <div>
-                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Student Name</label>
-                                <input type="text" name="student_name" required
-                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Father's Name</label>
+                                <input type="text" name="fatherName" required placeholder="Enter father's name" class="form-input">
                             </div>
-
-                            <!-- Roll Number -->
                             <div>
-                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Roll Number</label>
-                                <input type="text" name="roll_number" required
-                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
-                            </div>
-
-                            <!-- Email -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Email</label>
-                                <input type="email" name="email" required
-                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
-                            </div>
-
-                            <!-- Phone -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Phone</label>
-                                <input type="tel" name="phone" required
-                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Student CNIC</label>
+                                <input type="text" name="cnic" id="cnic" required placeholder="13 digits" class="form-input">
                             </div>
                         </div>
 
-                        <!-- University/Institution -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">University/Institution</label>
-                            <input type="text" name="institution" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        <!-- Row 3: Contacts -->
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Matric Roll No</label>
+                                <input type="text" name="matricRoll" required class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Phone</label>
+                                <input type="tel" name="contact" id="contact" required placeholder="03XXXXXXXXX" class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">WhatsApp</label>
+                                <input type="tel" name="whatsapp" id="whatsapp" required placeholder="03XXXXXXXXX" class="form-input">
+                            </div>
                         </div>
 
-                        <!-- Program -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Program/Degree</label>
-                            <input type="text" name="program" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Email</label>
+                                <input type="email" name="email" required placeholder="example@domain.com" class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">City</label>
+                                <input type="text" name="city" required class="form-input">
+                            </div>
                         </div>
 
-                        <!-- Annual Fee -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Annual Fee Amount (PKR)</label>
-                            <input type="number" name="annual_fee" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        <!-- Row 4: Academic Info -->
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Institute Name</label>
+                                <input type="text" name="instituteName" required class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Current Semester</label>
+                                <select name="currentSemester" required class="form-input">
+                                    <option value="">Select</option>
+                                    <option value="1">Semester 1</option><option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option><option value="4">Semester 4</option>
+                                    <option value="5">Semester 5</option><option value="6">Semester 6</option>
+                                    <option value="7">Semester 7</option><option value="8">Semester 8</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <!-- Financial Hardship Description -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Describe Your Financial Situation</label>
-                            <textarea name="financial_situation" rows="4" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition resize-none"></textarea>
+                            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Degree / Program</label>
+                            <input type="text" name="degree" required placeholder="e.g. BS Computer Science" class="form-input">
                         </div>
+
+                        <!-- Row 5: Finance & Banking -->
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="p-4 bg-white/5 rounded-lg border border-white/10">
+                                <label class="block text-xs font-bold text-gray-500 mb-3 uppercase required">Applying For</label>
+                                <div class="grid grid-cols-2 gap-2 text-sm">
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="applyingFor" value="semesterFee" class="accent-tcf-green"> Semester</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="applyingFor" value="hostelFee" class="accent-tcf-green"> Hostel</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="applyingFor" value="messFee" class="accent-tcf-green"> Mess</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="applyingFor" value="transportFee" class="accent-tcf-green"> Transport</label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Fee Last Date</label>
+                                <input type="date" name="lastDate" required class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Account Holder Name</label>
+                                <input type="text" name="accountHolder" required class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">IBAN Number</label>
+                                <input type="text" name="iban" required placeholder="PKxxxxxxxxxxxx" class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">No. of Siblings</label>
+                                <input type="number" name="siblings" required class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Monthly Income (PKR)</label>
+                                <input type="number" name="income" required class="form-input">
+                            </div>
+                        </div>
+
+                        <!-- Row 6: File Uploads -->
+                        <div class="grid md:grid-cols-2 gap-6 pt-4">
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Fee Voucher</label>
+                                <input type="file" name="feeVoucher" required class="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tcf-green file:text-black">
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Contribution Slip</label>
+                                <input type="file" name="contributionSlip" required class="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tcf-green file:text-black">
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase required">Latest Result</label>
+                                <input type="file" name="result" required class="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tcf-green file:text-black">
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Cheque Book (Optional)</label>
+                                <input type="file" name="chequeBook" class="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-white/10 file:text-white">
+                            </div>
+                        </div>
+
+                        <!-- Response Box -->
+                        <div id="responseBox" class="hidden rounded-xl p-4 text-center font-bold"></div>
 
                         <!-- Submit Button -->
-                        <button type="submit" class="w-full bg-tcf-green text-tcf-black font-bold py-3 rounded-lg hover:bg-white transition duration-300 uppercase tracking-wider">
-                            Submit Application
+                        <button type="submit" id="submitBtn" class="w-full bg-tcf-green text-tcf-black font-bold py-4 rounded-xl hover:bg-white transition duration-300 uppercase tracking-widest">
+                            Submit Fee Application
                         </button>
                     </form>
                 </div>
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 mt-16">
-            <div class="max-w-7xl mx-auto text-center">
-                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
-            </div>
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 mt-16 text-center">
+            <p class="text-gray-500 text-xs tracking-widest uppercase">&copy; 2026 The Citizens Foundation. All rights reserved.</p>
         </footer>
-    </div>
-</body>
-</html>
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .checkbox-item input[type="checkbox"] {
-            width: auto;
-            margin: 0;
-        }
-
-        .checkbox-item label {
-            display: inline;
-            font-weight: normal;
-            margin: 0;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #responseBox {
-            margin-top: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            display: none;
-        }
-
-        #responseBox.show {
-            display: block;
-        }
-
-        .required::after {
-            content: " *";
-            color: red;
-        }
-
-        .file-hint {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .loading::after {
-            content: "⏳";
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h1>Tertiary Fee Process Form</h1>
-
-        <form id="feeForm" enctype="multipart/form-data">
-            <div class="form-group">
-                <label class="required">Today's Date</label>
-                <input type="date" name="todayDate" required>
-            </div>
-
-            <div class="form-group">
-                <label class="required">Name</label>
-                <input type="text" name="name" required placeholder="Enter your full name">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Father's Name</label>
-                <input type="text" name="fatherName" required placeholder="Enter father's name">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Student CNIC</label>
-                <input type="text" name="cnic" required placeholder="12345-1234567-1">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Email</label>
-                <input type="email" name="email" required placeholder="example@domain.com">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Matric Roll</label>
-                <input type="text" name="matricRoll" required placeholder="Enter matric roll number">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Contact</label>
-                <input type="text" name="contact" required placeholder="03XXXXXXXXX">
-            </div>
-
-            <div class="form-group">
-                <label class="required">WhatsApp</label>
-                <input type="text" name="whatsapp" required placeholder="03XXXXXXXXX">
-            </div>
-
-            <div class="form-group">
-                <label class="required">City</label>
-                <input type="text" name="city" required placeholder="Enter your city">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Institute</label>
-                <input type="text" name="instituteName" required placeholder="Enter institute name">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Degree</label>
-                <input type="text" name="degree" required placeholder="e.g., BS Computer Science">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Applying For</label>
-                <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="applyingFor" value="semesterFee">
-                        <label>Semester Fee</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="applyingFor" value="hostelFee">
-                        <label>Hostel Fee</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="applyingFor" value="messFee">
-                        <label>Mess Fee</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="applyingFor" value="transportFee">
-                        <label>Transport Fee</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="required">Current Semester</label>
-                <select name="currentSemester" required>
-                    <option value="">Select Semester</option>
-                    <option value="1">Semester 1</option>
-                    <option value="2">Semester 2</option>
-                    <option value="3">Semester 3</option>
-                    <option value="4">Semester 4</option>
-                    <option value="5">Semester 5</option>
-                    <option value="6">Semester 6</option>
-                    <option value="7">Semester 7</option>
-                    <option value="8">Semester 8</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="required">Last Date</label>
-                <input type="date" name="lastDate" required>
-            </div>
-
-            <div class="form-group">
-                <label class="required">Account Holder</label>
-                <input type="text" name="accountHolder" required placeholder="Name on bank account">
-            </div>
-
-            <div class="form-group">
-                <label class="required">IBAN</label>
-                <input type="text" name="iban" required placeholder="PKxxxxxxxxxxxx">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Number of Siblings</label>
-                <input type="number" name="siblings" required min="0">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Monthly Income</label>
-                <input type="number" name="income" required min="0" placeholder="in PKR">
-            </div>
-
-            <div class="form-group">
-                <label class="required">Fee Voucher</label>
-                <input type="file" name="feeVoucher" required accept=".pdf,.jpg,.jpeg,.png">
-                <div class="file-hint">Accepted formats: PDF, JPG, PNG (Max 5MB)</div>
-            </div>
-
-            <div class="form-group">
-                <label class="required">Contribution Slip</label>
-                <input type="file" name="contributionSlip" required accept=".pdf,.jpg,.jpeg,.png">
-                <div class="file-hint">Accepted formats: PDF, JPG, PNG (Max 5MB)</div>
-            </div>
-
-            <div class="form-group">
-                <label class="required">Latest Result</label>
-                <input type="file" name="result" required accept=".pdf,.jpg,.jpeg,.png">
-                <div class="file-hint">Accepted formats: PDF, JPG, PNG (Max 5MB)</div>
-            </div>
-
-            <div class="form-group">
-                <label>Cheque Book (Optional)</label>
-                <input type="file" name="chequeBook" accept=".pdf,.jpg,.jpeg,.png">
-                <div class="file-hint">Accepted formats: PDF, JPG, PNG (Max 5MB)</div>
-            </div>
-
-            <button type="submit" id="submitBtn">Submit Application</button>
-        </form>
-
-        <div id="responseBox"></div>
     </div>
 
     <script>
         document.getElementById("feeForm").addEventListener("submit", async function(e) {
             e.preventDefault();
-
-            const form = document.getElementById("feeForm");
+            const form = e.target;
             const formData = new FormData(form);
             const submitBtn = document.getElementById("submitBtn");
             const responseBox = document.getElementById("responseBox");
 
-            // Validate checkboxes - at least one must be selected
+            // Checkbox validation
             const checkboxes = document.querySelectorAll('input[name="applyingFor"]:checked');
             if (checkboxes.length === 0) {
-                responseBox.innerHTML = '<div style="color: red; padding: 10px; background: #ffeeee; border-radius: 5px;">⚠️ Please select at least one option in "Applying For"</div>';
-                responseBox.classList.add('show');
+                responseBox.className = "block bg-red-500/20 text-red-500 p-4 rounded-lg mb-4";
+                responseBox.innerText = "⚠️ Please select at least one 'Applying For' option.";
                 return;
             }
 
-            // Show loading state
             submitBtn.disabled = true;
-            submitBtn.innerHTML = 'Submitting... ⏳';
-            responseBox.innerHTML = '<div class="loading">Processing your application...</div>';
-            responseBox.classList.add('show');
-
-            try {
-                // Send data to server - FIXED URL from "/fee-form" to "/fee"
-                const response = await fetch("/fee", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const html = await response.text();
-                
-                // Display response
-                responseBox.innerHTML = html;
-                
-                // Reset form if submission was successful
-                if (response.ok) {
-                    form.reset();
-                }
-
-            } catch (error) {
-                console.error("Error:", error);
-                responseBox.innerHTML = `
-                    <div style="color: red; padding: 20px; background: #ffeeee; border-radius: 5px; text-align: center;">
-                        <h3 style="margin-top: 0;">❌ Server Error</h3>
-                        <p>Unable to connect to the server. Please try again later.</p>
-                        <p style="font-size: 12px; color: #666;">${error.message}</p>
-                        <button onclick="window.location.href='/'" style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
-                            Try Again
-                        </button>
-                    </div>
-                `;
-            } finally {
-                // Reset button state
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Submit Application';
-            }
-        });
-
-        // Optional: Add CNIC formatting
-        document.querySelector('input[name="cnic"]').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 13) value = value.slice(0, 13);
+            submitBtn.innerText = "Processing... ⏳";
             
-            if (value.length > 5) {
-                value = value.slice(0,5) + '-' + value.slice(5);
+            try {
+                const response = await fetch("/fee", { method: "POST", body: formData });
+                const resultText = await response.text();
+
+                responseBox.className = "block bg-tcf-green/20 text-tcf-green p-4 rounded-lg mb-4";
+                responseBox.innerHTML = resultText;
+
+                if (response.ok) form.reset();
+            } catch (error) {
+                responseBox.className = "block bg-red-500/20 text-red-500 p-4 rounded-lg mb-4";
+                responseBox.innerText = "❌ Connection error. Please try again.";
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Submit Fee Application";
             }
-            if (value.length > 13) {
-                value = value.slice(0,13) + '-' + value.slice(13,14);
-            }
-            e.target.value = value;
         });
 
-        // Optional: Add phone number formatting
-        document.querySelector('input[name="contact"]').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.slice(0, 11);
-            e.target.value = value;
-        });
-
-        document.querySelector('input[name="whatsapp"]').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.slice(0, 11);
-            e.target.value = value;
-        });
-
-        // File size validation
-        const fileInputs = document.querySelectorAll('input[type="file"]');
-        fileInputs.forEach(input => {
-            input.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file && file.size > 5 * 1024 * 1024) {
-                    alert('File size should not exceed 5MB');
-                    e.target.value = '';
-                }
+        // Numeric constraints
+        ['cnic', 'contact', 'whatsapp'].forEach(id => {
+            document.getElementById(id).addEventListener('input', e => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, id === 'cnic' ? 13 : 11);
             });
         });
     </script>

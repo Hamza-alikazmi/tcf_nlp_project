@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TCF — Staff Management</title>
+  <title>Staff Management · TCF Alumni Pathways</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0d1117;
-      --surface:   #161b22;
+      --bg:        #0B0C0C; 
+      --surface:   #1A1C1D; 
       --surface2:  #21262d;
       --border:    #30363d;
-      --green:     #3fb950;
+      --green:     #49C34A; 
       --green-dim: #1a6b3c;
       --red:       #f85149;
       --red-dim:   #6e1f1f;
@@ -29,17 +29,17 @@
       color: var(--text);
       min-height: 100vh;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       padding: 2rem;
       background-image:
-        radial-gradient(ellipse at 20% 10%, rgba(63,185,80,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 10%, rgba(73, 195, 74, 0.06) 0%, transparent 50%),
         radial-gradient(ellipse at 80% 90%, rgba(248,81,73,0.05) 0%, transparent 50%);
     }
 
     .wrapper {
       width: 100%;
-      max-width: 520px;
+      max-width: 950px;
       animation: rise 0.55s cubic-bezier(0.22,1,0.36,1);
     }
 
@@ -48,15 +48,24 @@
       to   { opacity:1; transform:translateY(0); }
     }
 
-    /* ── Header ── */
-    .header {
-      margin-bottom: 2rem;
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    @media (min-width: 850px) {
+      .layout { flex-direction: row; align-items: flex-start; }
+      .list-col { flex: 1.3; }
+      .action-col { flex: 1; position: sticky; top: 2rem; }
     }
 
+    /* ── Header ── */
+    .header { margin-bottom: 2rem; }
     .header-badge {
       display: inline-block;
-      background: rgba(63,185,80,0.12);
-      border: 1px solid rgba(63,185,80,0.3);
+      background: rgba(73, 195, 74, 0.12);
+      border: 1px solid rgba(73, 195, 74, 0.3);
       color: var(--green);
       font-size: 0.72rem;
       font-weight: 600;
@@ -66,381 +75,296 @@
       border-radius: 100px;
       margin-bottom: 0.9rem;
     }
-
-    .header h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.5px;
-      color: var(--white);
-    }
-
+    .header h1 { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.5px; color: var(--white); }
     .header h1 span { color: var(--green); }
+    .header p { color: var(--muted); font-size: 0.88rem; margin-top: 0.5rem; font-weight: 300; }
 
-    .header p {
-      color: var(--muted);
-      font-size: 0.88rem;
-      margin-top: 0.5rem;
-      font-weight: 300;
-    }
-
-    /* ── Card ── */
-    .card {
+    /* ── Staff List ── */
+    .list-title { color: var(--white); font-family: 'Syne', sans-serif; font-size: 1.2rem; margin-bottom: 1rem; }
+    .staff-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
     }
-
-    /* ── Tabs ── */
-    .tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-bottom: 1px solid var(--border);
+    .staff-card:hover { border-color: rgba(255,255,255,0.2); }
+    .staff-info h3 { font-size: 1.1rem; color: var(--white); margin-bottom: 0.3rem; }
+    .staff-info p { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .role-badge {
+      display: inline-block; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
     }
+    .bg-superadmin { background: rgba(210,153,34,0.15); color: var(--gold); border: 1px solid rgba(210,153,34,0.3); }
+    .bg-fee { background: rgba(73, 195, 74, 0.15); color: var(--green); border: 1px solid rgba(73, 195, 74, 0.3); }
+    .bg-scholarship { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .bg-genadmin { background: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3); }
 
+    /* ── Action Card ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
     .tab {
-      padding: 1rem;
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      transition: color 0.2s, background 0.2s;
-      user-select: none;
-      border: none;
-      background: transparent;
-      letter-spacing: 0.2px;
+      padding: 1rem; text-align: center; font-size: 0.9rem; font-weight: 500;
+      color: var(--muted); cursor: pointer; transition: color 0.2s, background 0.2s;
+      user-select: none; border: none; background: transparent; letter-spacing: 0.2px;
     }
-
     .tab .tab-icon { margin-right: 0.45rem; font-size: 1rem; }
-
-    .tab.active-add  { color: var(--green); border-bottom: 2px solid var(--green);  background: rgba(63,185,80,0.05); }
+    .tab.active-add  { color: var(--green); border-bottom: 2px solid var(--green);  background: rgba(73, 195, 74, 0.05); }
     .tab.active-del  { color: var(--red);   border-bottom: 2px solid var(--red);    background: rgba(248,81,73,0.05); }
     .tab:hover:not(.active-add):not(.active-del) { color: var(--text); background: var(--surface2); }
 
-    /* ── Panel ── */
     .panel { padding: 2rem; display: none; }
     .panel.show { display: block; animation: fadeSlide 0.3s ease; }
+    @keyframes fadeSlide { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
-    @keyframes fadeSlide {
-      from { opacity:0; transform:translateY(8px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-
-    .panel-title {
-      font-size: 0.78rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      margin-bottom: 1.5rem;
-    }
+    .panel-title { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 1.5rem; }
     .panel-title.add { color: var(--green); }
     .panel-title.del { color: var(--red); }
 
     /* ── Fields ── */
     .field { margin-bottom: 1.2rem; }
-
-    label {
-      display: block;
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
-      margin-bottom: 0.45rem;
-    }
-
+    label { display: block; font-size: 0.78rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 0.45rem; }
     input, select {
-      width: 100%;
-      padding: 0.78rem 1rem;
-      background: var(--surface2);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.95rem;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%; padding: 0.78rem 1rem; background: var(--surface2); border: 1.5px solid var(--border);
+      border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 0.95rem; color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s;
     }
-
     input::placeholder { color: var(--muted); }
-
-    input:focus, select:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(63,185,80,0.12);
-    }
-
-    .panel-del input:focus {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(248,81,73,0.12);
-    }
-
+    input:focus, select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(73, 195, 74, 0.12); }
+    .panel-del input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(248,81,73,0.12); }
     select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238b949e' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 0.9rem center;
-      padding-right: 2.5rem;
-      cursor: pointer;
+      appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238b949e' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.5rem; cursor: pointer;
     }
-
-    select option { background: var(--surface2); color: var(--text); }
 
     /* ── Buttons ── */
     .btn {
-      width: 100%;
-      padding: 0.88rem;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: 0.3px;
-      transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
-      margin-top: 0.4rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      width: 100%; padding: 0.88rem; border: none; border-radius: 10px; font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem; font-weight: 600; cursor: pointer; letter-spacing: 0.3px; transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s; margin-top: 0.4rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
-
     .btn:hover   { transform: translateY(-1px); }
     .btn:active  { transform: translateY(0); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
 
-    .btn-add {
-      background: linear-gradient(135deg, #1a6b3c, var(--green));
-      color: var(--white);
-      box-shadow: 0 4px 14px rgba(63,185,80,0.2);
-    }
-    .btn-add:hover { box-shadow: 0 6px 20px rgba(63,185,80,0.35); }
-
-    .btn-del {
-      background: linear-gradient(135deg, #6e1f1f, var(--red));
-      color: var(--white);
-      box-shadow: 0 4px 14px rgba(248,81,73,0.2);
-    }
+    .btn-add { background: linear-gradient(135deg, #1a6b3c, var(--green)); color: var(--white); box-shadow: 0 4px 14px rgba(73, 195, 74, 0.2); }
+    .btn-add:hover { box-shadow: 0 6px 20px rgba(73, 195, 74, 0.35); }
+    .btn-del { background: linear-gradient(135deg, #6e1f1f, var(--red)); color: var(--white); box-shadow: 0 4px 14px rgba(248,81,73,0.2); }
     .btn-del:hover { box-shadow: 0 6px 20px rgba(248,81,73,0.35); }
+    
+    .btn-small { background: var(--surface2); border: 1px solid var(--border); color: var(--red); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 0.8rem; font-weight: 600; }
+    .btn-small:hover { background: rgba(248,81,73,0.1); border-color: var(--red); }
 
-    /* ── Message ── */
-    .msg {
-      padding: 0.8rem 1rem;
-      border-radius: 10px;
-      font-size: 0.88rem;
-      font-weight: 400;
-      margin-bottom: 1.2rem;
-      display: none;
-      animation: fadeSlide 0.3s ease;
-      line-height: 1.5;
-    }
-
-    .msg.success { background: rgba(63,185,80,0.1);  border: 1px solid rgba(63,185,80,0.35); color: var(--green); display: block; }
+    /* ── Messages & Utilities ── */
+    .msg { padding: 0.8rem 1rem; border-radius: 10px; font-size: 0.88rem; font-weight: 400; margin-bottom: 1.2rem; display: none; animation: fadeSlide 0.3s ease; line-height: 1.5; }
+    .msg.success { background: rgba(73, 195, 74, 0.1);  border: 1px solid rgba(73, 195, 74, 0.35); color: var(--green); display: block; }
     .msg.error   { background: rgba(248,81,73,0.1);  border: 1px solid rgba(248,81,73,0.35); color: var(--red);   display: block; }
     .msg.warn    { background: rgba(210,153,34,0.1); border: 1px solid rgba(210,153,34,0.35);color: var(--gold);  display: block; }
 
-    /* ── Spinner ── */
-    .spinner {
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      display: none;
-    }
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
     .btn.loading .spinner { display: block; }
     .btn.loading .btn-label { display: none; }
-
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Divider ── */
     .sep { height: 1px; background: var(--border); margin: 1.4rem 0; }
-
-    /* ── Footer ── */
-    .footer {
-      text-align: center;
-      margin-top: 1.5rem;
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
+    .back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .back-link:hover { color: var(--green); }
   </style>
 </head>
 <body>
 
 <div class="wrapper">
+  <a href="/admin/dashboard" class="back-link">← Back to Dashboard</a>
+  
   <div class="header">
-    <div class="header-badge">TCF Portal</div>
+    <div class="header-badge">Admin Access</div>
     <h1>Staff <span>Management</span></h1>
-    <p>Add or remove members from the signins collection</p>
+    <p>View current administrative staff or assign new roles.</p>
   </div>
 
-  <div class="card">
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab active-add" onclick="switchTab('add')">
-        <span class="tab-icon">＋</span> Add Member
-      </button>
-      <button class="tab" id="del-tab" onclick="switchTab('del')">
-        <span class="tab-icon">✕</span> Delete Member
-      </button>
+  <div class="layout">
+    <!-- ── LEFT: STAFF DIRECTORY ── -->
+    <div class="list-col">
+      <h2 class="list-title">Active Staff Directory</h2>
+      
+      {% if staff_members and staff_members|length > 0 %}
+        {% for staff in staff_members %}
+        <div class="staff-card">
+          <div class="staff-info">
+            <h3>{{ staff.full_name }}</h3>
+            <p>CNIC: {{ staff.cnic }} &nbsp;•&nbsp; {{ staff.email }}</p>
+            <span class="role-badge bg-{{ staff.role }}">{{ staff.role }}</span>
+          </div>
+          <div>
+            <!-- Prevent deleting self or other superadmins directly from here for safety -->
+            {% if staff.role != 'superadmin' %}
+            <button class="btn-small" onclick="prepRevoke('{{ staff.cnic }}')">Revoke</button>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="staff-card" style="justify-content: center; padding: 2rem;">
+          <p style="color: var(--muted); margin: 0;">No staff members found.</p>
+        </div>
+      {% endif %}
     </div>
 
-    <!-- ── ADD PANEL ── -->
-    <div class="panel show" id="panel-add">
-      <p class="panel-title add">— New Member Registration</p>
+    <!-- ── RIGHT: MANAGEMENT CARD ── -->
+    <div class="action-col">
+      <div class="card">
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab active-add" onclick="switchTab('add')">
+            <span class="tab-icon">＋</span> Add
+          </button>
+          <button class="tab" id="del-tab" onclick="switchTab('del')">
+            <span class="tab-icon">✕</span> Revoke
+          </button>
+        </div>
 
-      <div id="msg-add" class="msg"></div>
+        <!-- ── ADD PANEL ── -->
+        <div class="panel show" id="panel-add">
+          <p class="panel-title add">— New Admin</p>
+          <div id="msg-add" class="msg"></div>
 
-      <div class="field">
-        <label>CNIC Number</label>
-        <input type="text" id="add-cnic" placeholder="13 digit CNIC e.g. 3830262874104" maxlength="13"/>
+          <div class="field">
+            <label>Full Name</label>
+            <input type="text" id="add-fullname" placeholder="E.g. Ali Ahmed"/>
+          </div>
+
+          <div class="field">
+            <label>CNIC Number</label>
+            <input type="text" id="add-cnic" placeholder="13 digit CNIC" maxlength="13"/>
+          </div>
+
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="add-email" placeholder="admin@tcf.edu.pk"/>
+          </div>
+
+          <div class="field">
+            <label>Password</label>
+            <input type="password" id="add-password" placeholder="Create a strong password"/>
+          </div>
+
+          <div class="field">
+            <label>Assign Role</label>
+            <select id="add-role">
+              <option value="" disabled selected>Select specific access role</option>
+              <option value="fee">Fee Applications Admin</option>
+              <option value="scholarship">Scholarship Admin</option>
+              <option value="genadmin">General Admin (Complaints)</option>
+              <option value="superadmin">Super Admin (All Access)</option>
+            </select>
+          </div>
+
+          <div class="sep"></div>
+
+          <button class="btn btn-add" id="btn-add" onclick="addMember()">
+            <div class="spinner"></div>
+            <span class="btn-label">＋ Add Admin</span>
+          </button>
+        </div>
+
+        <!-- ── DELETE PANEL ── -->
+        <div class="panel panel-del" id="panel-del">
+          <p class="panel-title del">— Remove Access</p>
+          <div id="msg-del" class="msg"></div>
+
+          <div class="field">
+            <label>CNIC Number</label>
+            <input type="text" id="del-cnic" placeholder="Enter Admin CNIC to delete" maxlength="13"/>
+          </div>
+
+          <div class="sep"></div>
+
+          <button class="btn btn-del" id="btn-del" onclick="deleteMember()">
+            <div class="spinner"></div>
+            <span class="btn-label">✕ Revoke Access</span>
+          </button>
+        </div>
       </div>
-
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" id="add-email" placeholder="member@example.com"/>
-      </div>
-
-      <div class="field">
-        <label>Password</label>
-        <input type="password" id="add-password" placeholder="Enter password"/>
-      </div>
-
-      <div class="field">
-        <label>Role</label>
-        <select id="add-role">
-          <option value="" disabled selected>Select role</option>
-          <option value="fee-section-member">Fee Section Member</option>
-          <option value="scholarship-section-member">Scholarship Section Member</option>
-        </select>
-      </div>
-
-      <div class="sep"></div>
-
-      <button class="btn btn-add" id="btn-add" onclick="addMember()">
-        <div class="spinner"></div>
-        <span class="btn-label">＋ Add Member</span>
-      </button>
-    </div>
-
-    <!-- ── DELETE PANEL ── -->
-    <div class="panel panel-del" id="panel-del">
-      <p class="panel-title del">— Remove Member</p>
-
-      <div id="msg-del" class="msg"></div>
-
-      <div class="field">
-        <label>CNIC Number</label>
-        <input type="text" id="del-cnic" placeholder="Enter CNIC to delete" maxlength="13"/>
-      </div>
-
-      <div class="sep"></div>
-
-      <button class="btn btn-del" id="btn-del" onclick="deleteMember()">
-        <div class="spinner"></div>
-        <span class="btn-label">✕ Delete Member</span>
-      </button>
     </div>
   </div>
-
-  <div class="footer">TCF-DATABASE › signins collection</div>
 </div>
 
 <script>
-  // ── Tab Switch ──────────────────────────────────────────────
   function switchTab(tab) {
     const tabs = document.querySelectorAll('.tab');
-    tabs[0].className = 'tab';
-    tabs[1].className = 'tab';
+    tabs[0].className = 'tab'; tabs[1].className = 'tab';
     document.getElementById('panel-add').classList.remove('show');
     document.getElementById('panel-del').classList.remove('show');
 
     if (tab === 'add') {
-      tabs[0].classList.add('active-add');
-      document.getElementById('panel-add').classList.add('show');
+      tabs[0].classList.add('active-add'); document.getElementById('panel-add').classList.add('show');
     } else {
-      tabs[1].classList.add('active-del');
-      document.getElementById('panel-del').classList.add('show');
+      tabs[1].classList.add('active-del'); document.getElementById('panel-del').classList.add('show');
     }
   }
 
-  // ── Show Message ────────────────────────────────────────────
   function showMsg(id, type, text) {
     const el = document.getElementById(id);
-    el.className = 'msg ' + type;
-    el.textContent = text;
+    el.className = 'msg ' + type; el.textContent = text;
+  }
+  function hideMsg(id) { document.getElementById(id).className = 'msg'; }
+
+  // Auto-fill and switch to delete tab
+  function prepRevoke(cnic) {
+    document.getElementById('del-cnic').value = cnic;
+    switchTab('del');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll up for mobile users
   }
 
-  function hideMsg(id) {
-    document.getElementById(id).className = 'msg';
-  }
-
-  // ── Add Member ──────────────────────────────────────────────
+  // ── Add Admin ──
   async function addMember() {
-    const cnic     = document.getElementById('add-cnic').value.trim();
-    const email    = document.getElementById('add-email').value.trim();
-    const password = document.getElementById('add-password').value.trim();
-    const role     = document.getElementById('add-role').value;
-    const btn      = document.getElementById('btn-add');
+    const full_name = document.getElementById('add-fullname').value.trim();
+    const cnic      = document.getElementById('add-cnic').value.trim();
+    const email     = document.getElementById('add-email').value.trim();
+    const password  = document.getElementById('add-password').value.trim();
+    const role      = document.getElementById('add-role').value;
+    const btn       = document.getElementById('btn-add');
 
     hideMsg('msg-add');
 
-    if (!cnic || !email || !password || !role) {
-      return showMsg('msg-add', 'error', 'Tamam fields fill karna zaroori hain.');
-    }
-    if (!/^\d{13}$/.test(cnic)) {
-      return showMsg('msg-add', 'error', 'CNIC 13 digits ka hona chahiye (bina dashes ke).');
-    }
+    if (!full_name || !cnic || !email || !password || !role) return showMsg('msg-add', 'error', 'Please fill in all fields.');
+    if (!/^\d{13}$/.test(cnic)) return showMsg('msg-add', 'error', 'CNIC must be exactly 13 digits.');
 
-    btn.disabled = true;
-    btn.classList.add('loading');
+    btn.disabled = true; btn.classList.add('loading');
 
     try {
-      const res  = await fetch('http://localhost:3001/api/staff/add', {
+      const res = await fetch('/api/admin/staff', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cnic, email, password, role })
+        body: JSON.stringify({ full_name, cnic, email, password, role })
       });
       const data = await res.json();
 
       if (res.ok) {
-        showMsg('msg-add', 'success', '✓ ' + data.message);
-        document.getElementById('add-cnic').value = '';
-        document.getElementById('add-email').value = '';
-        document.getElementById('add-password').value = '';
-        document.getElementById('add-role').value = '';
-      } else if (res.status === 409) {
-        showMsg('msg-add', 'warn', '⚠ ' + data.message);
+        showMsg('msg-add', 'success', '✓ ' + data.message + ' (Refreshing list...)');
+        setTimeout(() => window.location.reload(), 1500); // Reload to show new user in list
       } else {
         showMsg('msg-add', 'error', '✕ ' + data.message);
       }
-    } catch {
-      showMsg('msg-add', 'error', 'Server se connection nahi ho saka.');
-    }
-
-    btn.disabled = false;
-    btn.classList.remove('loading');
+    } catch { showMsg('msg-add', 'error', 'Connection to server failed.'); }
+    btn.disabled = false; btn.classList.remove('loading');
   }
 
-  // ── Delete Member ───────────────────────────────────────────
+  // ── Delete Admin ──
   async function deleteMember() {
     const cnic = document.getElementById('del-cnic').value.trim();
     const btn  = document.getElementById('btn-del');
 
     hideMsg('msg-del');
 
-    if (!cnic) return showMsg('msg-del', 'error', 'CNIC darj karna zaroori hai.');
-    if (!/^\d{13}$/.test(cnic)) {
-      return showMsg('msg-del', 'error', 'CNIC 13 digits ka hona chahiye.');
-    }
+    if (!cnic) return showMsg('msg-del', 'error', 'Please provide a CNIC.');
+    if (!/^\d{13}$/.test(cnic)) return showMsg('msg-del', 'error', 'CNIC must be exactly 13 digits.');
 
-    btn.disabled = true;
-    btn.classList.add('loading');
+    btn.disabled = true; btn.classList.add('loading');
 
     try {
-      const res  = await fetch('http://localhost:3001/api/staff/delete', {
+      const res = await fetch('/api/admin/staff', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cnic })
@@ -448,19 +372,13 @@
       const data = await res.json();
 
       if (res.ok) {
-        showMsg('msg-del', 'success', '✓ ' + data.message);
-        document.getElementById('del-cnic').value = '';
-      } else if (res.status === 404) {
-        showMsg('msg-del', 'warn', '⚠ ' + data.message);
+        showMsg('msg-del', 'success', '✓ ' + data.message + ' (Refreshing list...)');
+        setTimeout(() => window.location.reload(), 1500); // Reload to remove user from list
       } else {
         showMsg('msg-del', 'error', '✕ ' + data.message);
       }
-    } catch {
-      showMsg('msg-del', 'error', 'Server se connection nahi ho saka.');
-    }
-
-    btn.disabled = false;
-    btn.classList.remove('loading');
+    } catch { showMsg('msg-del', 'error', 'Connection to server failed.'); }
+    btn.disabled = false; btn.classList.remove('loading');
   }
 </script>
 </body>

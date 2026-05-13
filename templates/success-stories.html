@@ -1,184 +1,1186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <title>Success Stories | TCF Alumni Pathways</title>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'tcf-black': '#0B0C0C',
-                        'tcf-dark-grey': '#1A1C1D',
-                        'tcf-green': '#49C34A',
-                    },
-                    fontFamily: {
-                        header: ['Barlow Condensed', 'sans-serif'],
-                        body: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-        .glass-card { background: rgba(26, 28, 29, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .story-gradient { background: linear-gradient(to bottom, transparent, rgba(11, 12, 12, 0.9)); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Alumni Pathways — Success Stories</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     RESET & CSS VARIABLES
+     ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:         #17d4a8;
+    --teal-dim:     rgba(23,212,168,0.12);
+    --teal-mid:     rgba(23,212,168,0.25);
+    --dark:         #060e0a;
+    --bg:           #000000;
+    --card:         #0a0a0a;
+    --accent:       #17d4a8;
+    --light-border: rgba(23,212,168,0.25);
+    --charcoal:     #ffffff;
+    --muted:        rgba(255,255,255,0.55);
+    --body-text:    rgba(255,255,255,0.72);
+    --text:         rgba(255,255,255,0.80);
+    --text-muted:   rgba(255,255,255,0.45);
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body:    'DM Sans', sans-serif;
+    --expo:         cubic-bezier(0.16,1,0.3,1);
+
+    /* File 1 nav vars */
+    --teal-nav:  #00c896;
+    --dark-text: #040404;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    font-family: var(--font-body);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ============================================================
+     NAVBAR — File 1 exact style
+     ============================================================ */
+  #nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(
+      115deg,
+      rgba(80,210,173,0.96),
+      rgba(45,167,131,0.97) 25%,
+      rgba(23,146,100,0.98) 50%,
+      rgba(18,98,73,0.97)   75%,
+      rgba(3,52,43,0.99)
+    );
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+    padding: 0.7rem 1.8rem;
+    box-shadow: 0 2px 32px rgba(0,0,0,0.35);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+  }
+
+  #nav .logo-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: linear-gradient(
+      115deg,
+      rgba(80,210,173,0.96),
+      rgba(45,167,131,0.97) 25%,
+      rgba(23,146,100,0.98) 50%,
+      rgba(18,98,73,0.97)   75%,
+      rgba(3,52,43,0.99)
+    );
+    overflow: hidden;
+  }
+  #nav .logo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+  }
+
+  #nav h1 {
+    color: white;
+    font-family: var(--font-display);
+    font-size: 1.32rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    margin: 0;
+    flex: 1;
+    min-width: 160px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 10px;
+    width: 42px;
+    height: 42px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: auto;
+  }
+  .hamburger span {
+    display: block;
+    width: 20px;
+    height: 1.5px;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.28s ease;
+  }
+  .hamburger:hover {
+    background: rgba(0,200,150,0.2);
+    border-color: rgba(0,200,150,0.5);
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
+
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  #nav a {
+    position: relative;
+    color: rgba(255,255,255,0.88) !important;
+    text-decoration: none;
+    font-weight: 400;
+    padding: 0.45rem 1rem 0.4rem;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+    font-size: 0.875rem;
+    letter-spacing: 0.1px;
+  }
+  #nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: calc(100% - 18px);
+    height: 2px;
+    background: var(--teal-nav);
+    border-radius: 2px;
+    transition: transform 0.25s var(--expo);
+    transform-origin: center;
+  }
+  #nav a:hover { color: white !important; }
+  #nav a:hover::after { transform: translateX(-50%) scaleX(1); }
+
+  #nav a.active {
+    color: var(--dark-text) !important;
+    background: var(--teal-nav) !important;
+    font-weight: 600;
+    border-radius: 40px;
+    padding: 0.42rem 1.15rem;
+  }
+  #nav a.active::after { display: none; }
+
+  #nav .nav-login {
+    background: rgba(0,200,150,0.1);
+    border: 1px solid rgba(0,200,150,0.4);
+    color: var(--teal-nav) !important;
+    font-weight: 600;
+    border-radius: 40px;
+    padding: 0.42rem 1.15rem;
+  }
+  #nav .nav-login::after { display: none; }
+  #nav .nav-login:hover {
+    background: var(--teal-nav) !important;
+    color: var(--dark-text) !important;
+    border-color: var(--teal-nav) !important;
+    box-shadow: 0 0 20px rgba(0,200,150,0.3);
+  }
+
+  @media (min-width: 801px) {
+    .nav-links {
+      display: flex !important;
+      flex-direction: row !important;
+      max-height: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      padding: 0 !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      width: auto !important;
+    }
+    .hamburger { display: none !important; }
+  }
+
+  @media (max-width: 800px) {
+    #nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      position: relative;
+    }
+    #nav h1 {
+      font-size: 1rem;
+      text-align: left;
+      min-width: auto;
+      flex: 0 1 auto;
+      margin: 0;
+      order: 2;
+      padding-left: 8px;
+    }
+    #nav .logo-wrap { order: 1; width: 46px; height: 46px; margin: 0; }
+    .hamburger { display: flex; order: 3; margin-left: auto; }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        max-height 0.45s cubic-bezier(0.16,1,0.3,1),
+        opacity 0.3s ease,
+        visibility 0.25s;
+      background: linear-gradient(160deg, rgba(12,80,65,0.99) 0%, rgba(4,36,28,0.99) 100%);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      gap: 3px;
+      padding: 0 0.85rem;
+      order: 4;
+    }
+
+    .nav-links.show {
+      max-height: 500px;
+      opacity: 1;
+      visibility: visible;
+      padding: 0.85rem 0.85rem 1rem;
+    }
+
+    .nav-links::before {
+      content: 'NAVIGATION';
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      color: rgba(255,255,255,0.28);
+      padding: 0 0.1rem 0.5rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: rgba(255,255,255,0.7) !important;
+      font-size: 0.88rem;
+      font-weight: 400;
+      letter-spacing: 0.2px;
+      text-align: left;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: '›';
+      position: static;
+      transform: none;
+      width: auto;
+      height: auto;
+      background: none;
+      margin-left: auto;
+      font-size: 18px;
+      color: rgba(255,255,255,0.2);
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: inline-block;
+      border-radius: 0;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.07);
+      color: #fff !important;
+      transform: translateX(3px);
+    }
+    .nav-links a:hover::after {
+      color: rgba(255,255,255,0.45);
+      transform: translateX(2px);
+    }
+
+    #nav a.active {
+      background: rgba(0,200,150,0.1) !important;
+      border-color: rgba(0,200,150,0.22) !important;
+      color: #00c896 !important;
+      font-weight: 500;
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+    }
+    #nav a.active::after {
+      display: inline-block;
+      color: rgba(0,200,150,0.45);
+      transform: none;
+    }
+
+    .nav-links .nav-login {
+      margin-top: 0.5rem;
+      padding: 0.78rem 1rem;
+      background: linear-gradient(135deg, rgba(0,200,150,0.14), rgba(0,150,110,0.18)) !important;
+      border: 1px solid rgba(0,200,150,0.32) !important;
+      color: #00c896 !important;
+      font-weight: 600 !important;
+      border-radius: 10px;
+      justify-content: center;
+      letter-spacing: 0.4px;
+      font-size: 0.87rem;
+    }
+    .nav-links .nav-login::after { display: none; }
+    .nav-links .nav-login:hover {
+      background: rgba(0,200,150,0.25) !important;
+      border-color: rgba(0,200,150,0.55) !important;
+      color: #fff !important;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #nav h1 { font-size: 0.82rem; max-width: 150px; white-space: normal; line-height: 1.2; }
+    #nav .logo-wrap { width: 40px; height: 40px; }
+    .hamburger { width: 40px; height: 40px; }
+  }
+
+  /* ============================================================
+     MAIN STORIES CONTENT
+     ============================================================ */
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 40px;
+    gap: 80px;
+  }
+
+  /* ── Page Header ── */
+  .page-header {
+    text-align: center;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s var(--expo), transform 1s var(--expo);
+  }
+  .page-header.visible { opacity: 1; transform: translateY(0); }
+  .page-header .site-tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .page-header h1 em {
+    font-family: 'Dancing Script', cursive;
+    font-style: normal;
+    color: var(--accent);
+    font-size: 1.1em;
+  }
+  .page-header .sub {
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+
+  /* ── Story Card ── */
+  .story-card {
+    background: var(--card);
+    width: 100%;
+    max-width: 100%;
+    padding: 60px 80px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 60px rgba(0,0,0,0.6);
+    border: 2px solid rgba(23,212,168,0.35);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s var(--expo), transform 0.9s var(--expo), box-shadow 0.6s ease;
+  }
+  .story-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow: 0 8px 80px rgba(23,212,168,0.08);
+  }
+  .story-card::before, .story-card::after {
+    content: '';
+    position: absolute;
+    width: 0; height: 0;
+    border-color: var(--accent);
+    border-style: solid;
+    opacity: 0;
+    transition: width 0.7s var(--expo), height 0.7s var(--expo), opacity 0.5s ease;
+  }
+  .story-card::before { top: 20px; left: 20px; border-width: 3px 0 0 3px; }
+  .story-card::after  { bottom: 20px; right: 20px; border-width: 0 3px 3px 0; }
+  .story-card.visible::before,
+  .story-card.visible::after {
+    width: 40px; height: 40px; opacity: 0.5;
+    transition-delay: 0.6s;
+  }
+
+  /* ── Reveal ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s var(--expo), transform 0.8s var(--expo);
+  }
+  .reveal.from-left  { transform: translateX(-32px); }
+  .reveal.from-right { transform: translateX(32px); }
+  .reveal.scale-in   { transform: scale(0.88); }
+  .reveal.visible    { opacity: 1; transform: none; }
+
+  /* ── Tag line ── */
+  .tag-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  /* ── Story Title ── */
+  .story-card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3.5vw, 46px);
+    font-weight: 400;
+    line-height: 1.3;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+  .story-card h1 em {
+    font-family: 'Dancing Script', cursive;
+    font-style: normal;
+    font-size: 1.15em;
+    color: var(--accent);
+  }
+
+  /* ── Divider ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 24px 0;
+  }
+  .divider span {
+    flex: 1; height: 2px;
+    background: var(--light-border);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.9s var(--expo);
+  }
+  .divider i {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    transform: rotate(45deg) scale(0);
+    opacity: 0;
+    display: block; flex-shrink: 0;
+    transition: transform 0.5s var(--expo), opacity 0.5s ease;
+  }
+  .divider.visible span { transform: scaleX(1); }
+  .divider.visible i   { transform: rotate(45deg) scale(1); opacity: 0.7; }
+
+  /* ── Image wrapper ── */
+  .img-wrapper {
+    position: relative;
+    margin: 0 auto 32px;
+    width: 220px;
+    height: 280px;
+  }
+  .img-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border: 2px solid var(--accent);
+    opacity: 0;
+    transform: scale(1.12);
+    transition: opacity 0.7s ease, transform 0.7s var(--expo);
+    transition-delay: 0.2s;
+  }
+  .img-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border: 2px solid var(--accent);
+    opacity: 0;
+    transform: scale(1.18);
+    transition: opacity 0.7s ease, transform 0.7s var(--expo);
+    transition-delay: 0.35s;
+  }
+  .img-wrapper.visible::before { opacity: 0.4; transform: scale(1); }
+  .img-wrapper.visible::after  { opacity: 0.15; transform: scale(1); }
+  .img-wrapper img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    filter: grayscale(15%);
+    transition: filter 0.6s ease;
+  }
+  .img-wrapper img:hover { filter: grayscale(0%); }
+
+  .img-placeholder {
+    width: 100%; height: 100%;
+    background: #111;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--muted);
+    font-size: 13px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .img-placeholder svg { margin-bottom: 10px; opacity: 0.4; }
+
+  /* ── Pull quote ── */
+  .intro-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(16px, 1.6vw, 20px);
+    line-height: 1.6;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 28px;
+    padding: 0 8px;
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .intro-quote::before { content: '\201C'; font-size: 1.5em; color: var(--accent); line-height: 0; vertical-align: -0.3em; margin-right: 4px; }
+  .intro-quote::after  { content: '\201D'; font-size: 1.5em; color: var(--accent); line-height: 0; vertical-align: -0.3em; margin-left: 4px; }
+
+  /* ── Body text ── */
+  p.body-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(15px, 1.4vw, 18px);
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--body-text);
+    text-align: center;
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  p.body-text strong { font-weight: 600; color: #ffffff; }
+
+  /* ── EMBEDDED YOUTUBE STYLES ── */
+  .video-section { margin-top: 36px; max-width: 860px; margin-left: auto; margin-right: auto; }
+  .video-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .youtube-embed {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border: 2px solid var(--light-border);
+    background: #000;
+    transform: scaleX(0.94);
+    opacity: 0;
+    transition: transform 0.9s var(--expo), opacity 0.9s ease;
+  }
+  .youtube-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .youtube-embed.visible {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  /* ── Signature ── */
+  .signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 26px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 36px;
+  }
+  .closing-tag {
+    text-align: center;
+    font-size: 10.5px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0;
+    margin-top: 16px;
+    transform: translateY(10px);
+    transition: opacity 0.8s ease, transform 0.8s var(--expo);
+  }
+  .closing-tag.visible { opacity: 0.6; transform: translateY(0); }
+
+  .story-card:hover .divider.visible span {
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  /* ============================================================
+     FOOTER — File 1 exact style
+     ============================================================ */
+  footer {
+    margin-top: 40px;
+    background: linear-gradient(
+      115deg,
+      rgba(80,210,173,0.94),
+      rgba(45,167,131,0.96) 25%,
+      rgba(23,146,100,0.97) 50%,
+      rgba(18,98,73,0.96)   75%,
+      rgba(3,52,43,0.98)
+    );
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-family: var(--font-body);
+    color: rgba(255,255,255,0.75);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+  }
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    opacity: 0.6;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr;
+    gap: 3rem;
+    padding: 4rem 4.5rem 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-brand .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 1.2rem;
+  }
+  .footer-brand .brand-row .logo-wrap {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(115deg, rgba(80,210,173,0.96), rgba(45,167,131,0.97) 25%, rgba(23,146,100,0.98) 50%, rgba(18,98,73,0.97) 75%, rgba(3,52,43,0.99));
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .footer-brand .brand-row .logo-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .footer-brand .brand-row .name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; line-height: 1.25; }
+  .footer-brand .brand-row .name small { display: block; font-family: var(--font-body); font-size: 0.68rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 2px; }
+  .footer-brand > p { font-size: 0.82rem; line-height: 1.8; color: rgba(255,255,255,0.65); max-width: 290px; margin-bottom: 1.6rem; }
+
+  .footer-socials { display: flex; gap: 14px; }
+  .footer-socials a { display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; text-decoration: none; transition: all 0.25s ease; flex-shrink: 0; }
+  .footer-socials a:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.5); }
+  .footer-socials a.yt:hover  { background: #FF0000; border-color: #FF0000; box-shadow: 0 8px 20px rgba(255,0,0,0.35); }
+  .footer-socials a.fb:hover  { background: #1877F2; border-color: #1877F2; box-shadow: 0 8px 20px rgba(24,119,242,0.35); }
+  .footer-socials a.ig:hover  { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); border-color: #dc2743; box-shadow: 0 8px 20px rgba(220,39,67,0.35); }
+  .footer-socials svg { width: 20px; height: 20px; fill: currentColor; }
+
+  .footer-col h4 { font-size: 0.68rem; font-weight: 600; letter-spacing: 2.8px; text-transform: uppercase; color: rgba(255,255,255,0.95); margin-bottom: 1.2rem; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.15); }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.65rem; }
+  .footer-col ul li a { font-size: 0.83rem; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.18s ease, padding-left 0.2s var(--expo); display: inline-flex; align-items: center; gap: 6px; }
+  .footer-col ul li a::before { content: ''; width: 0; height: 1px; background: rgba(255,255,255,0.8); transition: width 0.2s var(--expo); display: inline-block; }
+  .footer-col ul li a:hover { color: rgba(255,255,255,0.95); }
+  .footer-col ul li a:hover::before { width: 10px; }
+
+  .contact-item { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 0.9rem; }
+  .contact-item .ci-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+  .contact-item .ci-text strong { display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
+  .contact-item .ci-text span { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; padding: 1.3rem 4.5rem; background: rgba(0,0,0,0.15); }
+  .footer-bottom p { font-size: 0.74rem; color: rgba(255,255,255,0.55); margin: 0; }
+  .footer-bottom .pill { font-size: 0.68rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); padding: 5px 14px; border-radius: 40px; }
+
+  @media (max-width: 960px) {
+    .footer-top { grid-template-columns: 1fr 1fr; padding: 3rem 2rem; gap: 2.5rem; }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-brand > p { max-width: 100%; }
+    .footer-bottom { padding: 1.1rem 2rem; }
+  }
+  @media (max-width: 560px) {
+    .footer-top { grid-template-columns: 1fr; padding: 2.5rem 1.4rem; }
+    .footer-bottom { padding: 1rem 1.4rem; flex-direction: column; text-align: center; }
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 768px) {
+    main { padding: 40px 16px; gap: 50px; }
+    .story-card { padding: 40px 28px; }
+  }
+</style>
 </head>
-<body class="antialiased">
+<body>
 
-    <!-- Navigation -->
-    {% include 'navbar.html' %}
+  <!-- ============================================================
+       NAVBAR — 
+       ============================================================ -->
+        {% include 'navbar.html' %}
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main>
 
-    <!-- Hero Section -->
-    <section class="py-20 px-6 text-center">
-        <h2 class="text-tcf-green font-bold tracking-[0.3em] mb-4">Dreams Realized</h2>
-        <h1 class="text-5xl md:text-7xl font-black text-white leading-none mb-6">Our Alumni <br><span class="opacity-50">Impact Stories</span></h1>
-        <p class="max-w-2xl mx-auto text-gray-400">From the streets of Orangi to the halls of Harvard, see how education changes everything.</p>
-    </section>
+    <!-- PAGE HEADER -->
+    <header class="page-header" id="pageHeader">
+      <div class="site-tag">The Citizens Foundation</div>
+      <h1>Alumni <em>Stories</em></h1>
+      <div class="sub">Empowering Pakistan's Future · Since 1995</div>
+    </header>
 
-    <main class="max-w-7xl mx-auto px-6 pb-24">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- Story 1: Kainat -->
-            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
-                <div class="relative h-64">
-                    <img src="kainat.jpg" alt="Kainat Ansari" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
-                    <div class="absolute inset-0 story-gradient flex items-end p-6">
-                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">HARVARD UNIVERSITY</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-2xl font-bold text-white mb-3">Kainat Ansari: From Orangi to Harvard</h3>
-                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">Accepted to the Ivy League Harvard Graduate School of Education, Kainat proves that even in the smallest slums, the biggest dreams can take flight.</p>
-                    <div class="flex items-center justify-between">
-                        <a href="#kainat-full" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
-                        <span class="text-[10px] text-gray-600 font-bold uppercase">Class of TCF</span>
-                    </div>
-                </div>
-            </article>
+    <!-- ══ KAINAT ══ -->
+    <article class="story-card" id="kainat">
+      <div class="tag-line reveal" data-delay="0">TCF Alumna · Harvard Graduate School of Education</div>
+      <h1 class="reveal" data-delay="100"><em>From Orangi to Harvard</em> — Dreams Know No Limits</h1>
+      <div class="divider"><span></span><i></i><span></span></div>
 
-            <!-- Story 2: Asad -->
-            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
-                <div class="relative h-64">
-                    <img src="asad2.jpg" alt="Asad Graduation" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
-                    <div class="absolute inset-0 story-gradient flex items-end p-6">
-                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">GIKI GRADUATE</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-2xl font-bold text-white mb-3">Asad: The Fruit-Seller's Legacy</h3>
-                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">Asad's father chose his son's education over fixing their leaking roof. Today, Asad is a Software Engineer, rewriting his family's future.</p>
-                    <div class="flex items-center justify-between">
-                        <a href="#raza" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
-                        <span class="text-[10px] text-gray-600 font-bold uppercase">Engineer</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Story 3: Abdul Wahid -->
-            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
-                <div class="relative h-64">
-                    <img src="abdul.jpg" alt="Abdul Wahid" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
-                    <div class="absolute inset-0 story-gradient flex items-end p-6">
-                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">LUMS SCHOLAR</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-2xl font-bold text-white mb-3">Abdul Wahid: Beyond the Fields</h3>
-                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">A farmer's son from Bhurewala becomes the first in his village to attend university, securing a full scholarship at LUMS.</p>
-                    <div class="flex items-center justify-between">
-                        <a href="#abdul" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
-                        <span class="text-[10px] text-gray-600 font-bold uppercase">Physics Major</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Story 4: Iram -->
-            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
-                <div class="relative h-64">
-                    <img src="irum.jpg" alt="Iram" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
-                    <div class="absolute inset-0 story-gradient flex items-end p-6">
-                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">POLICE FORCE</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-2xl font-bold text-white mb-3">Iram: Breaking Barriers</h3>
-                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">Challenging conventional norms, Iram joined the Motorway Police, proving that women can lead and protect in any field.</p>
-                    <div class="flex items-center justify-between">
-                        <a href="#irum" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
-                        <span class="text-[10px] text-gray-600 font-bold uppercase">Patrol Officer</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Story 5: Anum -->
-            <article class="glass-card rounded-2xl overflow-hidden group hover:border-tcf-green transition-all duration-500">
-                <div class="relative h-64">
-                    <img src="anum.jpg" alt="Anum Fatima" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
-                    <div class="absolute inset-0 story-gradient flex items-end p-6">
-                        <span class="bg-tcf-green text-tcf-black text-[10px] font-black px-2 py-1 rounded">MICRO-LENDING</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-2xl font-bold text-white mb-3">Anum Fatima: Humble to Harvard</h3>
-                    <p class="text-gray-400 text-sm line-clamp-3 mb-6">From a driver's home to a Harvard prize winner, Anum now uses her education to provide micro-loans for her community.</p>
-                    <div class="flex items-center justify-between">
-                        <a href="#anum" class="text-tcf-green text-xs font-bold uppercase tracking-widest hover:underline">Read More</a>
-                        <span class="text-[10px] text-gray-600 font-bold uppercase">Entrepreneur</span>
-                    </div>
-                </div>
-            </article>
-
+      <div class="img-wrapper reveal scale-in" data-delay="200">
+        <div class="img-placeholder">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#17d4a8" stroke-width="1.2">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+          <img src="{{url_for('static', filename='kainat2.png')}}" alt="Kainat Ansari">
         </div>
-    </main>
+      </div>
 
-    <!-- Detailed View Spotlight (Example for Kainat) -->
-    <section id="kainat-full" class="bg-tcf-dark-grey py-24 px-6 border-t border-white/5">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
-            <div class="md:w-1/2">
-                <h2 class="text-4xl font-black text-tcf-green mb-6">Spotlight: Kainat Ansari</h2>
-                <p class="text-gray-300 leading-relaxed mb-6 italic">
-                    "One day, as a kid, you're wondering if you will ever go to school. Next thing you know, you are packing your bags to go to Harvard!"
-                </p>
-                <p class="text-gray-400 text-sm mb-6 leading-relaxed">
-                    Coming from Orangi – a small town, a slum – women like me are told places like Harvard aren't for us. Getting in was beyond what my parents or I ever imagined. We celebrate Kainat's grit and your belief in the potential of Pakistan's children.
-                </p>
-                <div class="bg-tcf-black p-4 rounded-xl border border-white/5">
-                    <video class="w-full rounded-lg" controls>
-                        <source src="kainat-video.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-            <div class="md:w-1/2">
-                <img src="kainat.jpg" alt="Kainat" class="rounded-3xl border-2 border-tcf-green shadow-2xl shadow-tcf-green/10">
-            </div>
+      <p class="intro-quote reveal" data-delay="100">
+        One day, as a kid, you're wondering if you will ever go to school. Next thing you know, you are packing your bags to go to Harvard!
+      </p>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <p class="body-text reveal" data-delay="80">
+        Kainat Ansari, a TCF Alumna from Orangi Town, was accepted to the Ivy League
+        <strong>Harvard Graduate School of Education.</strong>
+        Coming from Orangi — a small town, a slum — women like me are told places like Harvard aren't for us.
+        <strong>Getting in was beyond what my parents or I ever imagined.</strong>
+        <br><br>
+        It feels like just yesterday that Kainat walked through TCF's gates with her father for her brother's admission.
+        She saw girls playing badminton, books in the library, classrooms alive with ideas she couldn't yet grasp.
+        She knew she belonged there — and pleaded with her father for a chance.
+        <br><br>
+        And when she finally got it, <strong>she worked harder than ever to catch up.</strong>
+        Soon, she rose to the top of her class. We celebrate Kainat's grit and your belief in the
+        potential of Pakistan's children. <strong>Change truly begins with education.</strong>
+        <br><br>
+        Kainat, you make us proud. Keep flying high!
+      </p>
+
+      <div class="video-section reveal" data-delay="100">
+        <div class="video-label">Watch Kainat's Story</div>
+        <div class="youtube-embed">
+          <iframe src="https://www.youtube.com/embed/ezbbRJy7am4" title="Kainat's Journey - TCF Alumni Story" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-    </section>
+      </div>
+      <div class="signature reveal from-left" data-delay="120">The Citizens Foundation</div>
+      <div class="closing-tag">Empowering Pakistan's Future · Since 1995</div>
+    </article>
 
-    <!-- CTA Section -->
-    <section class="py-24 px-6 text-center">
-        <div class="max-w-3xl mx-auto glass-card p-12 rounded-3xl border-t-4 border-tcf-green">
-            <h3 class="text-3xl font-black mb-4">Be the Next Story</h3>
-            <p class="text-gray-400 mb-8">Your background doesn't define your destination. Apply for the TCF Scholarship Program and start your journey.</p>
-            <a href="/login" class="bg-tcf-green text-tcf-black px-10 py-3 rounded-full font-black uppercase text-sm inline-block tracking-widest">Join Alumni Portal</a>
+    <!-- ══ ASAD ══ -->
+    <article class="story-card" id="raza">
+      <div class="tag-line reveal" data-delay="0">TCF Alumnus · GIKI Graduate</div>
+      <h1 class="reveal" data-delay="100">Fruit-seller's Son, <em>GIKI</em> Graduate</h1>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <div class="img-wrapper reveal scale-in" data-delay="200">
+        <img src="{{url_for('static', filename='raza2.png')}}" alt="Asad with family">
+      </div>
+
+      <p class="intro-quote reveal" data-delay="100">
+        The repairing of our home can wait — but this opportunity might not come again.
+      </p>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <p class="body-text reveal" data-delay="80">
+        The sweet scent of mangoes fills the air as we enter a small, mud-brick home in a dusty street of
+        <strong>Khuda ki Basti, Karachi.</strong> Muhammad Ahmad, a fruit-seller, stacking up mangoes on his pushcart,
+        smiling from ear to ear.
+        <br><br>
+        "With my earnings, it would not have been possible for me to put Asad through a good school, college and university."
+        He had to drop out of school at a young age to support his family.
+        <strong>"It is my dream to educate all my children and TCF is making it possible."</strong>
+        <br><br>
+        In their community, boys are expected to take up full-time jobs at a young age — but Baba encouraged Asad to focus on
+        his education. When Asad was leaving for university, his father handed him money he had been saving to get their roof fixed.
+        <strong>"The repairing of our home can wait but this opportunity might not come again."</strong>
+        <br><br>
+        Asad graduated from the prestigious <strong>Ghulam Ishaq Khan Institute of Engineering Sciences and Technology</strong>
+        and is ready to begin his first job at a software company. Two of his younger siblings are currently first-year students
+        at TCF College while two other sisters study at TCF school — <strong>all with big dreams of their own!</strong>
+      </p>
+
+      <div class="video-section reveal" data-delay="100">
+        <div class="video-label">Watch Asad's Story</div>
+        <div class="youtube-embed">
+          <iframe src="https://www.youtube.com/embed/2YLR4lYnqRE" title="TCF alumnus, Asad Raza, breaks through the cycle of poverty after graduating from GIKI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
-    </section>
+      </div>
+      <div class="signature reveal from-left" data-delay="120">The Citizens Foundation</div>
+      <div class="closing-tag">Empowering Pakistan's Future · Since 1995</div>
+    </article>
 
-    <!-- Footer -->
-    <footer class="bg-tcf-dark-grey py-12 px-6 border-t border-white/10 text-center">
-        <h3 class="text-xl font-bold text-tcf-green mb-4">TCF Alumni Pathways</h3>
-        <div class="text-sm text-gray-500 space-y-2 mb-8">
-            <p>📧 info@tcf-alumni.org | 📞 0800-00823</p>
-            <p>© 2026 The Citizens Foundation. All Rights Reserved.</p>
+    <!-- ══ ABDUL ══ -->
+    <article class="story-card" id="abdul">
+      <div class="tag-line reveal" data-delay="0">TCF Alumnus · LUMS Full Scholar</div>
+      <h1 class="reveal" data-delay="100">A Farmer's Son Will Become <em>Anything</em> He Dreams Of</h1>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <div class="img-wrapper reveal scale-in" data-delay="200">
+        <img src="{{url_for('static', filename='abdul2.png')}}" alt="Abdul Wahid">
+      </div>
+
+      <p class="intro-quote reveal" data-delay="100">
+        Whatever I am today is because of my father. He is my hero!
+      </p>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <p class="body-text reveal" data-delay="80">
+        Every morning, Abdul Wahid's father would drop him and his brother off to school on his bicycle before heading out to the
+        fields — labouring under the <strong>scorching heat of the sun</strong> to provide for his family.
+        <br><br>
+        As his father got older, many villagers suggested he pull his sons out of school and put them to work.
+        <em>"What's the use of sending them to school? A farmer's son will become a farmer anyway."</em>
+        But Ahmad disregarded their comments. <strong>"You can be anything you want if you work hard,"</strong> he told his children.
+        <br><br>
+        Today, Abdul Wahid pursues a <strong>Bachelor of Science in Physics on a full scholarship at LUMS</strong> —
+        the <strong>first child in his village in Bhurewala, Punjab</strong> to attend university.
+        <br><br>
+        "I can never forget the moment when I told him about my admission. He was in tears — for he knew his hard work and
+        struggle had finally paid off." <strong>He chose our future over a comfortable life. He is my hero!</strong>
+      </p>
+
+      <div class="video-section reveal" data-delay="100">
+        <div class="video-label">Watch Abdul's Story</div>
+        <div class="youtube-embed">
+          <iframe width="788" height="443" src="https://www.youtube.com/embed/KXXph2JTkqM" title="TCF-USA Abdul Wahid's story (Alumni)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
-    </footer>
+      </div>
+      <div class="signature reveal from-left" data-delay="120">The Citizens Foundation</div>
+      <div class="closing-tag">Empowering Pakistan's Future · Since 1995</div>
+    </article>
 
+    <!-- ══ IRUM ══ -->
+    <article class="story-card" id="irum">
+      <div class="tag-line reveal" data-delay="0">TCF Alumna · National Highways &amp; Motorway Police</div>
+      <h1 class="reveal" data-delay="100">TCF Alumna <em>Iram,</em> a Policewoman #ChoseToChallenge!</h1>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <div class="img-wrapper reveal scale-in" data-delay="200">
+        <img src="{{url_for('static', filename='irum.jpg')}}" alt="Iram police officer">
+      </div>
+
+      <p class="intro-quote reveal" data-delay="100">
+        These days will pass once we are educated and on our feet.
+      </p>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <p class="body-text reveal" data-delay="80">
+        <em>"A policewoman? What kind of a job is that for a girl?"</em> — Iram's relatives would ask her mother.
+        At the time, TCF alumna Iram from <strong>Kalabagh, Punjab</strong> was training to become a patrol officer
+        with the National Highways and Motorway Police — an occupation generally considered unconventional for women.
+        <br><br>
+        Raised by a <strong>single mother</strong> who worked day and night as a tailor and domestic help,
+        Iram and her sisters found strength in her words as others told them it was a waste of money to educate girls.
+        <br><br>
+        The day Iram learned she had aced her training and was appointed <strong>Junior Patrol Officer</strong>,
+        she heard from her father after nearly nine years. He called to tell her that he was proud of her.
+        Today, the same people who used to mock her mother now tell their daughters to follow in her footsteps.
+        <br><br>
+        <strong>"Like in any other field, the presence of women in Motorway Police is equally important.
+        There are so many female passengers that call out for help and it is important that there are women here who can help them."</strong>
+        <br><br>
+        On IWD2021, we are celebrating the passion, excellence and strength of women who <strong>#ChooseToChallenge.</strong>
+      </p>
+
+      <div class="video-section reveal" data-delay="100">
+        <div class="video-label">Watch Iram's Story</div>
+        <div class="youtube-embed">
+          <iframe width="788" height="443" src="https://www.youtube.com/embed/WxdBjFpVmlE" title="Iram Jabeen. Junior Patrol Officer. ID #223 - The Citizens Foundation, USA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="signature reveal from-left" data-delay="120">The Citizens Foundation</div>
+      <div class="closing-tag">Empowering Pakistan's Future · Since 1995</div>
+    </article>
+
+    <!-- ══ ANUM ══ -->
+    <article class="story-card" id="anum">
+      <div class="tag-line reveal" data-delay="0">TCF Alumna · Harvard Summer Program Grand Prize Winner</div>
+      <h1 class="reveal" data-delay="100">From <em>Humble</em> to Harvard</h1>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <div class="img-wrapper reveal scale-in" data-delay="200">
+        <img src="{{url_for('static', filename='anum2.png')}}" alt="Anum Fatima">
+      </div>
+
+      <p class="intro-quote reveal" data-delay="100">
+        Education has empowered me. Now, I'm doing something I always wanted to do — helping people around me.
+      </p>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <p class="body-text reveal" data-delay="80">
+        Anum Fatima started her remarkable journey with TCF in seventh grade.
+        Born in a family facing significant financial challenges, Anum saw her father working tirelessly as a driver.
+        From a very young age, she committed herself to his only expectation — <strong>work hard and focus on your studies.</strong>
+        <br><br>
+        After graduating from TCF in 2006, Anum went on to become the <strong>first girl in her family to attend college</strong>
+        and completed her MBA from College of Business Management in Karachi.
+        In 2013, she received a scholarship to attend a <strong>Harvard University summer programme</strong>
+        — where she was selected as the <strong>Grand Prize Winner</strong> in her class.
+        <br><br>
+        During a subsequent internship in Washington DC, Anum designed a <strong>micro-lending project</strong> for her community
+        and has already provided micro loans to families, helping them improve their own lives.
+        <br><br>
+        <em>"I'm a bridge between people who want to help and the ones who need help. I get enormous satisfaction from knowing
+        that education has empowered me."</em>
+      </p>
+
+      <div class="video-section reveal" data-delay="100">
+        <div class="video-label">Watch Anum's Story</div>
+        <div class="youtube-embed">
+          <iframe width="788" height="443" src="https://www.youtube.com/embed/7_PSwkicDJM" title="TCF Alumna, Anum Fatima tells her story!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="signature reveal from-left" data-delay="120">The Citizens Foundation</div>
+      <div class="closing-tag">Empowering Pakistan's Future · Since 1995</div>
+    </article>
+
+    <!-- ══ ZAINT ══ -->
+    <article class="story-card" id="zaint">
+      <div class="tag-line reveal" data-delay="0">TCF Alumnus · Inspiring Tomorrow</div>
+      <h1 class="reveal" data-delay="100"><em>Zaint's</em> Story</h1>
+      <div class="divider"><span></span><i></i><span></span></div>
+
+      <div class="img-wrapper reveal scale-in" data-delay="200">
+        <img src="{{url_for('static', filename='zain.png')}}" alt="Zaint">
+      </div>
+      <p class="body-text reveal" data-delay="80">Zaint embodies resilience and transformation — from TCF classrooms to building a future with purpose. Watch his journey unfold.</p>
+
+      <div class="video-section reveal" data-delay="100">
+        <div class="video-label">Coming soon — Zaint's full story</div>
+        <div class="youtube-embed">
+          <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" title="Zaint's Inspiring Story - TCF Alumni" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="signature reveal from-left" data-delay="120">The Citizens Foundation</div>
+      <div class="closing-tag">Empowering Pakistan's Future · Since 1995</div>
+    </article>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER — File 1 style
+       ============================================================ -->
+  <footer>
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <div class="brand-row">
+          <div class="logo-wrap">
+            <img src="{{url_for('static', filename='logo3.png')}}" alt="TCF Logo">
+          </div>
+          <div class="name">
+            The Citizens Foundation
+            <small>Alumni Pathways</small>
+          </div>
+        </div>
+        <p>Empowering Pakistan's next generation through quality education since 1995. Every child deserves a future built on knowledge, courage, and opportunity.</p>
+        <div class="footer-socials">
+          <a href="https://youtube.com/@tcf-dummy" target="_blank" rel="noopener" class="yt" title="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://facebook.com/tcf-dummy" target="_blank" rel="noopener" class="fb" title="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://instagram.com/tcf-dummy" target="_blank" rel="noopener" class="ig" title="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About TCF</a></li>
+          <li><a href="/guide">Alumni Guide</a></li>
+          <li><a href="/success-stories">Success Stories</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/login">Alumni Login</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-item">
+          <div class="ci-icon">📧</div>
+          <div class="ci-text">
+            <strong>Email</strong>
+            <span>alumni@tcf.org.pk</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📞</div>
+          <div class="ci-text">
+            <strong>Phone</strong>
+            <span>+92 21 111 823 823</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📍</div>
+          <div class="ci-text">
+            <strong>Head Office</strong>
+            <span>Karachi, Pakistan</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 TCF Alumni Pathways — All rights reserved.</p>
+      <span class="pill">Empowering Pakistan · Since 1995</span>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+       ============================================================ -->
+  <script>
+    // Nav active link highlight
+    (function () {
+      var currentPath = window.location.pathname;
+      var links = document.querySelectorAll('#nav .nav-links a:not(.nav-login)');
+      links.forEach(function (link) {
+        var href = link.getAttribute('href');
+        if (href && (currentPath === href || currentPath.endsWith(href))) {
+          links.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
+    })();
+
+    // Hamburger toggle
+    (function () {
+      const hamburger = document.getElementById('hamburgerBtn');
+      const navLinksContainer = document.getElementById('navLinks');
+      let isMenuOpen = false;
+
+      function toggleMenu(forceState) {
+        if (typeof forceState === 'boolean') {
+          isMenuOpen = forceState;
+        } else {
+          isMenuOpen = !isMenuOpen;
+        }
+        if (isMenuOpen) {
+          navLinksContainer.classList.add('show');
+          hamburger.classList.add('open');
+          hamburger.setAttribute('aria-expanded', 'true');
+        } else {
+          navLinksContainer.classList.remove('show');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      if (hamburger && navLinksContainer) {
+        hamburger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (window.innerWidth <= 800) toggleMenu();
+        });
+        navLinksContainer.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', function () {
+            if (window.innerWidth <= 800 && isMenuOpen) toggleMenu(false);
+          });
+        });
+        document.addEventListener('click', function (e) {
+          if (window.innerWidth <= 800 && isMenuOpen) {
+            if (!navLinksContainer.contains(e.target) && !hamburger.contains(e.target)) {
+              toggleMenu(false);
+            }
+          }
+        });
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 800 && isMenuOpen) toggleMenu(false);
+        });
+      }
+    })();
+
+    // Intersection Observer for reveal animations
+    function onVisible(el, cb, threshold = 0.1) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { cb(); io.unobserve(el); }
+        });
+      }, { threshold });
+      io.observe(el);
+    }
+
+    // Page header reveal
+    onVisible(document.getElementById('pageHeader'), () => {
+      document.getElementById('pageHeader').classList.add('visible');
+    }, 0.05);
+
+    // Process each story card
+    document.querySelectorAll('.story-card').forEach(card => {
+      onVisible(card, () => card.classList.add('visible'), 0.05);
+
+      card.querySelectorAll('.reveal').forEach((el, i) => {
+        const delay = parseInt(el.dataset.delay || 0);
+        onVisible(el, () => {
+          setTimeout(() => el.classList.add('visible'), delay + i * 60);
+        }, 0.08);
+      });
+
+      card.querySelectorAll('.divider').forEach((div, i) => {
+        onVisible(div, () => {
+          setTimeout(() => div.classList.add('visible'), 150 + i * 80);
+        }, 0.08);
+      });
+
+      card.querySelectorAll('.img-wrapper').forEach(wrap => {
+        onVisible(wrap, () => setTimeout(() => wrap.classList.add('visible'), 100), 0.08);
+      });
+
+      card.querySelectorAll('.youtube-embed').forEach(ytWrap => {
+        onVisible(ytWrap, () => setTimeout(() => ytWrap.classList.add('visible'), 200), 0.08);
+      });
+
+      const ct = card.querySelector('.closing-tag');
+      if (ct) onVisible(ct, () => setTimeout(() => ct.classList.add('visible'), 300), 0.08);
+    });
+  </script>
 </body>
 </html>

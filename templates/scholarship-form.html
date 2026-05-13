@@ -26,568 +26,382 @@
     <style>
         body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+        .form-section { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2rem; margin-bottom: 2rem; }
+        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input, select, textarea { transition: all 0.3s ease; }
     </style>
 </head>
 <body class="antialiased">
+    <!-- Overlay & Loading -->
+    <div id="overlay" class="fixed inset-0 bg-black/70 z-[998] hidden"></div>
+    <div id="loading" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[999] hidden text-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-tcf-green border-white/10 mb-4 mx-auto"></div>
+        <p class="text-tcf-green font-bold">Submitting Your Application...</p>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] hidden w-[90%] max-w-md bg-tcf-dark-grey p-8 rounded-2xl border border-white/10 text-center shadow-2xl">
+        <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+        <p id="modalText" class="text-gray-400 mb-6"></p>
+        <button onclick="closeModal()" class="bg-tcf-green text-tcf-black px-8 py-2 rounded-lg font-bold uppercase hover:bg-white transition">OK</button>
+    </div>
+
     <div id="main">
-        <!-- Navigation -->
         {% include 'navbar.html' %}
 
-        <!-- Scholarship Form Section -->
         <section class="py-16 px-6">
-            <div class="max-w-2xl mx-auto">
-                <h1 class="text-4xl font-bold mb-2 text-tcf-green text-center">Qarz-e-Hasna Scholarship</h1>
-                <p class="text-center text-gray-400 mb-12 text-sm uppercase tracking-widest">Apply for Financial Support</p>
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-bold mb-2 text-tcf-green text-center">Qarz-e-Hasna Scholarship Form</h1>
+                <p class="text-center text-gray-400 mb-12 text-sm uppercase tracking-widest">Interest-Free Loan for TCF Alumni</p>
 
-                <!-- Scholarship Form -->
                 <div class="bg-tcf-dark-grey border border-white/10 rounded-2xl p-8 shadow-2xl">
-                    <form id="scholarshipForm" class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <!-- Name -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Full Name</label>
-                                <input type="text" name="name" required
-                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                    <form id="scholarshipForm" enctype="multipart/form-data" class="space-y-8">
+                        
+                        <!-- 1. Personal Information -->
+                        <div class="form-section">
+                            <h2 class="text-tcf-green text-xl mb-6">1. Personal Information</h2>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Full Name *</label>
+                                    <input type="text" name="name" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Gender *</label>
+                                    <select name="gender" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Date of Birth *</label>
+                                    <input type="date" name="dob" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">CNIC (13 Digits) *</label>
+                                    <input type="text" name="cnic" id="cnic" maxlength="13" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Email *</label>
+                                    <input type="email" name="email" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Father's Name *</label>
+                                    <input type="text" name="fatherName" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Father CNIC *</label>
+                                    <input type="text" name="fatherCnic" id="fatherCnic" maxlength="13" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Home City/District *</label>
+                                    <input type="text" name="city" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
                             </div>
-
-                            <!-- Email -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Email</label>
-                                <input type="email" name="email" required
-                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            <div class="grid md:grid-cols-3 gap-6 mt-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Personal Phone *</label>
+                                    <input type="tel" name="phone" id="phone" maxlength="11" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">WhatsApp No *</label>
+                                    <input type="tel" name="whatsapp" id="whatsapp" maxlength="11" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">TCF Campus *</label>
+                                    <input type="text" name="campus" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
                             </div>
-
-                            <!-- CNIC -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">CNIC</label>
-                                <input type="text" name="cnic" maxlength="13" required
-                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            <div class="mt-6 grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Emergency Contact Person *</label>
+                                    <input type="text" name="emergencyContact" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Emergency Phone *</label>
+                                    <input type="tel" name="emergencyPhone" id="emergencyPhone" maxlength="11" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
                             </div>
-
-                            <!-- Phone -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Phone Number</label>
-                                <input type="tel" name="phone" required
-                                    class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                            <div class="mt-6">
+                                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Home Address *</label>
+                                <textarea name="address" rows="2" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none"></textarea>
                             </div>
                         </div>
 
-                        <!-- Education Level -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Education Level</label>
-                            <select name="education_level" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
-                                <option value="">Select Education Level</option>
-                                <option value="intermediate">Intermediate</option>
-                                <option value="bachelor">Bachelor</option>
-                                <option value="master">Master</option>
-                                <option value="phd">PhD</option>
-                            </select>
+                        <!-- 2. Educational Information -->
+                        <div class="form-section">
+                            <h2 class="text-tcf-green text-xl mb-6">2. Educational Information</h2>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">TCF School Name *</label>
+                                    <input type="text" name="schoolName" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">School Location *</label>
+                                    <input type="text" name="schoolLocation" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Years in TCF *</label>
+                                    <input type="number" name="yearsInTcf" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Matric Year *</label>
+                                    <input type="number" name="matricYear" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Matric Roll No *</label>
+                                    <input type="text" name="matricRoll" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Matric Faculty *</label>
+                                    <input type="text" name="faculty" placeholder="Science/Arts" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Matric Percentage *</label>
+                                    <input type="number" step="0.01" name="matricPercentage" min="55" max="100" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Matric Grade *</label>
+                                    <select name="matricGrade" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                        <option value="A+">A+</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                    </select>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Last Qualification *</label>
+                                    <input type="text" name="lastQualification" placeholder="e.g. 2nd Year Completed" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Applicable Option *</label>
+                                    <select name="applicableOption" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-tcf-green outline-none">
+                                        <option value="tcfCollege">TCF College Student</option>
+                                        <option value="tcfVirtual">TCF Virtual College</option>
+                                        <option value="none">Other Alumni</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-6 mt-6">
+                                <div class="bg-white/5 p-4 rounded-lg border border-white/5">
+                                    <label class="block text-xs font-bold text-gray-500 mb-3 uppercase">Are you currently working? *</label>
+                                    <div class="flex gap-4">
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="working" value="yes" required class="accent-tcf-green"> Yes</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="working" value="no" required class="accent-tcf-green"> No</label>
+                                    </div>
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-lg border border-white/5">
+                                    <label class="block text-xs font-bold text-gray-500 mb-3 uppercase">Previously Applied for Loan? *</label>
+                                    <div class="flex gap-4">
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="previousApply" value="yes" required class="accent-tcf-green"> Yes</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="previousApply" value="no" required class="accent-tcf-green"> No</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Field of Study -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Field of Study</label>
-                            <input type="text" name="field_of_study" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition">
+                        <!-- 3. Household & Financials -->
+                        <div class="form-section">
+                            <h2 class="text-tcf-green text-xl mb-6">3. Household & Financials</h2>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Earning Members *</label>
+                                    <input type="number" name="earningMembers" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Siblings in Uni *</label>
+                                    <input type="number" name="siblingsInUni" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Household Members *</label>
+                                    <input type="number" name="householdMembers" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">House Type *</label>
+                                    <select name="house" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white outline-none">
+                                        <option value="own">Own</option>
+                                        <option value="rented">Rented</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Total Monthly Expense *</label>
+                                    <input type="number" name="totalExpense" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Monthly Repayment *</label>
+                                    <input type="number" name="contributionAmount" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white outline-none">
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-4 gap-4 mt-6">
+                                <!-- Grouping smaller expenses -->
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">Transport</label>
+                                    <input type="number" name="transport" required class="w-full bg-tcf-black border border-white/10 rounded-sm px-2 py-2 text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">Medical</label>
+                                    <input type="number" name="medical" required class="w-full bg-tcf-black border border-white/10 rounded-sm px-2 py-2 text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">Electricity</label>
+                                    <input type="number" name="electricity" required class="w-full bg-tcf-black border border-white/10 rounded-sm px-2 py-2 text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">Gas</label>
+                                    <input type="number" name="gasBill" required class="w-full bg-tcf-black border border-white/10 rounded-sm px-2 py-2 text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">Water</label>
+                                    <input type="number" name="water" required class="w-full bg-tcf-black border border-white/10 rounded-sm px-2 py-2 text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">Grocery</label>
+                                    <input type="number" name="grocery" required class="w-full bg-tcf-black border border-white/10 rounded-sm px-2 py-2 text-white">
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Financial Need Description -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-300 mb-2 uppercase">Describe Your Financial Situation</label>
-                            <textarea name="financial_need" rows="4" required
-                                class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-tcf-green focus:outline-none focus:ring-2 focus:ring-tcf-green/20 transition resize-none"></textarea>
+                        <!-- 4. E-Assessment Plan A -->
+                        <div class="form-section">
+                            <h2 class="text-tcf-green text-xl mb-6">4. Education Plan A</h2>
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Interest Degree *</label>
+                                    <input type="text" name="degreePlanA" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Why do you want this degree? *</label>
+                                    <textarea name="reasonPlanA" rows="3" required class="w-full bg-tcf-black border border-white/10 rounded-lg px-4 py-3 text-white outline-none"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5. Documents Upload -->
+                        <div class="form-section">
+                            <h2 class="text-tcf-green text-xl mb-6">5. Documents (Max 10MB)</h2>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Your CNIC/B-Form *</label>
+                                    <input type="file" name="cnicFile" required class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tcf-green file:text-black hover:file:bg-white transition">
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Father's CNIC *</label>
+                                    <input type="file" name="fatherCnicFile" required class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tcf-green file:text-black hover:file:bg-white transition">
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Photograph *</label>
+                                    <input type="file" name="photo" required class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tcf-green file:text-black hover:file:bg-white transition">
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Matric Marksheet *</label>
+                                    <input type="file" name="matricMarksheet" required class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tcf-green file:text-black hover:file:bg-white transition">
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Utility Bills *</label>
+                                    <input type="file" name="utilityBills" required class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tcf-green file:text-black hover:file:bg-white transition">
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Other Documents (Optional)</label>
+                                    <input type="file" name="otherDocs" class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-white/10 file:text-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. Declarations -->
+                        <div class="space-y-4 pt-4">
+                            <div class="flex items-start gap-4 bg-white/5 p-4 rounded-lg border border-white/5">
+                                <input type="checkbox" name="zakatEligibility" required class="mt-1 w-5 h-5 accent-tcf-green cursor-pointer">
+                                <p class="text-xs text-gray-400 leading-relaxed italic">
+                                    I confess that I am eligible to receive Zakat as per Shariah. I authorize The Citizens Foundation to receive Zakat on my behalf for my educational expenses.
+                                </p>
+                            </div>
+                            <div class="flex items-start gap-4 bg-white/5 p-4 rounded-lg border border-white/5">
+                                <input type="checkbox" name="undertaking" required class="mt-1 w-5 h-5 accent-tcf-green cursor-pointer">
+                                <p class="text-xs text-gray-400 leading-relaxed italic">
+                                    I declare that all provided information is true. I agree to return the loan amount as soon as possible to benefit other Alumni.
+                                </p>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-lg border border-white/5">
+                                <label class="block text-xs font-bold text-gray-500 mb-3 uppercase">Consent Declaration *</label>
+                                <div class="flex flex-col gap-2">
+                                    <label class="flex items-center gap-2 text-xs text-gray-400 cursor-pointer"><input type="radio" name="consent" value="yes" required class="accent-tcf-green"> Yes, TCF can use my story/picture for fundraising.</label>
+                                    <label class="flex items-center gap-2 text-xs text-gray-400 cursor-pointer"><input type="radio" name="consent" value="no" required class="accent-tcf-green"> No, I do not permit TCF to use my story.</label>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" class="w-full bg-tcf-green text-tcf-black font-bold py-3 rounded-lg hover:bg-white transition duration-300 uppercase tracking-wider">
-                            Submit Application
+                        <button type="submit" class="w-full bg-tcf-green text-tcf-black font-bold py-4 rounded-xl hover:bg-white transition duration-300 uppercase tracking-widest text-lg shadow-lg">
+                            Submit Complete Application
                         </button>
                     </form>
                 </div>
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 mt-16">
-            <div class="max-w-7xl mx-auto text-center">
-                <p class="text-gray-500 text-xs">&copy; 2024 The Citizens Foundation. All rights reserved.</p>
-            </div>
+        <footer class="bg-tcf-dark-grey pt-12 pb-6 px-6 border-t border-white/5 mt-16 text-center">
+            <p class="text-gray-500 text-xs tracking-widest uppercase">&copy; 2026 The Citizens Foundation. Empowering Through Education.</p>
         </footer>
-    </div>
-</body>
-</html>
-            z-index: 1000;
-            max-width: 500px;
-            width: 90%;
-            display: none;
-        }
-        .message-box {
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-        .success-box {
-            background-color: #d4edda;
-            color: #155724;
-            border: 2px solid #c3e6cb;
-        }
-        .error-box {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
-        }
-        .message-box h2 {
-            margin-top: 0;
-        }
-        .message-box button {
-            margin-top: 20px;
-            width: auto;
-            padding: 10px 30px;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 999;
-            display: none;
-        }
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        .loading img {
-            width: 50px;
-            height: 50px;
-        }
-    </style>
-</head>
-<body>
-    <div class="overlay" id="overlay"></div>
-    
-    <div id="messageContainer">
-        <div class="message-box" id="messageBox">
-            <h2 id="messageTitle"></h2>
-            <p id="messageText"></p>
-            <button onclick="hideMessage()" id="messageButton">OK</button>
-        </div>
-    </div>
-    
-    <div class="loading" id="loading">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Cpath fill='%23007bff' d='M25,5A20,20,0,0,1,45,25'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 25 25' to='360 25 25' dur='1s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E" alt="Loading...">
-        <p>Submitting your application...</p>
-    </div>
-
-    <div class="container">
-        <h1>TCF Interest Free Loan (Qarz-e-Hasna) Application Form</h1>
-        
-        <form id="tcfForm" enctype="multipart/form-data">
-            <!-- Personal Information Section -->
-            <fieldset>
-                <legend><h2>Personal Information</h2></legend>
-                
-                <label for="name">Name:*</label>
-                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-                
-                <div class="radio-group">
-                    <label>Gender:*</label>
-                    <input type="radio" id="male" name="gender" value="male" required>
-                    <label for="male">Male</label>
-                    <input type="radio" id="female" name="gender" value="female" required>
-                    <label for="female">Female</label>
-                </div>
-                
-                <label for="dob">Date of Birth:*</label>
-                <input type="date" id="dob" name="dob" required>
-                
-                <label for="cnic">CNIC (13 digits without dashes):*</label>
-                <input type="text" id="cnic" name="cnic" placeholder="1234512345671" pattern="\d{13}" maxlength="13" required>
-                
-                <label for="email">Email:*</label>
-                <input type="email" id="email" name="email" placeholder="example@domain.com" required>
-                
-                <label for="fatherName">Father Name:*</label>
-                <input type="text" id="fatherName" name="fatherName" placeholder="Enter father's full name" required>
-                
-                <label for="fatherCnic">Father CNIC (13 digits without dashes):*</label>
-                <input type="text" id="fatherCnic" name="fatherCnic" placeholder="1234512345671" pattern="\d{13}" maxlength="13" required>
-                
-                <label for="address">Home Address:*</label>
-                <textarea id="address" name="address" placeholder="Enter complete home address" required></textarea>
-                
-                <label for="city">Home City District/Province:*</label>
-                <input type="text" id="city" name="city" placeholder="Enter your city/district" required>
-                
-                <label for="campus">Your TCF Campus:*</label>
-                <input type="text" id="campus" name="campus" placeholder="Enter TCF campus name" required>
-                
-                <label for="phone">Personal Phone No (11 digits):*</label>
-                <input type="tel" id="phone" name="phone" placeholder="03XXXXXXXXX" pattern="\d{11}" maxlength="11" required>
-                
-                <label for="whatsapp">WhatsApp Contact No (11 digits):*</label>
-                <input type="tel" id="whatsapp" name="whatsapp" placeholder="03XXXXXXXXX" pattern="\d{11}" maxlength="11" required>
-                
-                <label for="emergencyContact">Emergency Contact Person:*</label>
-                <input type="text" id="emergencyContact" name="emergencyContact" placeholder="Name of emergency contact" required>
-                
-                <label for="emergencyPhone">Emergency Contact Person No (11 digits):*</label>
-                <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="03XXXXXXXXX" pattern="\d{11}" maxlength="11" required>
-                
-                <label for="applicableOption">Please select the most applicable option:*</label>
-                <select id="applicableOption" name="applicableOption" required>
-                    <option value="">Select an option</option>
-                    <option value="tcfCollege">I am a student of TCF College, Qayyumabad, Karachi</option>
-                    <option value="tcfVirtual">I am a student of TCF Virtual College, Qayyumabad, Karachi</option>
-                    <option value="tcfCoaching">I am a student of TCF Coaching</option>
-                    <option value="tcfCoachingADP">I am a student of TCF Coaching + ADP</option>
-                    <option value="adpAfterMatric">I have attended ADP classes after Matric</option>
-                    <option value="none">None of the above</option>
-                </select>
-                
-                <div class="radio-group">
-                    <label>Are you currently working?*</label>
-                    <input type="radio" id="workingYes" name="working" value="yes" required>
-                    <label for="workingYes">Yes</label>
-                    <input type="radio" id="workingNo" name="working" value="no" required>
-                    <label for="workingNo">No</label>
-                </div>
-                
-                <div class="radio-group">
-                    <label>Have you previously applied for TCF Qarz Hasna?*</label>
-                    <input type="radio" id="appliedYes" name="previousApply" value="yes" required>
-                    <label for="appliedYes">Yes</label>
-                    <input type="radio" id="appliedNo" name="previousApply" value="no" required>
-                    <label for="appliedNo">No</label>
-                </div>
-            </fieldset>
-            
-            <!-- Educational Information Section -->
-            <fieldset>
-                <legend><h2>Educational Information</h2></legend>
-                
-                <label for="schoolName">Name of TCF School Campus:*</label>
-                <input type="text" id="schoolName" name="schoolName" placeholder="Enter TCF school campus name" required>
-                
-                <label for="schoolLocation">Location:*</label>
-                <input type="text" id="schoolLocation" name="schoolLocation" placeholder="Enter school location" required>
-                
-                <label for="yearsInTcf">No. of Years in TCF School:*</label>
-                <input type="number" id="yearsInTcf" name="yearsInTcf" min="1" max="20" required>
-                
-                <label for="matricYear">Year of Matriculation:*</label>
-                <input type="number" id="matricYear" name="matricYear" min="1990" max="2025" placeholder="YYYY" required>
-                
-                <label for="matricRoll">Matric Roll/Seat No:*</label>
-                <input type="text" id="matricRoll" name="matricRoll" placeholder="Enter roll/seat number" required>
-                
-                <label for="faculty">Faculty - Matric:*</label>
-                <select id="faculty" name="faculty" required>
-                    <option value="">Select faculty</option>
-                    <option value="science">Science</option>
-                    <option value="art">Art</option>
-                    <option value="technical">Technical</option>
-                </select>
-                
-                <label for="matricPercentage">Percentage - Matric (55-100):*</label>
-                <input type="number" id="matricPercentage" name="matricPercentage" min="55" max="100" step="0.01" placeholder="Enter percentage" required>
-                
-                <label for="matricGrade">Grade - Matric:*</label>
-                <select id="matricGrade" name="matricGrade" required>
-                    <option value="">Select grade</option>
-                    <option value="a+">A+</option>
-                    <option value="a">A</option>
-                    <option value="b">B</option>
-                    <option value="c">C</option>
-                    <option value="d">D</option>
-                </select>
-                
-                <label for="lastQualification">Last Qualification:*</label>
-                <select id="lastQualification" name="lastQualification" required>
-                    <option value="">Select qualification</option>
-                    <option value="matric">Matric Completed</option>
-                    <option value="secondYear">2nd Year Completed</option>
-                    <option value="secondYearNoResult">2nd Year Completed Result Not Announced</option>
-                    <option value="secondYearResult">2nd Year Completed Result Announced</option>
-                </select>
-            </fieldset>
-            
-            <!-- Household Information Section -->
-            <fieldset>
-                <legend><h2>Household Information</h2></legend>
-                
-                <label for="earningMembers">Total No. of Earning Members:*</label>
-                <input type="number" id="earningMembers" name="earningMembers" min="0" max="20" required>
-                
-                <label for="siblingsInUni">How many siblings are studying in university:*</label>
-                <input type="number" id="siblingsInUni" name="siblingsInUni" min="0" max="20" required>
-                
-                <label for="householdMembers">No. of People Living in the Household (other than you):*</label>
-                <input type="number" id="householdMembers" name="householdMembers" min="0" max="50" required>
-            </fieldset>
-            
-            <!-- Monthly Expense Details Section -->
-            <fieldset>
-                <legend><h2>Detail of Monthly Expense</h2></legend>
-                
-                <div class="radio-group">
-                    <label>House:*</label>
-                    <input type="radio" id="own" name="house" value="own" required>
-                    <label for="own">Own</label>
-                    <input type="radio" id="rented" name="house" value="rented" required>
-                    <label for="rented">Rented</label>
-                </div>
-                
-                <label for="rentAmount">If rented, rent amount (not required):</label>
-                <input type="number" id="rentAmount" name="rentAmount" min="0">
-                
-                <label for="transport">Transport Expense:*</label>
-                <input type="number" id="transport" name="transport" min="0" required>
-                
-                <label for="medical">Medical Expense:*</label>
-                <input type="number" id="medical" name="medical" min="0" required>
-                
-                <label for="gasBill">Monthly Gas Bill:*</label>
-                <input type="number" id="gasBill" name="gasBill" min="0" required>
-                
-                <label for="electricity">Monthly Electricity Bill:*</label>
-                <input type="number" id="electricity" name="electricity" min="0" required>
-                
-                <label for="water">Monthly Water Bill:*</label>
-                <input type="number" id="water" name="water" min="0" required>
-                
-                <label for="grocery">Monthly Grocery Expense:*</label>
-                <input type="number" id="grocery" name="grocery" min="0" required>
-                
-                <label for="loan">Loan (if any, not required):</label>
-                <input type="number" id="loan" name="loan" min="0">
-                
-                <label for="otherExpense">Other Expense (not required):</label>
-                <input type="number" id="otherExpense" name="otherExpense" min="0">
-                
-                <label for="totalExpense">Total Expense:*</label>
-                <input type="number" id="totalExpense" name="totalExpense" min="0" required>
-                
-                <label for="contributionAmount">Please specify the monthly amount you can contribute as repayment of your Interest Free Loan (Qarz-e-Hasna):*</label>
-                <input type="number" id="contributionAmount" name="contributionAmount" min="0" required>
-            </fieldset>
-            
-            <!-- E-Assessment for Tertiary Students Section -->
-            <fieldset>
-                <legend><h2>E-Assessment for Tertiary Students</h2></legend>
-                
-                <h3>Plan A</h3>
-                <label for="degreePlanA">Which degree are you interested in pursuing?*</label>
-                <input type="text" id="degreePlanA" name="degreePlanA" placeholder="Enter degree name" required>
-                
-                <label for="reasonPlanA">Why do you want to do this degree?*</label>
-                <textarea id="reasonPlanA" name="reasonPlanA" placeholder="Explain your reasons" required></textarea>
-                
-                <label for="industryPlanA">What kind of organization/industry/company do you want to work at?*</label>
-                <input type="text" id="industryPlanA" name="industryPlanA" placeholder="Enter industry/company type" required>
-                
-                <label>Which university do you want to apply at (Name three):*</label>
-                <input type="text" id="uni1PlanA" name="uni1PlanA" placeholder="University 1" required>
-                <input type="text" id="uni2PlanA" name="uni2PlanA" placeholder="University 2" required>
-                <input type="text" id="uni3PlanA" name="uni3PlanA" placeholder="University 3" required>
-                
-                <h3>Plan B</h3>
-                <label for="degreePlanB">If you do not get in your chosen program, what is your second option?*</label>
-                <input type="text" id="degreePlanB" name="degreePlanB" placeholder="Enter second option degree" required>
-                
-                <label for="reasonPlanB">Why do you want to do this degree?*</label>
-                <textarea id="reasonPlanB" name="reasonPlanB" placeholder="Explain your reasons" required></textarea>
-                
-                <label for="industryPlanB">What kind of organization/industry/company do you want to work at?*</label>
-                <input type="text" id="industryPlanB" name="industryPlanB" placeholder="Enter industry/company type" required>
-                
-                <label>Which university do you want to apply at (Name three):*</label>
-                <input type="text" id="uni1PlanB" name="uni1PlanB" placeholder="University 1" required>
-                <input type="text" id="uni2PlanB" name="uni2PlanB" placeholder="University 2" required>
-                <input type="text" id="uni3PlanB" name="uni3PlanB" placeholder="University 3" required>
-            </fieldset>
-            
-            <!-- Documents Section -->
-            <fieldset>
-                <legend><h2>Documents (Attachments)</h2></legend>
-                <p>Max file size: 10 MB each</p>
-                
-                <label for="cnicFile">CNIC/B-Form of yourself:*</label>
-                <input type="file" id="cnicFile" name="cnicFile" accept=".pdf,.jpg,.jpeg,.png" required>
-                
-                <label for="fatherCnicFile">CNIC Father/Guardian:*</label>
-                <input type="file" id="fatherCnicFile" name="fatherCnicFile" accept=".pdf,.jpg,.jpeg,.png" required>
-                
-                <label for="photo">Photograph:*</label>
-                <input type="file" id="photo" name="photo" accept=".jpg,.jpeg,.png" required>
-                
-                <label for="matricMarksheet">Marksheet - Matric (not Certificate):*</label>
-                <input type="file" id="matricMarksheet" name="matricMarksheet" accept=".pdf,.jpg,.jpeg,.png" required>
-                
-                <label for="otherDocs">Additional Documents (not required):</label>
-                <input type="file" id="otherDocs" name="otherDocs" accept=".pdf,.jpg,.jpeg,.png">
-                
-                <label for="utilityBills">Latest paid utility bills: Electricity and Gas:*</label>
-                <input type="file" id="utilityBills" name="utilityBills" accept=".pdf,.jpg,.jpeg,.png" required>
-            </fieldset>
-            
-            <!-- Zakat Eligibility Section -->
-            <fieldset>
-                <legend><h2>Zakat Eligibility</h2></legend>
-                <p>
-                    I (with above mentioned name in Personal Information Section) confess that I am Muslim, adult, not a Syed, Hashmi and Abbasi. 
-                    I am eligible to receive Zakat as per Shariah; as I do not own Gold more than 7.5 tola; I do not own Silver more than 52.5 tola; 
-                    and I do not own Gold, Silver, Cash / Foreign Currency / Bonds / Certificates and Tradable Assets in total more than the value of 52.5 tola Silver. 
-                    I authorize The Citizens Foundation and its representatives to receive Zakat on my behalf as long as I am eligible to receive Zakat. 
-                    I also authorize them to spend that Zakat for my educational expenses and for the educational expenses of other deserving students 
-                    or to transfer that Zakat in the ownership of The Citizens Foundation.
-                </p>
-                <input type="checkbox" id="zakatEligibility" name="zakatEligibility" required>
-                <label for="zakatEligibility">I agree to the above Zakat eligibility declaration*</label>
-            </fieldset>
-            
-            <!-- Undertaking Section -->
-            <fieldset>
-                <legend><h2>Undertaking</h2></legend>
-                
-                <h3>Alumni Undertaking</h3>
-                <p>
-                    I declare that all information provided above is true and accurate to the best of my knowledge. 
-                    TCF can cancel my loan if any information given above is incorrect or incomplete. 
-                    TCF Higher Education Loan is Qarz –e-Hasana, awarded on a need and merit basis and subject to my ability to maintain a minimum SGPA predetermined under the TCF loan condition. 
-                    I will return the amount spent on me as soon as possible so that other TCF Alumni who need support can benefit from that money. 
-                    By signing below I agree to fulfill all terms and conditions of the TCF interest free loan.
-                </p>
-                <input type="checkbox" id="undertaking" name="undertaking" required>
-                <label for="undertaking">I agree to the above undertaking*</label>
-                
-                <h3>Consent Declaration*</h3>
-                <div class="radio-group">
-                    <input type="radio" id="consentYes" name="consent" value="yes" required>
-                    <label for="consentYes">Yes, I permit TCF to use my name, picture, enclosed details and stories with donors and on TCF website to collect funds for my education.</label><br>
-                    <input type="radio" id="consentNo" name="consent" value="no" required>
-                    <label for="consentNo">No. I don't permit TCF to use my name, picture, enclosed details and stories with donors and on TCF website to collect funds for my education.</label>
-                </div>
-            </fieldset>
-            
-            <!-- Submit Button -->
-            <button type="submit">Submit Application</button>
-        </form>
     </div>
 
     <script>
-        // Show message function
-        function showMessage(title, text, isSuccess = true) {
-            const messageContainer = document.getElementById('messageContainer');
-            const overlay = document.getElementById('overlay');
-            const messageBox = document.getElementById('messageBox');
-            const messageTitle = document.getElementById('messageTitle');
-            const messageText = document.getElementById('messageText');
-            
-            messageTitle.textContent = title;
-            messageText.textContent = text;
-            
-            // Set appropriate class
-            messageBox.className = 'message-box';
-            messageBox.classList.add(isSuccess ? 'success-box' : 'error-box');
-            
-            // Show message and overlay
-            messageContainer.style.display = 'block';
-            overlay.style.display = 'block';
-            
-            // Disable background scrolling
-            document.body.style.overflow = 'hidden';
+        const form = document.getElementById('scholarshipForm');
+        const overlay = document.getElementById('overlay');
+        const loading = document.getElementById('loading');
+        const modal = document.getElementById('messageModal');
+
+        function showStatus(title, text, isSuccess) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalTitle').className = isSuccess ? 'text-2xl font-bold mb-4 text-tcf-green' : 'text-2xl font-bold mb-4 text-red-500';
+            document.getElementById('modalText').textContent = text;
+            loading.classList.add('hidden');
+            modal.classList.remove('hidden');
+            overlay.classList.remove('hidden');
         }
-        
-        // Hide message function
-        function hideMessage() {
-            document.getElementById('messageContainer').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            
-            // If it was a success message, redirect to home
-            if (document.getElementById('messageBox').classList.contains('success-box')) {
-                window.location.href = '/get';
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+            if(document.getElementById('modalTitle').classList.contains('text-tcf-green')) {
+                window.location.href = '/student/dashboard';
             }
         }
-        
-        // Show loading
-        function showLoading() {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-        
-        // Hide loading
-        function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
-        
-        // Form submission
-        document.getElementById('tcfForm').addEventListener('submit', async function(e) {
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            // Show loading
-            showLoading();
-            
-            // Create FormData object
-            const formData = new FormData(this);
-            
+            overlay.classList.remove('hidden');
+            loading.classList.remove('hidden');
+
+            const formData = new FormData(form);
+
             try {
-                // Send data to server
                 const response = await fetch('/scholarship', {
                     method: 'POST',
                     body: formData
                 });
-                
-                // Parse response
-                const data = await response.json();
-                
-                // Hide loading
-                hideLoading();
-                
-                // Show message based on response
-                if (response.ok) {
-                    showMessage('Success!', data.message, true);
-                    // Reset form on success
-                    this.reset();
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showStatus('Success!', result.message, true);
+                    form.reset();
                 } else {
-                    showMessage('Error!', data.message, false);
+                    showStatus('Error', result.message || 'Submission failed. Check all required fields.', false);
                 }
-                
             } catch (error) {
-                // Hide loading
-                hideLoading();
-                
-                // Show error message
-                showMessage('Error!', 'Network error. Please try again.', false);
-                console.error('Error:', error);
+                showStatus('Network Error', 'Could not connect to server. Please try again later.', false);
             }
         });
-        
-        // Add validation for CNIC fields
-        document.getElementById('cnic').addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13);
-        });
-        
-        document.getElementById('fatherCnic').addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13);
-        });
-        
-        document.getElementById('phone').addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
-        });
-        
-        document.getElementById('whatsapp').addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
-        });
-        
-        document.getElementById('emergencyPhone').addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
+
+        // Numeric constraints for specific fields
+        const numericInputs = ['cnic', 'fatherCnic', 'phone', 'whatsapp', 'emergencyPhone'];
+        numericInputs.forEach(id => {
+            const input = document.getElementById(id);
+            if(input) {
+                input.addEventListener('input', e => {
+                    const limit = (id === 'cnic' || id === 'fatherCnic') ? 13 : 11;
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, limit);
+                });
+            }
         });
     </script>
 </body>

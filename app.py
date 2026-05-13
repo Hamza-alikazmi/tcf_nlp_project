@@ -26,7 +26,8 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from database import init_mongodb, close_mongodb,DB_NAME 
 from models import (
     Complaint, ComplaintCreate, QueryRequest, FeeApplication,
-    User, StudentRegistration, ScholarshipApplication, SignupRequest   
+    User, StudentRegistration, ScholarshipApplication, SignupRequest,
+    StaffCreateRequest, StaffDeleteRequest, SystemLog, QueryTicket, QueryTicketUpdate
     )
 
 
@@ -95,14 +96,9 @@ def role_required(allowed_roles: list):
         if not role:
             return "<script> alert('Please Login First'); window.href.location='/';</script>"
         if role not in allowed_roles:
-            raise HTTPException(status_code=403, detail="Unauthorized Access")
+            return "<script>alert('Unauthorized Access'); window.href.location='/';</script>"
         return role
     return Depends(dependency)
-
-# Example: Protecting the Admin Dashboard
-@app.get("/admin/dashboard")
-async def admin_dashboard(request: Request, role: str = role_required(["admin"])):
-    return templates.TemplateResponse("admin-dashboard.html", {"request": request, "role": role})
 
 
 @app.middleware("http")
@@ -126,30 +122,26 @@ def inject_role(request: Request):
 
 templates.env.globals.update(inject_role=inject_role)
 
+from fastapi import HTTPException, status
+from fastapi.responses import RedirectResponse
+
 def role_required(allowed_roles: list):
     async def dependency(role: str = Depends(get_current_user_role)):
-        if not role:
-            raise HTTPException(status_code=401, detail="Please login first")
+        # Agar user login nahi hai
+        if role is None:
+            # Option A: Error throw karein (Recommended for APIs)
+            # raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in")
+            
+            # Option B: Login page par redirect kar dein (Better for UI/Jinja)
+            return "redirect_to_login" 
+            
+        # Agar user login hai par role ghalat hai
         if role not in allowed_roles:
-            raise HTTPException(status_code=403, detail="Unauthorized Access")
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Unauthorized Access")
+            
         return role
     return Depends(dependency)
 
-# Example: Protecting the Admin Dashboard
-@app.get("/admin/dashboard")
-async def admin_dashboard(request: Request, role: str = role_required(["admin"])):
-    return templates.TemplateResponse("admin-dashboard.html", {"request": request, "role": role})
-
-# Example: Protecting Student Form
-@app.get("/scholarship-form")
-async def scholarship_page(request: Request, role: str = role_required(["student", "user"])):
-    return templates.TemplateResponse("scholarship-form.html", {"request": request, "role": role})
-
-
-# Example: Protecting Student Form
-@app.get("/scholarship-form")
-async def scholarship_page(request: Request, role: str = role_required(["student", "user"])):
-    return templates.TemplateResponse("scholarship-form.html", {"request": request, "role": role})
 
 # ==========================
 # Pydantic Models
@@ -392,7 +384,7 @@ def index_page(request: Request):
 
 @app.get("/home")
 def home_page(request: Request):
-    return templates.TemplateResponse(request=request, name="home.html")
+    return templates.TemplateResponse(request=request, name="index.html")
 
 @app.get("/about")
 def about_page(request: Request):
@@ -418,9 +410,7 @@ def success_stories_page(request: Request):
 def guide_page(request: Request):
     return templates.TemplateResponse(request=request, name="guide.html")
 
-@app.get("/query-page")
-def query_page(request: Request):
-    return templates.TemplateResponse(request=request, name="query.html")
+
 
 # ==========================
 # Forms Routes (GET)
@@ -442,7 +432,7 @@ def scholarship_form_page(request: Request):
 # Dashboard Routes (GET)
 # ==========================
 
-@app.get("/admin")
+@app.get("/admin-complaints")
 async def admin_login_page(request: Request, page: int = 1):
     # Number of complaints per page
     per_page = 10
@@ -478,36 +468,445 @@ def dashboard_page(request: Request, role: str = role_required(["student", "user
 
 @app.get("/admin/dashboard")
 def alt_admin_dashboard_page(request: Request):
-    return templates.TemplateResponse(request=request, name="admin-dashboard.html")
+    # 1. Calculate Stats
+    total_users = User.objects.count()
+    
+    fee_apps_count = FeeApplication.objects.count()
+    schol_apps_count = ScholarshipApplication.objects.count()
+    total_applications = fee_apps_count + schol_apps_count
+    
+    total_complaints = Complaint.objects.count()
+    resolved_complaints = Complaint.objects(status="Resolved").count()
+    pending_complaints = Complaint.objects(status="Pending").count()
+
+    # 2. Fetch Recent Applications (Merge Fee & Scholarship)
+    recent_fee = list(FeeApplication.objects.order_by('-created_at').limit(5))
+    recent_schol = list(ScholarshipApplication.objects.order_by('-created_at').limit(5))
+    
+    all_recent_apps = []
+    for app in recent_fee:
+        all_recent_apps.append({
+            "name": app.name,
+            "type": "Fee Support",
+            "cnic": app.cnic,
+            "status": app.status,
+            "date": app.created_at
+        })
+    for app in recent_schol:
+        all_recent_apps.append({
+            "name": app.name,
+            "type": "Scholarship",
+            "cnic": app.cnic,
+            "status": app.status,
+            "date": app.created_at
+        })
+    
+    # Sort merged list by date descending and take top 5
+    all_recent_apps.sort(key=lambda x: x["date"], reverse=True)
+    recent_apps_display = all_recent_apps[:5]
+
+    # 3. Fetch Recent Complaints (Using -id to get latest naturally)
+    recent_complaints = Complaint.objects.order_by('-id').limit(5)
+
+    # 4. Pass everything to the template
+    context = {
+        "request": request,
+        "total_users": total_users,
+        "total_applications": total_applications,
+        "total_complaints": total_complaints,
+        "resolved_complaints": resolved_complaints,
+        "pending_complaints": pending_complaints,
+        "recent_applications": recent_apps_display,
+        "recent_complaints": recent_complaints
+    }
+    
+    return templates.TemplateResponse(request=request, name="admin-dashboard.html", context=context)
+
+
+
+# ==========================
+# STAFF / ADMIN MANAGEMENT
+# ==========================
+
+@app.get("/admin/users")
+def staff_management_page(request: Request, role: str = role_required(["superadmin"])):
+    # Only superadmins can view the staff management page
+    if role == "redirect_to_login":
+        return RedirectResponse(url="/login")
+    
+    # Fetch ONLY users who are marked as admins (ignores students/alumni)
+    staff_members = User.objects(type="admin").order_by('-created_at')
+    
+    return templates.TemplateResponse(
+        request=request, 
+        name="staff-management.html", 
+        context={
+            "role": role,
+            "staff_members": staff_members
+        }
+    )
+
+@app.post("/api/admin/staff")
+async def add_staff_member(payload: StaffCreateRequest, role: str = role_required(["superadmin"])):
+    # Only superadmins can create new admins
+    if role == "redirect_to_login":
+        return JSONResponse(status_code=401, content={"message": "Unauthorized"})
+
+    try:
+        # Check if user already exists
+        if User.objects(cnic=payload.cnic).first():
+            return JSONResponse(status_code=400, content={"message": "An account with this CNIC already exists."})
+        
+        # Ensure only valid roles are passed
+        valid_roles = ["fee", "scholarship", "genadmin", "superadmin"]
+        if payload.role not in valid_roles:
+            return JSONResponse(status_code=400, content={"message": "Invalid role selected."})
+
+        # Hash password and create user
+        hashed_password = pwd_context.hash(payload.password)
+        
+        new_staff = User(
+            full_name=payload.full_name,
+            cnic=payload.cnic,
+            email=payload.email,
+            password=hashed_password,
+            type="admin",        # Marking them explicitly as an admin type
+            role=payload.role
+        )
+        new_staff.save()
+
+        # Log the action
+        SystemLog(
+            event="Admin Created",
+            event_type="AUTH",
+            details=f"New admin '{payload.full_name}' created with role '{payload.role}'"
+        ).save()
+
+        return {"message": f"{payload.full_name} successfully added as {payload.role}."}
+
+    except Exception as e:
+        print(f"Error adding staff: {e}")
+        return JSONResponse(status_code=500, content={"message": "Internal server error."})
+
+@app.delete("/api/admin/staff")
+async def delete_staff_member(payload: StaffDeleteRequest, role: str = role_required(["superadmin"])):
+    # Only superadmins can delete admins
+    if role == "redirect_to_login":
+        return JSONResponse(status_code=401, content={"message": "Unauthorized"})
+
+    try:
+        user_to_delete = User.objects(cnic=payload.cnic).first()
+        
+        if not user_to_delete:
+            return JSONResponse(status_code=404, content={"message": "Admin with this CNIC not found."})
+        
+        # Prevent users from deleting regular students from this panel
+        if user_to_delete.type != "admin":
+            return JSONResponse(status_code=403, content={"message": "You can only remove admin accounts from this panel."})
+
+        user_to_delete.delete()
+        
+        # Log the action
+        SystemLog(
+            event="Admin Deleted",
+            event_type="AUTH",
+            details=f"Admin access revoked for CNIC: {payload.cnic}"
+        ).save()
+
+        return {"message": "Admin access successfully revoked."}
+
+    except Exception as e:
+        print(f"Error deleting staff: {e}")
+        return JSONResponse(status_code=500, content={"message": "Internal server error."})# ==========================
 
 @app.get("/alumni/dashboard")
 def alumni_dashboard_page(request: Request):
     return templates.TemplateResponse(request=request, name="alumni-dashboard.html")
 
+# ==========================
+
+# Query Management Routes
+
+# ==========================
+
+
+# 1. Frontend Page Render
+
+@app.get("/admin/queries")
+
+def queries_management_page(request: Request, role: str = role_required(["admin", "superadmin", "genadmin", "scholarship", "fee"])):
+
+    if role == "redirect_to_login":
+
+        return RedirectResponse(url="/login")
+
+    return templates.TemplateResponse(request=request, name="query-handler.html", context={"role": role})
+
+
+# 2. Get All Queries By Department
+
+@app.get("/api/query-management/department/{department}")
+
+async def get_department_queries(department: str, role: str = role_required(["admin", "superadmin", "genadmin", "scholarship", "fee"])):
+
+    if role == "redirect_to_login":
+
+        return JSONResponse(status_code=401, content={"success": False, "message": "Unauthorized"})
+
+        
+
+    queries = QueryTicket.objects(department=department).order_by('-createdAt')
+
+    result = []
+
+    for q in queries:
+
+        result.append({
+
+            "query_no": q.query_no,
+
+            "cnic": q.cnic,
+
+            "query": q.query,
+
+            "department": q.department,
+
+            "response": q.response,
+
+            "status": q.status,
+
+            "confidence": q.confidence,
+
+            "createdAt": q.createdAt.isoformat() if q.createdAt else None
+
+        })
+
+    return {"success": True, "data": result}
+
+
+# 3. Get Pending Queries By Department
+
+@app.get("/api/query-management/pending/{department}")
+
+async def get_pending_department_queries(department: str, role: str = role_required(["admin", "superadmin", "genadmin", "scholarship", "fee"])):
+
+    if role == "redirect_to_login":
+
+        return JSONResponse(status_code=401, content={"success": False, "message": "Unauthorized"})
+
+         
+
+    queries = QueryTicket.objects(department=department, status="forwarded").order_by('-createdAt')
+
+    result = []
+
+    for q in queries:
+
+        result.append({
+
+            "query_no": q.query_no,
+
+            "cnic": q.cnic,
+
+            "query": q.query,
+
+            "department": q.department,
+
+            "response": q.response,
+
+            "status": q.status,
+
+            "confidence": q.confidence,
+
+            "createdAt": q.createdAt.isoformat() if q.createdAt else None
+
+        })
+
+    return {"success": True, "data": result}
+
+
+# 4. Get a Single Query by Query Number
+
+@app.get("/api/query-management/{query_no}")
+
+async def get_single_query(query_no: str, role: str = role_required(["admin", "superadmin", "genadmin", "scholarship", "fee"])):
+
+    if role == "redirect_to_login":
+
+        return JSONResponse(status_code=401, content={"success": False, "message": "Unauthorized"})
+
+        
+
+    q = QueryTicket.objects(query_no=query_no).first()
+
+    if not q:
+
+        return {"success": False, "message": "Query not found"}
+
+        
+
+    return {"success": True, "data": {
+
+        "query_no": q.query_no,
+
+        "cnic": q.cnic,
+
+        "query": q.query,
+
+        "department": q.department,
+
+        "response": q.response,
+
+        "status": q.status,
+
+        "confidence": q.confidence,
+
+        "createdAt": q.createdAt.isoformat() if q.createdAt else None
+
+    }}
+
+
+# 5. Update a Query
+
+@app.put("/api/query-management/{query_no}")
+
+async def update_query(query_no: str, payload: QueryTicketUpdate, role: str = role_required(["admin", "superadmin", "genadmin", "scholarship", "fee"])):
+
+    if role == "redirect_to_login":
+
+        return JSONResponse(status_code=401, content={"success": False, "message": "Unauthorized"})
+
+        
+
+    q = QueryTicket.objects(query_no=query_no).first()
+
+    if not q:
+
+        return {"success": False, "message": "Query not found"}
+
+    
+
+    q.cnic = payload.cnic
+
+    q.query = payload.query
+
+    q.department = payload.department
+
+    q.response = payload.response
+
+    q.status = payload.status
+
+    q.save()
+
+    
+
+    return {"success": True, "message": "Query updated successfully"}
+
+
+# 6. Delete a Query
+
+@app.delete("/api/query-management/{query_no}")
+
+async def delete_query(query_no: str, role: str = role_required(["admin", "superadmin", "genadmin", "scholarship", "fee"])):
+
+    if role == "redirect_to_login":
+
+        return JSONResponse(status_code=401, content={"success": False, "message": "Unauthorized"})
+
+        
+
+    q = QueryTicket.objects(query_no=query_no).first()
+
+    if not q:
+
+        return {"success": False, "message": "Query not found"}
+
+        
+
+    q.delete()
+
+    return {"success": True, "message": "Query deleted successfully"}
+
+# ==========================
+# ALUMNI MANAGEMENT ROUTES
+# ==========================
+
+@app.get("/api/alumni/all")
+async def get_all_scholarship_alumni(role: str = role_required(["admin", "superadmin", "scholarship"])):
+    apps = ScholarshipApplication.objects().order_by('-created_at')
+    return [{"id": str(a.id), "name": a.name, "cnic": a.cnic, "status": a.status} for a in apps]
+
+@app.get("/api/alumni/search/cnic/{cnic}")
+async def search_alumni_cnic(cnic: str, role: str = role_required(["admin", "scholarship"])):
+    a = ScholarshipApplication.objects(cnic=cnic).first()
+    if not a: return []
+    return [{"id": str(a.id), "name": a.name, "cnic": a.cnic, "status": a.status}]
+
+@app.get("/api/alumni/search/status/{status}")
+async def search_alumni_status(status: str, role: str = role_required(["admin", "scholarship"])):
+    apps = ScholarshipApplication.objects(status=status)
+    return [{"id": str(a.id), "name": a.name, "cnic": a.cnic, "status": a.status} for a in apps]
+
+@app.put("/api/alumni/update/{app_id}")
+async def update_alumni_status(app_id: str, payload: dict, role: str = role_required(["admin", "scholarship"])):
+    app = ScholarshipApplication.objects(id=app_id).first()
+    if not app: raise HTTPException(status_code=404, detail="Not found")
+    app.status = payload.get("status", app.status)
+    app.save()
+    return {"success": True}
+
+@app.delete("/api/alumni/delete/{app_id}")
+async def delete_alumni_app(app_id: str, role: str = role_required(["superadmin", "scholarship"])):
+    app = ScholarshipApplication.objects(id=app_id).first()
+    if app: app.delete()
+    return {"success": True}
+
 @app.post("/complaint")
-def submit_complaint(payload: ComplaintCreate):
-    department = detect_department(payload.text)
+async def submit_complaint(
+    payload: ComplaintCreate, 
+    role: str = role_required(["student", "user"])
+):
+    # Authorization Check
+    if role == "redirect_to_login":
+        raise HTTPException(status_code=401, detail="Please login first to file a complaint.")
+
+    # CNIC Validation (13 digits)
+    clean_cnic = payload.cnic.replace("-", "")
+    if len(clean_cnic) != 13 or not clean_cnic.isdigit():
+        raise HTTPException(status_code=400, detail="Invalid CNIC format. Please provide 13 digits.")
+
+    # NLP Logic & ID Generation
+    department = payload.department if payload.department else detect_department(payload.text)
     sentiment = detect_sentiment(payload.text)
     priority = detect_priority(payload.text)
     complaint_id = generate_complaint_id()
 
-    new_complaint = Complaint(
-        complaint_id=complaint_id,
-        text=payload.text,
-        department=department,
-        sentiment=sentiment,
-        priority=priority,
-        status="Pending"
-    )
-    new_complaint.save()
+    try:
+        # 2. Database mein save karein (Complaint model mein cnic field honi chahiye)
+        new_complaint = Complaint(
+            complaint_id=complaint_id,
+            text=payload.text,
+            cnic=clean_cnic,        # New field added
+            department=department,
+            sentiment=sentiment,
+            priority=priority,
+            status="Pending",
+            created_at=datetime.datetime.utcnow()
+        )
+        new_complaint.save()
 
-    return {
-        "message": f"Your Complaint has been forwarded to {department} Department. Your Complaint ID is {complaint_id}.",
-        "complaint_id": complaint_id,
-        "department": department,
-        "priority": priority,
-        "sentiment": sentiment
-    }
+        return {
+            "success": True,
+            "message": f"Your Complaint has been forwarded to {department} Department. Your Complaint ID is {complaint_id}.",
+            "complaint_id": complaint_id,
+            "department": department,
+            "priority": priority,
+            "sentiment": sentiment
+        }
+
+    except Exception as e:
+        print(f"Complaint Error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save complaint. Please try again.")
 
 
 @app.get("/track/{complaint_id}")
@@ -582,6 +981,11 @@ def get_all_complaints():
         for c in complaints
     ]
 
+@app.get("/queryandcomplain")
+def query_page(request: Request, role: str = role_required(["student", "user"])):
+    if role == "redirect_to_login":
+        return RedirectResponse(url="/login")
+    return templates.TemplateResponse(request=request, name="query.html", context={"role":role})
 
 @app.post("/query")
 def query(payload: QueryRequest):
@@ -606,8 +1010,18 @@ def query(payload: QueryRequest):
 # ==========================
 # FEE APPLICATION
 # ==========================
+from fastapi import Depends, Form, File, UploadFile, HTTPException
+from fastapi.responses import HTMLResponse
+import os
+import shutil
+from typing import List, Optional
+
 @app.post("/fee")
 async def submit_fee_application(
+    # Auth Security: Sirf logged-in students/users access kar saken
+    role: str = role_required(["student", "user"]),
+    
+    # Text Fields (Matching your Frontend names)
     todayDate: str = Form(...),
     name: str = Form(...),
     fatherName: str = Form(...),
@@ -619,19 +1033,27 @@ async def submit_fee_application(
     city: str = Form(...),
     instituteName: str = Form(...),
     degree: str = Form(...),
-    applyingFor: List[str] = Form(...),
+    # Note: List[str] because multiple checkboxes can be selected
+    applyingFor: List[str] = Form(...), 
     currentSemester: str = Form(...),
     lastDate: str = Form(...),
     accountHolder: str = Form(...),
     iban: str = Form(...),
     siblings: int = Form(...),
     income: float = Form(...),
+    
+    # Files
     feeVoucher: UploadFile = File(...),
     contributionSlip: UploadFile = File(...),
     result: UploadFile = File(...),
     chequeBook: Optional[UploadFile] = File(None)
 ):
+    # Role check
+    if role == "redirect_to_login":
+        return HTMLResponse("<script>alert('Please login first'); window.location.href='/login';</script>")
+
     try:
+        # Generate Tracking ID
         count = FeeApplication.objects.count() + 1
         app_id = f"FEE-2026-{str(count).zfill(5)}"
 
@@ -640,16 +1062,22 @@ async def submit_fee_application(
                 return None
             ext = os.path.splitext(file_obj.filename)[1]
             filename = f"{app_id}_{prefix}{ext}"
+            os.makedirs("uploads", exist_ok=True)
             filepath = os.path.join("uploads", filename)
             with open(filepath, "wb") as buffer:
                 shutil.copyfileobj(file_obj.file, buffer)
             return filepath
 
+        # Save files to disk
         voucher_path = save_upload(feeVoucher, "voucher")
         slip_path = save_upload(contributionSlip, "slip")
         result_path = save_upload(result, "result")
         cheque_path = save_upload(chequeBook, "cheque") if chequeBook else None
 
+        # Process List to String (Agar aapka model List accept nahi karta)
+        # scholarship_options = ", ".join(applyingFor)
+
+        # Create Database Entry
         application = FeeApplication(
             application_id=app_id,
             today_date=todayDate,
@@ -663,7 +1091,7 @@ async def submit_fee_application(
             city=city,
             institute_name=instituteName,
             degree=degree,
-            applying_for=applyingFor,
+            applying_for=applyingFor, 
             current_semester=currentSemester,
             last_date=lastDate,
             account_holder=accountHolder,
@@ -673,26 +1101,28 @@ async def submit_fee_application(
             fee_voucher_path=voucher_path,
             contribution_slip_path=slip_path,
             result_path=result_path,
-            cheque_book_path=cheque_path
+            cheque_book_path=cheque_path,
+            status="Pending"
         )
         application.save()
 
+        # Success Message (Matches Frontend CSS)
         return HTMLResponse(f"""
-            <div style="color: #155724; padding: 20px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; text-align: center;">
-                <h3>✅ Application Submitted Successfully!</h3>
-                <p><strong>Tracking ID:</strong> {app_id}</p>
-                <p>We will review your application and contact you soon.</p>
+            <div style="color: #49C34A; padding: 20px; background: rgba(73, 195, 74, 0.1); border: 1px solid #49C34A; border-radius: 12px; text-align: center; font-family: sans-serif;">
+                <h3 style="margin: 0 0 10px 0;"> Application Submitted!</h3>
+                <p>Tracking ID: <strong style="color: white;">{app_id}</strong></p>
+                <p style="font-size: 14px; opacity: 0.8;">We have received your fee assistance request.</p>
             </div>
         """)
+
     except Exception as e:
         print(f"Fee Submission Error: {e}")
         return HTMLResponse(f"""
-            <div style="color: #721c24; padding: 20px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; text-align: center;">
-                <h3>❌ Submission Failed</h3>
-                <p>Please try again. If the problem persists, contact support.</p>
+            <div style="color: #ff4444; padding: 20px; background: rgba(255, 68, 68, 0.1); border: 1px solid #ff4444; border-radius: 12px; text-align: center; font-family: sans-serif;">
+                <h3 style="margin: 0 0 10px 0;"> Submission Failed</h3>
+                <p>Error: {str(e)}</p>
             </div>
         """, status_code=500)
-
 
 # ==========================
 # AUTHENTICATION
@@ -710,7 +1140,7 @@ async def login(payload: LoginRequest, response: JSONResponse):
     response = JSONResponse(content={
         "success": True,
         "message": "Welcome back!",
-        "redirect": "/admin/dashboard" if user.role == "admin" else "/student/dashboard",
+        "redirect": "/admin/dashboard" if user.type == "admin" else "/student/dashboard",
         "role": user.role
     })
     response.set_cookie(key="access_token", value=token, httponly=True, samesite="lax")
@@ -821,8 +1251,19 @@ def delete_by_cnic(cnic: str):
 # ==========================
 # QARZ-E-HASNA SCHOLARSHIP
 # ==========================
+from fastapi import Depends, Form, File, UploadFile, HTTPException
+from fastapi.responses import JSONResponse
+import os
+import shutil
+from datetime import datetime
+
+# Is route ko update karein:
 @app.post("/scholarship")
 async def submit_scholarship_application(
+    # Role checking: Sirf student ya user access kar sake
+    role: str = role_required(["student", "user"]),
+    
+    # Text Fields (Matching Frontend 'name' attributes)
     name: str = Form(...),
     gender: str = Form(...),
     dob: str = Form(...),
@@ -838,8 +1279,8 @@ async def submit_scholarship_application(
     emergencyContact: str = Form(...),
     emergencyPhone: str = Form(...),
     applicableOption: str = Form(...),
-    working: str = Form(...),
-    previousApply: str = Form(...),
+    working: str = Form(...),          # Frontend: name="working"
+    previousApply: str = Form(...),    # Frontend: name="previousApply"
     schoolName: str = Form(...),
     schoolLocation: str = Form(...),
     yearsInTcf: int = Form(...),
@@ -849,6 +1290,8 @@ async def submit_scholarship_application(
     matricPercentage: float = Form(...),
     matricGrade: str = Form(...),
     lastQualification: str = Form(...),
+    
+    # Financial Fields
     earningMembers: int = Form(...),
     siblingsInUni: int = Form(...),
     householdMembers: int = Form(...),
@@ -861,9 +1304,12 @@ async def submit_scholarship_application(
     grocery: float = Form(...),
     totalExpense: float = Form(...),
     contributionAmount: float = Form(...),
+    
+    # Education Plan
     degreePlanA: str = Form(...),
     reasonPlanA: str = Form(...),
-    # Add other Plan A/B fields if needed
+    
+    # Files
     cnicFile: UploadFile = File(...),
     fatherCnicFile: UploadFile = File(...),
     photo: UploadFile = File(...),
@@ -871,7 +1317,15 @@ async def submit_scholarship_application(
     utilityBills: UploadFile = File(...),
     otherDocs: Optional[UploadFile] = File(None)
 ):
+    # Agar authentication fail ho jaye toh role_required "redirect_to_login" bhejega
+    if role == "redirect_to_login":
+        return JSONResponse(
+            status_code=401, 
+            content={"success": False, "message": "Please login as a student to apply."}
+        )
+
     try:
+        # Check database count for ID generation
         count = ScholarshipApplication.objects.count() + 1
         app_id = f"QEH-2026-{str(count).zfill(5)}"
 
@@ -880,19 +1334,23 @@ async def submit_scholarship_application(
                 return None
             ext = os.path.splitext(file.filename)[1]
             filename = f"{app_id}_{prefix}{ext}"
+            # Ensure uploads directory exists
+            os.makedirs("uploads", exist_ok=True)
             filepath = os.path.join("uploads", filename)
             with open(filepath, "wb") as buffer:
                 shutil.copyfileobj(file.file, buffer)
             return filepath
 
+        # Saving all files
         cnic_path = save_file(cnicFile, "cnic")
-        father_cnic_path = save_file(fatherCnicFile, "father_cnic")
-        photo_path = save_file(photo, "photo")
-        matric_path = save_file(matricMarksheet, "matric")
-        utility_path = save_file(utilityBills, "utility")
-        other_path = save_file(otherDocs, "other") if otherDocs else None
+        f_cnic_path = save_file(fatherCnicFile, "father_cnic")
+        p_path = save_file(photo, "photo")
+        m_path = save_file(matricMarksheet, "matric")
+        u_path = save_file(utilityBills, "utility")
+        o_path = save_file(otherDocs, "other") if otherDocs else None
 
-        ScholarshipApplication(
+        # Saving to MongoDB (MongoEngine)
+        application = ScholarshipApplication(
             application_id=app_id,
             name=name,
             gender=gender,
@@ -935,19 +1393,27 @@ async def submit_scholarship_application(
             degree_plan_a=degreePlanA,
             reason_plan_a=reasonPlanA,
             cnic_file=cnic_path,
-            father_cnic_file=father_cnic_path,
-            photo=photo_path,
-            matric_marksheet=matric_path,
-            utility_bills=utility_path,
-            other_docs=other_path,
-            status="Pending"
-        ).save()
+            father_cnic_file=f_cnic_path,
+            photo=p_path,
+            matric_marksheet=m_path,
+            utility_bills=u_path,
+            other_docs=o_path,
+            status="Pending",
+            created_at=datetime.utcnow()
+        )
+        application.save()
 
-        return JSONResponse({"success": True, "message": f"Application submitted successfully! Your ID is {app_id}"})
+        return JSONResponse({
+            "success": True, 
+            "message": f"Application submitted successfully! Your Tracking ID is {app_id}"
+        })
 
     except Exception as e:
-        print(f"Scholarship Error: {e}")
-        return JSONResponse({"success": False, "message": "Failed to submit application"}, status_code=500)
+        print(f"❌ Scholarship Submission Error: {str(e)}")
+        return JSONResponse(
+            status_code=500, 
+            content={"success": False, "message": "Internal Server Error. Please try again."}
+        )
 
 
 # ==========================

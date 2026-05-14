@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship Queries | TCF System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+        .glass-card { background: #1A1C1D; border: 1px solid rgba(255,255,255,0.05); }
+        .btn-tcf { transition: all 0.3s ease; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #49C34A; border-radius: 10px; }
+        
+        /* Status Badges */
+        .status-pending { color: #F59E0B; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .status-responded { color: #49C34A; background: rgba(73, 195, 74, 0.1); border: 1px solid rgba(73, 195, 74, 0.2); }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative overflow-x-hidden">
+    
+    <!-- Decorative background glow -->
+    <div class="fixed top-0 right-0 w-[500px] h-[500px] bg-tcf-green/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+
+    <div id="main">
+        {% include 'navbar.html' %}
+
+        <div class="max-w-7xl mx-auto px-6 py-12">
+            <!-- Header Section -->
+            <div class="mb-10 text-center">
+                <h1 class="font-header text-5xl text-white uppercase mb-2">Scholarship <span class="text-tcf-green">Queries</span></h1>
+                <p class="text-gray-500 text-xs font-bold uppercase tracking-widest italic">Helpdesk Management Center</p>
+                
+                <div id="statsBar" class="mt-6 inline-flex items-center gap-6 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest">
+                    <span class="text-gray-400">📊 Stats:</span>
+                    <span id="statTotal" class="text-white">Total: 0</span>
+                    <span id="statPending" class="text-amber-500">Pending: 0</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Controls -->
+            <div class="glass-card p-8 rounded-3xl mb-8 flex flex-wrap gap-4 justify-center">
+                <button class="btn-tcf bg-tcf-green text-tcf-black px-8 py-3 rounded-xl text-xs hover:bg-white flex items-center gap-2 shadow-[0_0_20px_rgba(73,195,74,0.2)]" onclick="loadScholarshipQueries('all')">
+                    <i class="fas fa-layer-group"></i> All Scholarship Queries
+                </button>
+                <button class="btn-tcf bg-white/5 border border-white/10 text-white px-8 py-3 rounded-xl text-xs hover:border-tcf-green flex items-center gap-2" onclick="loadScholarshipQueries('pending')">
+                    <i class="fas fa-hourglass-half text-amber-500"></i> Pending Only
+                </button>
+            </div>
+
+            <!-- View Label -->
+            <div id="activeViewLabel" class="mb-8 text-center hidden">
+                <span id="labelText" class="px-4 py-1 bg-tcf-green/10 text-tcf-green text-[10px] font-bold uppercase tracking-[0.2em] rounded border border-tcf-green/20"></span>
+            </div>
+
+            <!-- Query Grid -->
+            <div id="queryList" class="grid md:grid-cols-2 gap-6 pb-20">
+                <!-- Welcome/Empty State -->
+                <div class="col-span-full flex flex-col items-center justify-center p-20 bg-tcf-dark-grey/50 border border-white/5 rounded-3xl text-center">
+                    <i class="fas fa-graduation-cap text-5xl text-gray-700 mb-6"></i>
+                    <p class="text-gray-500 font-bold uppercase text-xs tracking-widest leading-loose">
+                        Select a filter above to view Scholarship Tickets.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Response Modal -->
+    <div id="updateModal" class="fixed inset-0 bg-tcf-black/95 backdrop-blur-sm z-50 hidden items-center justify-center p-6">
+        <div class="bg-tcf-dark-grey border border-white/10 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+                <h3 class="font-header text-2xl text-tcf-green uppercase tracking-tight">Draft Official Response</h3>
+                <button onclick="closeUpdateModal()" class="text-gray-500 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            
+            <form id="updateForm" class="p-8 space-y-6 max-h-[75vh] overflow-y-auto custom-scroll">
+                <input type="hidden" id="updateQueryNo">
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Ticket ID</label>
+                        <input type="text" id="updateQueryNoDisplay" readonly class="w-full bg-tcf-black border border-white/5 rounded-xl px-4 py-3 text-gray-500 font-mono text-xs cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Student CNIC</label>
+                        <input type="text" id="updateCnic" required class="w-full bg-tcf-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-tcf-green outline-none text-xs">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Student Inquiry</label>
+                    <textarea id="updateQuery" required rows="3" class="w-full bg-tcf-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-tcf-green outline-none text-xs resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-tcf-green uppercase mb-2">Section Resolution</label>
+                    <textarea id="updateResponse" placeholder="Type the official answer here..." rows="5" class="w-full bg-tcf-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-tcf-green outline-none text-xs resize-none placeholder-gray-700"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Ticket Status</label>
+                    <select id="updateStatus" class="w-full bg-tcf-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-tcf-green outline-none text-xs font-bold uppercase tracking-widest">
+                        <option value="forwarded">⏳ Pending</option>
+                        <option value="responded">✅ Responded</option>
+                    </select>
+                </div>
+
+                <div class="pt-6 flex gap-4">
+                    <button type="submit" class="flex-1 bg-tcf-green text-tcf-black font-black py-4 rounded-xl text-xs uppercase hover:bg-white transition duration-300">Save & Close Ticket</button>
+                    <button type="button" onclick="closeUpdateModal()" class="flex-1 bg-white/5 text-white font-bold py-4 rounded-xl text-xs uppercase border border-white/10 hover:bg-white/10 transition">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+        const SCHOLARSHIP_DEPT = 'Scholarship-Section';
+
+        async function loadScholarshipQueries(type) {
+            currentFilter = type;
+            const container = document.getElementById('queryList');
+            const labelContainer = document.getElementById('activeViewLabel');
+            const labelText = document.getElementById('labelText');
+
+            labelContainer.classList.remove('hidden');
+            labelText.innerText = type === 'all' ? 'Displaying All Scholarship Tickets' : 'Displaying Pending Scholarship Tickets Only';
+            
+            container.innerHTML = '<div class="col-span-full text-center py-20"><i class="fas fa-circle-notch fa-spin text-3xl text-tcf-green"></i></div>';
+
+            try {
+                // Determine endpoint based on button clicked
+                const endpoint = type === 'all' 
+                    ? `/api/query-management/department/${SCHOLARSHIP_DEPT}` 
+                    : `/api/query-management/pending/${SCHOLARSHIP_DEPT}`;
+
+                const response = await fetch(endpoint);
+                const result = await response.json();
+
+                if (result.success) {
+                    renderCards(result.data);
+                    updateStats(result.data);
+                } else {
+                    container.innerHTML = '<div class="col-span-full text-center text-red-500 font-bold uppercase text-xs">Failed to load tickets</div>';
+                }
+            } catch (err) {
+                container.innerHTML = '<div class="col-span-full text-center text-red-500 font-bold uppercase text-xs">Connection Error</div>';
+            }
+        }
+
+        function renderCards(queries) {
+            const container = document.getElementById('queryList');
+            if (!queries || queries.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-20 text-gray-700 font-bold uppercase text-xs tracking-[0.3em]">No tickets found in this section</div>';
+                return;
+            }
+
+            container.innerHTML = queries.map(q => {
+                const isPending = q.status === 'forwarded';
+                return `
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between hover:border-tcf-green/30 transition duration-500 group">
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <p class="text-[10px] font-black text-tcf-green uppercase tracking-widest mb-1">Ref ID</p>
+                                <p class="font-mono text-sm text-white">${q.query_no}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase border ${isPending ? 'status-pending' : 'status-responded'}">
+                                ${isPending ? 'Pending' : 'Resolved'}
+                            </span>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-2">Student Inquiry:</p>
+                            <p class="text-sm text-gray-200 leading-relaxed italic bg-tcf-black/50 p-4 rounded-2xl border border-white/5 font-light">${escapeHtml(q.query)}</p>
+                        </div>
+
+                        ${q.response ? `
+                        <div class="mb-6">
+                            <p class="text-[9px] font-bold text-tcf-green uppercase tracking-widest mb-2">Resolution:</p>
+                            <p class="text-sm text-tcf-green/80 leading-relaxed font-medium bg-tcf-green/5 p-4 rounded-2xl border border-tcf-green/10">${escapeHtml(q.response)}</p>
+                        </div>
+                        ` : ''}
+
+                        <div class="grid grid-cols-2 gap-4 mt-8 border-t border-white/5 pt-4">
+                            <div>
+                                <p class="text-[8px] font-bold text-gray-600 uppercase mb-1">Student CNIC</p>
+                                <p class="text-[10px] text-gray-400 font-mono">${q.cnic}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[8px] font-bold text-gray-600 uppercase mb-1">Date Received</p>
+                                <p class="text-[10px] text-gray-400">${new Date(q.createdAt).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex gap-3">
+                        <button onclick="editQuery('${q.query_no}')" class="flex-1 bg-white/5 border border-white/10 hover:border-tcf-green text-white text-[10px] font-bold py-3 rounded-xl uppercase tracking-widest transition duration-300">
+                            Draft Response
+                        </button>
+                        <button onclick="deleteQuery('${q.query_no}')" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 px-5 rounded-xl transition duration-300">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function updateStats(queries) {
+            document.getElementById('statTotal').innerText = `Total: ${queries.length}`;
+            document.getElementById('statPending').innerText = `Pending: ${queries.filter(q => q.status === 'forwarded').length}`;
+        }
+
+        async function editQuery(id) {
+            const res = await fetch(`/api/query-management/${id}`);
+            const result = await res.json();
+            if (result.success) {
+                const q = result.data;
+                document.getElementById('updateQueryNo').value = q.query_no;
+                document.getElementById('updateQueryNoDisplay').value = q.query_no;
+                document.getElementById('updateCnic').value = q.cnic;
+                document.getElementById('updateQuery').value = q.query;
+                document.getElementById('updateResponse').value = q.response || '';
+                document.getElementById('updateStatus').value = q.status;
+                
+                const modal = document.getElementById('updateModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        document.getElementById('updateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('updateQueryNo').value;
+            const data = {
+                cnic: document.getElementById('updateCnic').value,
+                query: document.getElementById('updateQuery').value,
+                department: SCHOLARSHIP_DEPT,
+                response: document.getElementById('updateResponse').value,
+                status: document.getElementById('updateStatus').value
+            };
+
+            const res = await fetch(`/api/query-management/${id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            if ((await res.json()).success) {
+                closeUpdateModal();
+                loadScholarshipQueries(currentFilter);
+            }
+        });
+
+        async function deleteQuery(id) {
+            if(!confirm('Permanently delete this ticket?')) return;
+            const res = await fetch(`/api/query-management/${id}`, { method: 'DELETE' });
+            if ((await res.json()).success) loadScholarshipQueries(currentFilter);
+        }
+
+        function closeUpdateModal() {
+            const modal = document.getElementById('updateModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close on outside click
+        window.onclick = function(e) {
+            const modal = document.getElementById('updateModal');
+            if (e.target === modal) closeUpdateModal();
+        }
+    </script>
+</body>
+</html>

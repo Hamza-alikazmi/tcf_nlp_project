@@ -325,3 +325,8 @@ class QueryTicketUpdate(BaseModel):
     department: str
     response: Optional[str] = ""
     status: str
+
+class QueryTicketCreate(BaseModel):
+    cnic: str
+    department: str
+    query: str = Field(..., min_length=5, max_length=2000)

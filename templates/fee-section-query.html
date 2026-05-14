@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Queries | TCF System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tcf-black': '#0B0C0C',
+                        'tcf-dark-grey': '#1A1C1D',
+                        'tcf-green': '#49C34A',
+                    },
+                    fontFamily: {
+                        header: ['Barlow Condensed', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0C0C; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; }
+        .glass-card { background: #1A1C1D; border: 1px solid rgba(255,255,255,0.05); }
+        .btn-fee { transition: all 0.3s ease; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #49C34A; border-radius: 10px; }
+        
+        .status-pending { color: #F59E0B; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .status-responded { color: #49C34A; background: rgba(73, 195, 74, 0.1); border: 1px solid rgba(73, 195, 74, 0.2); }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative">
+    
+    <!-- Background Glow -->
+    <div class="fixed top-0 right-0 w-[500px] h-[500px] bg-tcf-green/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+
+    <div id="main">
+        {% include 'navbar.html' %}
+
+        <div class="max-w-7xl mx-auto px-6 py-12">
+            <!-- Header -->
+            <div class="mb-10 text-center">
+                <h1 class="font-header text-5xl text-white uppercase mb-2">Fee <span class="text-tcf-green">Queries</span></h1>
+                <p class="text-gray-500 text-xs font-bold uppercase tracking-widest italic">Confidential Access: Fee Section Personnel Only</p>
+                
+                <div id="liveStats" class="mt-6 inline-flex items-center gap-6 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest">
+                    <span class="text-gray-400 font-mono">📊 Data Overview:</span>
+                    <span id="statTotal" class="text-white">Total: 0</span>
+                    <span id="statPending" class="text-amber-500">Pending: 0</span>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="glass-card p-8 rounded-3xl mb-8 flex flex-wrap gap-4 justify-center shadow-2xl">
+                <button class="btn-fee bg-tcf-green text-tcf-black px-8 py-3 rounded-xl text-xs hover:bg-white flex items-center gap-2" onclick="loadFeeQueries('all')">
+                    <i class="fas fa-list-check"></i> All Fee Tickets
+                </button>
+                <button class="btn-fee bg-white/5 border border-white/10 text-white px-8 py-3 rounded-xl text-xs hover:border-tcf-green flex items-center gap-2" onclick="loadFeeQueries('pending')">
+                    <i class="fas fa-hourglass-half"></i> Pending Tickets
+                </button>
+            </div>
+
+            <!-- List -->
+            <div id="queryList" class="grid md:grid-cols-2 gap-6 pb-20">
+                <div class="col-span-full text-center py-20">
+                    <i class="fas fa-circle-notch fa-spin text-3xl text-tcf-green"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Modal -->
+    <div id="updateModal" class="fixed inset-0 bg-tcf-black/95 backdrop-blur-sm z-50 hidden items-center justify-center p-6">
+        <div class="bg-tcf-dark-grey border border-white/10 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+                <h3 class="font-header text-2xl text-tcf-green uppercase tracking-tight">Draft Fee Resolution</h3>
+                <button onclick="closeUpdateModal()" class="text-gray-500 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            
+            <form id="updateForm" class="p-8 space-y-6 max-h-[75vh] overflow-y-auto custom-scroll">
+                <input type="hidden" id="updateQueryNo">
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Ticket Reference</label>
+                        <input type="text" id="updateQueryNoDisplay" readonly class="w-full bg-tcf-black border border-white/5 rounded-xl px-4 py-3 text-gray-500 font-mono text-xs cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Student CNIC</label>
+                        <input type="text" id="updateCnic" required class="w-full bg-tcf-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-tcf-green outline-none text-xs">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Inquiry Details</label>
+                    <textarea id="updateQuery" required rows="3" class="w-full bg-tcf-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-tcf-green outline-none text-xs resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-tcf-green uppercase mb-2">Official Fee Response</label>
+                    <textarea id="updateResponse" placeholder="Draft resolution message..." rows="5" class="w-full bg-tcf-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-tcf-green outline-none text-xs resize-none placeholder-gray-700"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Processing Status</label>
+                    <select id="updateStatus" class="w-full bg-tcf-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-tcf-green outline-none text-xs font-bold">
+                        <option value="forwarded">⏳ PENDING</option>
+                        <option value="responded">✅ RESOLVED</option>
+                    </select>
+                </div>
+
+                <div class="pt-6 flex gap-4">
+                    <button type="submit" class="flex-1 bg-tcf-green text-tcf-black font-black py-4 rounded-xl text-xs uppercase hover:bg-white transition duration-300">Update Ticket</button>
+                    <button type="button" onclick="closeUpdateModal()" class="flex-1 bg-white/5 text-white font-bold py-4 rounded-xl text-xs uppercase border border-white/10">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const FEE_DEPT = 'Fee-Section';
+        let activeView = 'all';
+
+        async function loadFeeQueries(type = 'all') {
+            activeView = type;
+            const endpoint = type === 'all' 
+                ? `/api/query-management/department/${FEE_DEPT}` 
+                : `/api/query-management/pending/${FEE_DEPT}`;
+            
+            const container = document.getElementById('queryList');
+            container.innerHTML = '<div class="col-span-full text-center py-20"><i class="fas fa-circle-notch fa-spin text-3xl text-tcf-green"></i></div>';
+
+            try {
+                const res = await fetch(endpoint);
+                const result = await res.json();
+                
+                if (result.success) {
+                    const data = result.data || [];
+                    // Strictly filter to ensure no cross-contamination
+                    const feeOnly = data.filter(q => q.department === FEE_DEPT);
+                    renderFeeCards(feeOnly);
+                    updateStatsDisplay(feeOnly);
+                }
+            } catch (err) {
+                container.innerHTML = '<p class="col-span-full text-center text-red-500 uppercase text-xs font-black">Connection Failure</p>';
+            }
+        }
+
+        function renderFeeCards(queries) {
+            const container = document.getElementById('queryList');
+            if (queries.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-20 text-gray-700 font-bold uppercase text-xs tracking-widest">No Fee-Related Tickets Found</div>';
+                return;
+            }
+
+            container.innerHTML = queries.map(q => {
+                const isPending = q.status === 'forwarded';
+                return `
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between hover:border-tcf-green/30 transition duration-500 group">
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <p class="font-mono text-xs text-white bg-tcf-black px-3 py-1 rounded-lg border border-white/5">${q.query_no}</p>
+                            <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase border ${isPending ? 'status-pending' : 'status-responded'}">
+                                ${isPending ? 'Pending' : 'Resolved'}
+                            </span>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <p class="text-[9px] font-bold text-gray-500 uppercase mb-2">Student Question:</p>
+                            <p class="text-sm text-gray-200 leading-relaxed italic bg-tcf-black/50 p-4 rounded-2xl border border-white/5">${escapeHtml(q.query)}</p>
+                        </div>
+
+                        ${q.response ? `
+                        <div class="mb-4 bg-tcf-green/5 p-4 rounded-xl border border-tcf-green/10">
+                            <p class="text-[9px] font-bold text-tcf-green uppercase mb-1">Resolution Response:</p>
+                            <p class="text-sm text-tcf-green/90 font-medium">${escapeHtml(q.response)}</p>
+                        </div>
+                        ` : ''}
+
+                        <div class="mt-8 grid grid-cols-2 text-[10px] text-gray-500 font-mono border-t border-white/5 pt-4">
+                            <span>ID: ${q.cnic}</span>
+                            <span class="text-right">${new Date(q.createdAt).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex gap-3">
+                        <button onclick="editFeeQuery('${q.query_no}')" class="flex-1 bg-white/5 border border-white/10 hover:border-tcf-green text-white text-[10px] font-bold py-3 rounded-xl uppercase tracking-widest transition duration-300">
+                            Manage Ticket
+                        </button>
+                        <button onclick="deleteFeeQuery('${q.query_no}')" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 px-5 rounded-xl transition duration-300">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function updateStatsDisplay(queries) {
+            document.getElementById('statTotal').innerText = `Total: ${queries.length}`;
+            document.getElementById('statPending').innerText = `Pending: ${queries.filter(q => q.status === 'forwarded').length}`;
+        }
+
+        async function editFeeQuery(id) {
+            const res = await fetch(`/api/query-management/${id}`);
+            const result = await res.json();
+            if (result.success) {
+                const q = result.data;
+                if(q.department !== FEE_DEPT) return alert('Department Mismatch Error');
+                
+                document.getElementById('updateQueryNo').value = q.query_no;
+                document.getElementById('updateQueryNoDisplay').value = q.query_no;
+                document.getElementById('updateCnic').value = q.cnic;
+                document.getElementById('updateQuery').value = q.query;
+                document.getElementById('updateResponse').value = q.response || '';
+                document.getElementById('updateStatus').value = q.status;
+                
+                const modal = document.getElementById('updateModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        document.getElementById('updateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('updateQueryNo').value;
+            const payload = {
+                cnic: document.getElementById('updateCnic').value,
+                query: document.getElementById('updateQuery').value,
+                department: FEE_DEPT,
+                response: document.getElementById('updateResponse').value,
+                status: document.getElementById('updateStatus').value
+            };
+
+            const res = await fetch(`/api/query-management/${id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+
+            if ((await res.json()).success) {
+                closeUpdateModal();
+                loadFeeQueries(activeView);
+            }
+        });
+
+        async function deleteFeeQuery(id) {
+            if(!confirm('Permanently delete this fee ticket?')) return;
+            const res = await fetch(`/api/query-management/${id}`, { method: 'DELETE' });
+            if ((await res.json()).success) loadFeeQueries(activeView);
+        }
+
+        function closeUpdateModal() {
+            const modal = document.getElementById('updateModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        window.onclick = function(e) {
+            const modal = document.getElementById('updateModal');
+            if (e.target === modal) closeUpdateModal();
+        }
+
+        window.addEventListener('load', () => loadFeeQueries('all'));
+    </script>
+</body>
+</html>

@@ -27,7 +27,7 @@ from database import init_mongodb, close_mongodb,DB_NAME
 from models import (
     Complaint, ComplaintCreate, QueryRequest, FeeApplication,
     User, StudentRegistration, ScholarshipApplication, SignupRequest,
-    StaffCreateRequest, StaffDeleteRequest, SystemLog, QueryTicket, QueryTicketUpdate
+    StaffCreateRequest, StaffDeleteRequest, SystemLog, QueryTicket, QueryTicketCreate, QueryTicketUpdate
     )
 
 
@@ -137,7 +137,7 @@ def role_required(allowed_roles: list):
             
         # Agar user login hai par role ghalat hai
         if role not in allowed_roles:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Unauthorized Access")
+            return HTMLResponse("<script>alert('Unauthorized Access'); window.location.href='/';</script>") 
             
         return role
     return Depends(dependency)
@@ -623,6 +623,11 @@ async def delete_staff_member(payload: StaffDeleteRequest, role: str = role_requ
 def alumni_dashboard_page(request: Request):
     return templates.TemplateResponse(request=request, name="alumni-dashboard.html")
 
+@app.get("/admin/reg-handler")
+def registration_handler_page(request: Request, role: str = role_required(["admin", "superadmin"])):
+    if role == "redirect_to_login":
+        return RedirectResponse(url="/login")
+    return templates.TemplateResponse(request=request, name="registeration-handler.html", context={"role": role})
 # ==========================
 
 # Query Management Routes
@@ -827,6 +832,29 @@ async def delete_query(query_no: str, role: str = role_required(["admin", "super
 
     return {"success": True, "message": "Query deleted successfully"}
 
+@app.post("/api/query-management/submit")
+async def submit_query_ticket(payload: QueryTicketCreate):
+    try:
+        # Generate a unique human-readable ID
+        count = QueryTicket.objects.count() + 1
+        query_id = f"QRY-2026-{str(count).zfill(5)}"
+        
+        new_ticket = QueryTicket(
+            query_no=query_id,
+            cnic=payload.cnic.replace("-", ""), # Clean CNIC
+            query=payload.query,
+            department=payload.department,
+            status="forwarded"
+        )
+        new_ticket.save()
+        
+        return {
+            "success": True, 
+            "message": f"Query submitted! Your Tracking ID is {query_id}"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ==========================
 # ALUMNI MANAGEMENT ROUTES
 # ==========================
@@ -1016,6 +1044,29 @@ import os
 import shutil
 from typing import List, Optional
 
+# ==========================
+# FEE MANAGEMENT API
+# ==========================
+
+@app.get("/api/fee/all")
+async def get_all_fee_apps(role: str = role_required(["admin", "fee", "superadmin"])):
+    apps = FeeApplication.objects().order_by('-created_at')
+    return [{"id": str(a.id), "name": a.name, "cnic": a.cnic, "status": a.status} for a in apps]
+
+@app.get("/api/fee/search/{cnic}")
+async def search_fee_cnic(cnic: str, role: str = role_required(["admin", "fee", "superadmin"])):
+    apps = FeeApplication.objects(cnic=cnic.replace("-", ""))
+    return [{"id": str(a.id), "name": a.name, "cnic": a.cnic, "status": a.status} for a in apps]
+
+@app.put("/api/fee/status/{app_id}")
+async def update_fee_status(app_id: str, payload: dict, role: str = role_required(["admin", "fee"])):
+    app = FeeApplication.objects(id=app_id).first()
+    if not app:
+        raise HTTPException(status_code=404, detail="Application not found")
+    app.status = payload.get("status")
+    app.save()
+    return {"success": True}
+
 @app.post("/fee")
 async def submit_fee_application(
     # Auth Security: Sirf logged-in students/users access kar saken
@@ -1124,6 +1175,25 @@ async def submit_fee_application(
             </div>
         """, status_code=500)
 
+@app.get("/fee-applications")
+def view_fee_applications(request: Request, role: str = role_required(["admin", "superadmin", "fee","genadmin"])):
+    if role == "redirect_to_login":
+        return HTMLResponse("<script>alert('Unauthorized'); window.location.href='/login';</script>")
+    applications = FeeApplication.objects().order_by('-created_at')
+    return templates.TemplateResponse(request=request, name="fee-section-dashboard.html", context={"role": role})
+
+@app.get("/fee/queries")
+def fee_queries_page(request: Request, role: str = role_required(["admin", "superadmin", "fee", "genadmin"])):
+    if role == "redirect_to_login":
+        return HTMLResponse("<script>alert('Unauthorized'); window.location.href='/login';</script>")
+    return templates.TemplateResponse(request=request, name="fee-section-query.html", context={"role": role})
+
+@app.get("/fee-handler")
+def fee_handler_page(request: Request, role: str = role_required(["admin", "superadmin", "fee", "genadmin"])):
+    if role == "redirect_to_login":
+        return HTMLResponse("<script>alert('Unauthorized'); window.location.href='/login';</script>")
+    return templates.TemplateResponse(request=request, name="fee-handler.html", context={"role": role})
+
 # ==========================
 # AUTHENTICATION
 # ==========================
@@ -1215,6 +1285,19 @@ async def register_student(payload: RegistrationRequest):
 # ==========================
 # ALUMNI MANAGEMENT API (for your Alumni HTML)
 # ==========================
+@app.get('/admin/scholarship')
+def scholarship_applications_page(request: Request, role: str = role_required(["admin", "superadmin", "scholarship"])):
+    if role == "redirect_to_login":
+        return HTMLResponse("<script>alert('Unauthorized'); window.location.href='/login';</script>")
+    return templates.TemplateResponse(request=request, name="scholarship-section-dashboard.html", context={"role": role})
+
+@app.get('/scholarship-applications')
+def scholarship_applications_api(request: Request, role: str = role_required(["admin", "superadmin", "scholarship"])):
+    if role == "redirect_to_login":
+        return HTMLResponse("<script>alert('Please Login'); window.location.href='/login';</script>")
+    apps = ScholarshipApplication.objects().order_by('-status')
+    return templates.TemplateResponse(request=request, name="scholarship-applications.html", context={"role": role})
+    
 @app.get("/register/all")
 def get_all_registrations():
     registrations = StudentRegistration.objects().order_by('-created_at')
